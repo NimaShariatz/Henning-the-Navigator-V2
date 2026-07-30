@@ -1,6 +1,43 @@
 .menuContainer {
   width: 100%;
-  height: 30px;
-  background-color: red;
+  height: 60px;
   display: flex;
+  background-color: var(--logo_yellow);
+  transform: translateY(-45px);
+  transition: transform 0.25s ease-in-out;
+}
+.menuContainer:hover {
+  transform: translateY(0);
+}
+.menuContainer:hover .leftSide,
+.menuContainer:hover .rightSide {
+  opacity: 1;
+}
+.menuContainer:hover .middleSide {
+  opacity: 0;
+}
+.leftSide {
+  width: 45%;
+  height: 100%;
+  padding-left: 10px;
+  opacity: 0;
+  transition: opacity 0.15s linear;
+}
+.henningLogo {
+  width: auto;
+  height: 100%;
+}
+
+.middleSide {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  transition: opacity 0.15s linear;
+}
+
+.rightSide {
+  width: 45%;
+  height: 100%;
 }

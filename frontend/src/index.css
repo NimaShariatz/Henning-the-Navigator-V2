@@ -3,6 +3,9 @@
   --logo_black: #1d1d1d;
   --logo_white: #fdfdfd;
 
+  --background: #fffcf3;
+  --text_color: #1d1d1d;
+
   --waypoint_extraction: #2ee31e;
   --waypoint_extraction_id_color: #59e34cd4;
 
@@ -29,7 +32,8 @@
 
 body {
   font-family: 'Saira', Arial;
-  color: rgb(0, 0, 0);
+  color: var(--text_color);
+  background-color: var(--background);
 }
 
 img {
