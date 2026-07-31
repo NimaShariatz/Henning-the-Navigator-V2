@@ -6,6 +6,8 @@
   --background: #fffcf3;
   --text_color: #1d1d1d;
 
+  --darkBG_1: rgba(38, 38, 38, 0.76);
+
   --waypoint_extraction: #2ee31e;
   --waypoint_extraction_id_color: #59e34cd4;
 
@@ -25,8 +27,10 @@
 }
 
 * {
-  margin: 0;
   padding: 0;
+  margin: 0;
+  border: none;
+  outline: 0;
   box-sizing: border-box;
 }
 
@@ -34,6 +38,29 @@ body {
   font-family: 'Saira', Arial;
   color: var(--text_color);
   background-color: var(--background);
+  font-size: 16px;
+}
+h1 {
+  font-size: 3.125rem;
+}
+h2 {
+  font-size: 2.25rem;
+}
+h3 {
+  font-size: 1.75rem;
+}
+h4 {
+  font-size: 1.5rem;
+}
+h5 {
+  font-size: 1.375rem;
+}
+h6 {
+  font-size: 1.25rem;
+}
+
+small {
+  font-size: 0.8rem;
 }
 
 img {
@@ -45,6 +72,32 @@ button,
 select,
 textarea {
   font: inherit;
+}
+
+@media (max-width: 720px) {
+  /*for mobile view*/
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+  h2 {
+    font-size: 1.75rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+  h4 {
+    font-size: 1.375rem;
+  }
+  h5 {
+    font-size: 1.25rem;
+  }
+  h6 {
+    font-size: 1rem;
+  }
 }
 
 @font-face {

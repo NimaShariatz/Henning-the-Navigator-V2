@@ -1,0 +1,287 @@
+.coreContainer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  background-color: black;
+  color: var(--logo_white);
+}
+
+.container {
+  width: 100%;
+  background: var(--darkBG_1);
+  backdrop-filter: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  width: 600px;
+  padding-block: 2rem;
+  margin-top: 5vh;
+  border-radius: 10px;
+  transition: 0.25s ease-in-out;
+  box-shadow: 0vw 0vw 3vw 0vw rgba(0, 0, 0, 0.3);
+  border: 3px solid var(--logo_yellow);
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-inline: 3rem;
+  width: 100%;
+  height: 100%;
+}
+.form div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+}
+.form div:nth-child(3) {
+  margin-top: 20px;
+}
+
+.form div label,
+.form label {
+  font-weight: 800;
+  padding-bottom: 2px;
+}
+
+.form div input {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: none;
+  outline: 2px solid rgba(0, 0, 0, 1);
+}
+.form div input:focus {
+  outline-color: var(--logo_yellow);
+}
+
+.form button {
+  width: 40%;
+  min-width: 60px;
+  margin-top: 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--logo_yellow);
+}
+
+.logo_container {
+  padding-left: 5vw;
+  padding-top: 15vw;
+  padding-bottom: 15vw;
+  padding-right: 15vw;
+  background-color: var(--logo_yellow);
+  transform: rotate(45deg) translateX(-26vw) translateY(-2vw);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  box-shadow: 0vw 0vw 3vw 0vw rgba(0, 0, 0, 0.61);
+}
+
+.logo {
+  border-radius: 50%;
+  width: 15vw;
+  height: 15vw;
+  transform: rotate(-45deg) translate(11vw, 8vw);
+}
+
+.home_background_img_1,
+.home_background_img_2,
+.home_background_img_3,
+.home_background_img_4,
+.home_background_img_5,
+.home_background_img_6,
+.home_background_img_7 {
+  width: 100%;
+  height: 100%;
+
+  background-size: cover;
+  background-position: right;
+  background-repeat: no-repeat;
+  opacity: 0;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+  background-color: #000000ab;
+  background-blend-mode: color-dodge;
+}
+
+.home_background_img_1 {
+  animation: fade1 65s infinite;
+}
+
+.home_background_img_2 {
+  animation: fade2 65s infinite;
+}
+
+.home_background_img_3 {
+  animation: fade3 65s infinite;
+}
+
+.home_background_img_4 {
+  animation: fade4 65s infinite;
+}
+
+.home_background_img_5 {
+  animation: fade5 65s infinite;
+}
+
+.home_background_img_6 {
+  animation: fade6 65s infinite;
+}
+
+.home_background_img_7 {
+  animation: fade7 65s infinite;
+}
+
+@keyframes fade1 {
+  0% {
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  12.28% {
+    opacity: 1;
+  }
+  14.28% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade2 {
+  0% {
+    opacity: 0;
+  }
+  12.28% {
+    opacity: 0;
+  }
+  14.28% {
+    opacity: 1;
+  }
+  26.57% {
+    opacity: 1;
+  }
+  28.57% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade3 {
+  0% {
+    opacity: 0;
+  }
+  26.57% {
+    opacity: 0;
+  }
+  28.57% {
+    opacity: 1;
+  }
+  40.86% {
+    opacity: 1;
+  }
+  42.86% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade4 {
+  0% {
+    opacity: 0;
+  }
+  40.86% {
+    opacity: 0;
+  }
+  42.86% {
+    opacity: 1;
+  }
+  55.15% {
+    opacity: 1;
+  }
+  57.15% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade5 {
+  0% {
+    opacity: 0;
+  }
+  55.14% {
+    opacity: 0;
+  }
+  57.14% {
+    opacity: 1;
+  }
+  69.44% {
+    opacity: 1;
+  }
+  71.44% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade6 {
+  0% {
+    opacity: 0;
+  }
+  69.43% {
+    opacity: 0;
+  }
+  71.43% {
+    opacity: 1;
+  }
+  83.73% {
+    opacity: 1;
+  }
+  85.73% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade7 {
+  0% {
+    opacity: 0;
+  }
+  83.72% {
+    opacity: 0;
+  }
+  85.72% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
