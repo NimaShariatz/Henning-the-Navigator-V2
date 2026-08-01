@@ -39,7 +39,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 600px;
 }
 .form div:nth-child(3) {
   margin-top: 20px;
@@ -283,5 +282,27 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .coreContainer {
+    align-items: center;
+  }
+  .logo_container {
+    padding-left: 3vw;
+    padding-top: 14vw;
+    padding-bottom: 14vw;
+    padding-right: 14vw;
+  }
+  .logo {
+    width: 19vw;
+    height: 19vw;
+  }
+  .container {
+    width: 90%;
+  }
+  .form {
+    padding-inline: 1rem;
   }
 }
