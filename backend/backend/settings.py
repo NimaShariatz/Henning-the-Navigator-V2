@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta # - for using Djangorestframework-simplejwt. customizing the token lifetimes
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +28,12 @@ SECRET_KEY = 'django-insecure-@^_5b)d-qb4+lhx6c$(zx)09zsp+gl9s1#(n&bkmlizd%d2wgf
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ALLOWED_ORIGINS = [ # - so that api with ReactJS works
+    "http://localhost:5173",
+]
+CSRF_TRUSTED_ORIGINS = [ # - otherwise we get 403 forbidden errors from backend
+    "http://localhost:5173",
+]
 
 
 # Application definition
@@ -37,7 +45,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_spectacular', # - documentation
+    'corsheaders', # - so that api with ReactJS works
+    'rest_framework', # - simplifies code for views.py
 ]
+
+REST_FRAMEWORK = { # - for using Djangorestframework-simplejwt
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # - drf documentation
+}
+SIMPLE_JWT = { # - for using Djangorestframework-simplejwt
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
