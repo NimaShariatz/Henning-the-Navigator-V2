@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     'drf_spectacular', # - documentation
     'corsheaders', # - so that api with ReactJS works
     'rest_framework', # - simplifies code for views.py
+    'accounts'
 ]
+AUTH_USER_MODEL = "accounts.User" # to make django authentication for User work
 
 REST_FRAMEWORK = { # - for using Djangorestframework-simplejwt
     'DEFAULT_AUTHENTICATION_CLASSES': (
