@@ -40,4 +40,14 @@
 .rightSide {
   width: 45%;
   height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding-right: 10px;
+  transition: opacity 0.15s linear;
+}
+
+.rightSide button {
+  background-color: transparent;
+  cursor: pointer;
 }

@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'drf_spectacular', # - documentation
     'corsheaders', # - so that api with ReactJS works
     'rest_framework', # - simplifies code for views.py
-    'accounts'
+    'accounts',
 ]
 AUTH_USER_MODEL = "accounts.User" # to make django authentication for User work
 
@@ -65,6 +65,7 @@ SIMPLE_JWT = { # - for using Djangorestframework-simplejwt
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # with this, the browser blocks reactjs requests before it reachs django
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

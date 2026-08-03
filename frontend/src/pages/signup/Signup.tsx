@@ -10,13 +10,36 @@ import {
   HennLogo2,
 } from '../../constants';
 
+import { signupUser } from '../../api/Signup';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+
 function Signup() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError('');
+    try {
+      const tokens = await signupUser({ username, password });
+      localStorage.setItem('access', tokens.access);
+      localStorage.setItem('refresh', tokens.refresh);
+      navigate('/');
+    } catch (err) {
+      if (err instanceof Error) setError(err.message);
+    }
+  }
+
   return (
     <>
       <div className={styles.coreContainer}>
         <div className={styles.container}>
-          <form className={styles.form}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             <h2>Sign up</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <div>
               <label>Username</label>
               <input
@@ -24,7 +47,8 @@ function Signup() {
                 type="text"
                 name="username"
                 placeholder="Username"
-                autoComplete="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div>
@@ -33,12 +57,20 @@ function Signup() {
                 required
                 type="password"
                 name="password"
-                minLength={4}
+                minLength={8}
                 placeholder="Password"
                 autoComplete="new-password"
-              />{' '}
-              {/* login should do autoComplete="current-password" */}
+                pattern="^(?!^\d+$).{8,}$"
+                title="Must be at least 8 characters and not entirely numeric"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
+            <ul>
+              <li>At least 8 characters</li>
+              <li>Not entirely numeric</li>
+            </ul>
+
             <button className={styles.signupButton} type="submit">
               Sign Up
             </button>
