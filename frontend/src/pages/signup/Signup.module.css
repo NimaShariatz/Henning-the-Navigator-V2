@@ -22,7 +22,7 @@
   margin-top: 5vh;
   border-radius: 10px;
   transition: 0.25s ease-in-out;
-  box-shadow: 0vw 0vw 3vw 0vw rgba(0, 0, 0, 0.3);
+  box-shadow: var(--boxshadow_1);
   border: 3px solid var(--logo_yellow);
 }
 
@@ -83,7 +83,7 @@
   top: 0;
   left: 0;
   z-index: 3;
-  box-shadow: 0vw 0vw 3vw 0vw rgba(0, 0, 0, 0.61);
+  box-shadow: var(--boxshadow_1);
 }
 
 .logo {
