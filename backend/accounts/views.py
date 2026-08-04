@@ -2,11 +2,12 @@ from rest_framework import generics, permissions
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from .serializers import RegisterSerializer
+from rest_framework.views import APIView
+
 
 # Purpose: Handles POST /api/accounts/register/ - validates signup data and returns JWT tokens for an authenticated session
 # Input: JSON from frontend. { "username": "john", "password": "secret123" }
 # Output: JSON response with a pair of tokens on a 201. { "refresh": "...", "access": "..." }
-
 class RegisterView(generics.CreateAPIView):
   serializer_class = RegisterSerializer # use accounts/serializers.py
   permission_classes = [permissions.AllowAny] # disables auth as user does not have a token yet
@@ -21,3 +22,13 @@ class RegisterView(generics.CreateAPIView):
       'refresh': str(refresh),
       'access': str(refresh.access_token)
     })
+    
+    
+# Purpose: Returns the username of the currently authenticated user. Acts as a backend guard — rejects unauthenticated requests with a 401
+# Input: GET /api/accounts/user/ with the JWT access token in the Authorization header. Authorization: Bearer <access_token>
+# Output: JSON with the username on success (200) { "username": "john" }
+class UserView(APIView):
+  permission_classes = [permissions.IsAuthenticated]
+  
+  def get(self, request):
+    return Response({'username' : request.user.username})

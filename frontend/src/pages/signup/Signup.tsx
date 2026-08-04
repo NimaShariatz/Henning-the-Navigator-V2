@@ -27,7 +27,7 @@ function Signup() {
       const tokens = await signupUser({ username, password });
       localStorage.setItem('access', tokens.access);
       localStorage.setItem('refresh', tokens.refresh);
-      navigate('/');
+      navigate('/user-sessions');
     } catch (err) {
       if (err instanceof Error) setError(err.message);
     }

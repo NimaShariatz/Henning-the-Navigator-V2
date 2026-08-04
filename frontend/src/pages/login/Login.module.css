@@ -86,3 +86,28 @@
   background-color: #000000ab;
   background-blend-mode: color-dodge;
 }
+
+@media (max-width: 720px) {
+  .coreContainer {
+    align-items: center;
+  }
+  .logo_container {
+    padding-left: 3vw;
+    padding-top: 14vw;
+    padding-bottom: 14vw;
+    padding-right: 14vw;
+  }
+  .logo {
+    width: 19vw;
+    height: 19vw;
+  }
+  .container {
+    width: 90%;
+  }
+  .form {
+    padding-inline: 1rem;
+  }
+  .home_background_img {
+    background-position: center;
+  }
+}

@@ -17,7 +17,7 @@ function Login() {
       const tokens = await loginUser({ username, password });
       localStorage.setItem('access', tokens.access);
       localStorage.setItem('refresh', tokens.refresh);
-      navigate('/');
+      navigate('/user-sessions');
     } catch (err) {
       if (err instanceof Error) setError(err.message);
     }
@@ -37,6 +37,7 @@ function Login() {
                 type="text"
                 name="username"
                 placeholder="Username"
+                autoComplete="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -49,7 +50,7 @@ function Login() {
                 name="password"
                 minLength={8}
                 placeholder="Password"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 pattern="^(?!^\d+$).{8,}$"
                 title="Must be at least 8 characters and not entirely numeric"
                 value={password}
