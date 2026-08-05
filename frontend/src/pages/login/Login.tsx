@@ -1,6 +1,6 @@
 import styles from './Login.module.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { loginUser } from '../../api/Login';
 import { HennLogo2 } from '../../constants';
 
@@ -57,7 +57,7 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-
+            <Link to="/signup">No account? Sign up</Link>
             <button className={styles.signupButton} type="submit">
               Login
             </button>

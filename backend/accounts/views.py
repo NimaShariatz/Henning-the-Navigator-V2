@@ -21,7 +21,7 @@ class RegisterView(generics.CreateAPIView):
     return Response({ # return a fresh pair of tokens
       'refresh': str(refresh),
       'access': str(refresh.access_token)
-    })
+    }, status=201)
     
     
 # Purpose: Returns the username of the currently authenticated user. Acts as a backend guard — rejects unauthenticated requests with a 401
@@ -31,4 +31,4 @@ class UserView(APIView):
   permission_classes = [permissions.IsAuthenticated]
   
   def get(self, request):
-    return Response({'username' : request.user.username})
+    return Response({'username' : request.user.username}, status=200)

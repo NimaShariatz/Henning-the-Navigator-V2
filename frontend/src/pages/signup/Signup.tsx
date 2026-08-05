@@ -12,7 +12,7 @@ import {
 
 import { signupUser } from '../../api/Signup';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 function Signup() {
   const [username, setUsername] = useState('');
@@ -47,6 +47,7 @@ function Signup() {
                 type="text"
                 name="username"
                 placeholder="Username"
+                autoComplete="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -70,7 +71,7 @@ function Signup() {
               <li>At least 8 characters</li>
               <li>Not entirely numeric</li>
             </ul>
-
+            <Link to="/login">Already have an account? Login</Link>
             <button className={styles.signupButton} type="submit">
               Sign Up
             </button>

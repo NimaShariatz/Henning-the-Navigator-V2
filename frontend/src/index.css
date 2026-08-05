@@ -6,6 +6,7 @@
   --background: #fffcf3;
   --text_color: #1d1d1d;
   --text_color_white: #fdfdfd;
+  --hyperlink_color: #00d5d5;
 
   --darkBG_1: rgba(38, 38, 38, 0.76);
   --active_color: #fdfdfd;
@@ -44,6 +45,11 @@ body {
   background-color: var(--background);
   font-size: 16px;
 }
+
+a {
+  text-decoration: none;
+}
+
 h1 {
   font-size: 3.125rem;
 }
