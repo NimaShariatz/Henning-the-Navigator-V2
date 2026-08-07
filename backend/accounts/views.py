@@ -12,7 +12,7 @@ class RegisterView(generics.CreateAPIView):
   serializer_class = RegisterSerializer # use accounts/serializers.py
   permission_classes = [permissions.AllowAny] # disables auth as user does not have a token yet
   
-  
+  # called automatically by CreateAPIView when it receives a POST request
   def create(self, request, *args, **kwargs): # override CreateAPIView so we can return tokens as well
     serializer = self.get_serializer(data=request.data)# passes data into serializer
     serializer.is_valid(raise_exception=True) # will return 400 is validation fails

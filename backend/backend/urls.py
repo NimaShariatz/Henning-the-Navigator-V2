@@ -24,8 +24,10 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),      # - raw OpenAPI schema (JSON)
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema')),  # - interactive UI
     path('admin/', admin.site.urls),
-    path('api/accounts/', include('accounts.urls')),  # accounts/urls.py
     path('api/token/', TokenObtainPairView.as_view()),  # automatically handles login on its own. no view needed
+    path('api/accounts/', include('accounts.urls')),  # accounts/urls.py
+    path('api/mapSessions/', include('mapSessions.urls')), # sessions/urls.py
+    
 
 
 ]

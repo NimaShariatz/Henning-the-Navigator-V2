@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'corsheaders', # - so that api with ReactJS works
     'rest_framework', # - simplifies code for views.py
     'accounts',
+    'mapSessions'
 ]
 AUTH_USER_MODEL = "accounts.User" # to make django authentication for User work
 
