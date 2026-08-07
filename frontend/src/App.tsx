@@ -4,7 +4,7 @@ import './App.css';
 import Home from './pages/home/Home';
 import Signup from './pages/signup/Signup';
 import Login from './pages/login/Login';
-import UserPage from './pages/userPage/UserPage';
+import UserSessions from './pages/userSessions/UserSessions';
 
 const pageTitles: Record<string, string> = {
   '/': 'Henning the Navigator',
@@ -29,7 +29,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/user-sessions" element={<UserPage />} />
+      <Route path="/user-sessions" element={<UserSessions />} />
     </Routes>
   );
 }

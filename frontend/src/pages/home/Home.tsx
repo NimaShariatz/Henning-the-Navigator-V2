@@ -6,8 +6,9 @@ function Home() {
   return (
     <>
       <Menu />
+      <h1>home component</h1>
       <Link to="/signup">Go to Signup</Link>
-      <p>home component</p>
+      <Link to="/signup">Go to Login</Link>
     </>
   );
 }

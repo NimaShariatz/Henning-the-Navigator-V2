@@ -47,7 +47,8 @@
   transition: opacity 0.15s linear;
 }
 
-.rightSide button {
+.rightSide button,
+.rightSide a {
   background-color: transparent;
   cursor: pointer;
   display: flex;
@@ -56,18 +57,22 @@
   padding-inline: 0.25rem;
   border-radius: 4px;
 }
-.rightSide button:hover {
+.rightSide button:hover,
+.rightSide a:hover {
   background-color: var(--logo_black);
   color: var(--text_color_white);
 }
-.rightSide button svg {
+.rightSide button svg,
+.rightSide a svg {
   height: 16px;
   width: 16px;
   padding-left: 0.2rem;
 }
-.rightSide button svg path {
+.rightSide button svg path,
+.rightSide a svg path {
   fill: var(--text_color);
 }
-.rightSide button:hover svg path {
+.rightSide button:hover svg path,
+.rightSide a:hover svg path {
   fill: var(--text_color_white);
 }
