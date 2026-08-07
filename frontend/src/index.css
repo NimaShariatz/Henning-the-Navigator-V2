@@ -29,6 +29,8 @@
   --red_target_background: #fb7b7b4a;
   --blue_target: #0b62bf;
   --blue_target_background: #4272ec4c;
+
+  --menu_height: 60px;
 }
 
 * {
@@ -51,6 +53,9 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+a:visited {
+  color: initial; /* dont make color purple */
 }
 
 h1 {

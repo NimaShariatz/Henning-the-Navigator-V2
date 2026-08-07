@@ -21,10 +21,11 @@ function UserSessions() {
   return (
     <>
       <Menu />
-      <p>user page</p>
-      <p>Hi {username}!</p>
 
-      <div className={styles.coreContainer}></div>
+      <div className={styles.coreContainer}>
+        <p>user page</p>
+        <p>Hi {username}!</p>
+      </div>
     </>
   );
 }
