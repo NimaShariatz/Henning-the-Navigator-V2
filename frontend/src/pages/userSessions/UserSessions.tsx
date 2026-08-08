@@ -18,13 +18,38 @@ function UserSessions() {
       .catch(() => navigate('/login'));
   }, [navigate]);
 
+  /*
+   * 
+    Create mock sessions
+    Set up fetching on views and /api
+    Update admin.py
+    Create sessions with django admin
+    Update mock
+    Make search, delete, and create all functional
+   */
+
   return (
     <>
       <Menu />
+      <div className={styles.initialContainer}>
+        <h1>{username}'s Sessions</h1>
+      </div>
 
       <div className={styles.coreContainer}>
-        <p>user page</p>
-        <p>Hi {username}!</p>
+        <div className={styles.filterContainer}>
+          <form>
+            <input />
+            <button>Search</button>
+          </form>
+
+          <div className={styles.filtersRow}>
+            <div>
+              <p>Sort by: Date or Name</p>
+            </div>
+
+            <div>Create Session</div>
+          </div>
+        </div>
       </div>
     </>
   );

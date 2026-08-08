@@ -21,8 +21,8 @@
 .leftSide {
   width: 45%;
   height: 100%;
-  padding-left: 10px;
   opacity: 0;
+  padding-left: 10px;
   transition: opacity 0.15s linear;
 }
 .leftHomeLink {
@@ -46,11 +46,12 @@
 .rightSide {
   width: 45%;
   height: 100%;
+  opacity: 0;
   display: flex;
   justify-content: end;
   align-items: center;
   padding-right: 10px;
-  gap: 1rem;
+  gap: 3rem;
   transition: opacity 0.15s linear;
 }
 
@@ -85,4 +86,10 @@
 .rightSide button:hover svg path,
 .rightSide a:hover svg path {
   fill: var(--text_color_white);
+}
+
+@media (max-width: 720px) {
+  .rightSide {
+    gap: 1rem;
+  }
 }

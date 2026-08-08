@@ -1,8 +1,24 @@
-.coreContainer {
+.initialContainer {
   margin-top: var(--menu_height);
+  padding-left: 1rem;
+}
+
+.coreContainer {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
-  min-height: 100px;
+
+  margin-top: 2rem;
   background-color: red;
+}
+
+.filterContainer {
+  width: 80%;
+}
+
+.filtersRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

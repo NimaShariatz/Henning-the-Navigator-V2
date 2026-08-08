@@ -1,0 +1,14 @@
+waypoints should be its own app!
+eg its model could be 
+
+class Waypoint(models.Model):
+    WAYPOINT_TYPES = [
+        ('marker', 'Marker'),
+        ('checkpoint', 'Checkpoint'),
+    ]
+    session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='waypoints')
+    x = models.FloatField()
+    y = models.FloatField()
+    type = models.CharField(max_length=20, choices=WAYPOINT_TYPES)
+    color = models.CharField(max_length=7)  # hex e.g. "#ff0000"
+    order = models.PositiveIntegerField(default=0)  # for preserving waypoint sequence

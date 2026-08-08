@@ -60,7 +60,7 @@ REST_FRAMEWORK = { # - for using Djangorestframework-simplejwt
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # - drf documentation
 }
 SIMPLE_JWT = { # - for using Djangorestframework-simplejwt
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
