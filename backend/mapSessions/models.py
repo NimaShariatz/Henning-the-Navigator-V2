@@ -11,9 +11,10 @@ from django.utils.text import slugify
 class MapSession(models.Model):
   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # generates a unique ID
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sessions') # Links each session to a user. CASCADE means if the user is deleted, all their sessions are deleted too. related_name='sessions' lets you do user.sessions.all()
-  title = models.CharField(max_length=100)
-  slug = models.SlugField(max_length=100) # A URL-safe version of the title (e.g. "My Session" → "my-session"), used in the URL path
-  created_at = models.DateTimeField(auto_now_add=True) # auto_now_add is the same as manually doing created_at = datetime.now() in save(). also makes hte field non-editable
+  title = models.CharField(max_length=50)
+  slug = models.SlugField(max_length=50) # A URL-safe version of the title (e.g. "My Session" → "my-session"), used in the URL path
+  created_at = models.DateTimeField(auto_now_add=True) # auto_now_add is the same as manually doing created_at = datetime.now() in save(). also makes the field non-editable. But only done once on creation.
+  last_updated = models.DateTimeField(auto_now=True) # Automatically sets the field to the current date and time every time you call .save() on the object
   is_visible = models.BooleanField(default=True)
   has_access = models.ManyToManyField( # sessions can have many users. users can have many sessions
     settings.AUTH_USER_MODEL, # references whatever model is set as AUTH_USER_MODEL in settings.py. so "accounts.User"

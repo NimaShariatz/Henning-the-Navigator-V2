@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import Menu from '../../components/menu/Menu';
 import { getUser } from '../../api/User';
 import styles from './UserSessions.module.css';
+import { sessionHeader } from '../../constants';
 
 function UserSessions() {
   const [username, setUsername] = useState('');
@@ -26,6 +27,7 @@ function UserSessions() {
     Create sessions with django admin
     Update mock
     Make search, delete, and create all functional
+    introduce pagination
    */
 
   return (
@@ -33,6 +35,7 @@ function UserSessions() {
       <Menu />
       <div className={styles.initialContainer}>
         <h1>{username}'s Sessions</h1>
+        <img src={sessionHeader} />
       </div>
 
       <div className={styles.coreContainer}>
@@ -43,11 +46,51 @@ function UserSessions() {
           </form>
 
           <div className={styles.filtersRow}>
-            <div>
-              <p>Sort by: Date or Name</p>
-            </div>
+            <p>
+              Sort: Alphabetically [or by last updated] [or by date created]
+            </p>
 
-            <div>Create Session</div>
+            <p>
+              Create Session
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1rem"
+                height="1rem"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M18 12.998h-5v5a1 1 0 0 1-2 0v-5H6a1 1 0 0 1 0-2h5v-5a1 1 0 0 1 2 0v5h5a1 1 0 0 1 0 2"
+                ></path>
+              </svg>
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.sessionContainer}>
+          <div>
+            <h4>Novosolinki Raid Session</h4>
+            <p>Last Edit: March 22nd 2027</p>
+            <p>Edit Permission: By Invite</p>
+            <p className={styles.shareLink}>
+              Share link
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1rem"
+                height="1rem"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="#0a0909"
+                  d="M11 17H7q-2.075 0-3.537-1.463T2 12t1.463-3.537T7 7h4v2H7q-1.25 0-2.125.875T4 12t.875 2.125T7 15h4zm-3-4v-2h8v2zm5 4v-2h4q1.25 0 2.125-.875T20 12t-.875-2.125T17 9h-4V7h4q2.075 0 3.538 1.463T22 12t-1.463 3.538T17 17z"
+                ></path>
+              </svg>
+            </p>
+          </div>
+
+          <div>
+            <p>Small image</p>
+            <p>Novosolinki</p>
           </div>
         </div>
       </div>

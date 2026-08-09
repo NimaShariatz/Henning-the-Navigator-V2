@@ -7,6 +7,7 @@
   transition: transform 0.25s ease-in-out;
   position: fixed;
   top: 0;
+  z-index: var(--menu_index);
 }
 .menuContainer:hover {
   transform: translateY(0);
@@ -30,8 +31,9 @@
   height: 100%;
 }
 .henningLogo {
-  width: auto;
+  width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .middleSide {
@@ -50,8 +52,8 @@
   display: flex;
   justify-content: end;
   align-items: center;
-  padding-right: 10px;
-  gap: 3rem;
+  padding-right: 1rem;
+  gap: 2rem;
   transition: opacity 0.15s linear;
 }
 
@@ -63,9 +65,9 @@
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  padding-inline: 0.25rem;
   border-radius: 4px;
   font-weight: 700;
+  padding-inline: 0.25rem;
 }
 .rightSide button:hover,
 .rightSide a:hover {
@@ -89,7 +91,26 @@
 }
 
 @media (max-width: 720px) {
+  .leftSide {
+    width: 15%;
+    padding-left: 5px;
+  }
+
+  .middleSide {
+    display: none;
+  }
+
   .rightSide {
+    width: 85%;
     gap: 1rem;
+  }
+
+  .rightSide button,
+  .rightSide a {
+    font-size: 12px;
+  }
+  .rightSide button svg,
+  .rightSide a svg {
+    display: none;
   }
 }
