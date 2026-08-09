@@ -6,6 +6,7 @@
   text-align: left;
   display: flex;
   align-items: center;
+  z-index: var(--sessionHeader_index);
 }
 .initialContainer img {
   position: absolute;
@@ -55,7 +56,6 @@
 
 .filterContainer {
   width: 80%;
-  background-color: antiquewhite;
   padding-block: 1rem;
   padding-inline: 1rem;
   border-radius: 10px;
@@ -81,7 +81,7 @@
   width: 80%;
   min-height: 140px;
   border-radius: 10px;
-  background-color: aqua;
+  background-color: var(--light_yellow);
   display: flex;
   justify-content: space-between;
 }
