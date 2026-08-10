@@ -3,6 +3,10 @@ from django.contrib.auth.password_validation import validate_password
 from .models import User
 
 
+
+# serializers.py handles data concerns: validates the input and creates the object.
+
+
 # Purpose: validates incoming signup data and creates a new User with a hashed password. called in views.py
 # Input: frontend request data. { "username": "john", "password": "secret123" }
 # Output: A saved User model instance returned to views.py by .save()

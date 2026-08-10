@@ -3,11 +3,16 @@ import { Link } from 'react-router';
 import { HennLogo1 } from '../../constants';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
+import DeleteProfile from '../deleteAccount/DeleteAccount';
 
 function Menu() {
   const navigate = useNavigate();
-  const [loggedIn] = useState(isAuthenticated);
+  const [errorClicked, setErrorClicked] = useState(false);
+  function ErrorClicked_handler(input: boolean) {
+    setErrorClicked(input);
+  }
 
+  const [loggedIn] = useState(isAuthenticated);
   function isAuthenticated() {
     const token = localStorage.getItem('access');
     if (!token) return false;
@@ -29,6 +34,10 @@ function Menu() {
 
   return (
     <>
+      <DeleteProfile
+        errorClicked={errorClicked}
+        ErrorClicked_handler={ErrorClicked_handler}
+      />
       <menu>
         <div className={styles.menuContainer}>
           <div className={styles.leftSide}>
@@ -70,9 +79,9 @@ function Menu() {
                     ></path>
                   </svg>
                 </Link>
-                {/*
-                <Link to="/profile">
-                  Profile
+
+                <button onClick={() => setErrorClicked(true)}>
+                  Delete Profile
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g fill="none" stroke="currentColor" strokeWidth={2}>
                       <path
@@ -82,8 +91,8 @@ function Menu() {
                       <circle cx={12} cy={7} r={3}></circle>
                     </g>
                   </svg>
-                </Link>
-                */}
+                </button>
+
                 <button onClick={handleSignOut}>
                   Log out
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

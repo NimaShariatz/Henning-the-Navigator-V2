@@ -7,3 +7,11 @@ export async function getUser(): Promise<{ username: string }> {
   if (!res.ok) throw new Error('Failed to fetch user');
   return res.json();
 }
+
+export async function deleteUser() {
+  const res = await fetch(`${API_URL}/api/accounts/user/`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${localStorage.getItem('access')}` },
+  });
+  if (!res.ok) throw new Error('Failed to delete user');
+}
