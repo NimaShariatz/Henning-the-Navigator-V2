@@ -1,0 +1,36 @@
+.ToastContainer {
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  width: 200px;
+  padding-block: 0.25rem;
+  padding-inline: 0.5rem;
+  background: var(--logo_yellow);
+  border-radius: 3px;
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+  display: flex;
+  transform: translateX(240px);
+  animation: animatInOut 6s ease-in-out;
+}
+.ToastContainer small {
+  text-align: center;
+  width: 100%;
+  font-weight: 700;
+}
+
+@keyframes animatInOut {
+  0% {
+    transform: translateX(240px);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  89% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(240px);
+  }
+}

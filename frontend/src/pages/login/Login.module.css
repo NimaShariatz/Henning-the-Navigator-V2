@@ -63,7 +63,7 @@
   color: var(--hyperlink_color);
 }
 
-.form button {
+.loginButton {
   width: 40%;
   margin-top: 1rem;
   min-width: 60px;
@@ -73,8 +73,21 @@
   background-color: var(--logo_yellow);
   cursor: pointer;
 }
-.form button:active {
+.loginButton:active {
   background-color: var(--active_color);
+}
+
+.showPasswordButton {
+  position: absolute;
+  right: 10px;
+  top: 40px;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .home_background_img {
@@ -110,6 +123,9 @@
   }
   .form {
     padding-inline: 1rem;
+  }
+  .showPasswordButton {
+    top: 35px;
   }
   .home_background_img {
     background-position: center;

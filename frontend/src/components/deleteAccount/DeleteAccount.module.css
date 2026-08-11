@@ -57,3 +57,12 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+@media (max-width: 720px) {
+  .formContainer {
+    width: 90%;
+    margin-bottom: 20vh;
+    padding-inline: 1rem;
+    padding-block: 2rem;
+  }
+}

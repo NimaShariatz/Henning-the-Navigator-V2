@@ -20,7 +20,6 @@ function UserSessions() {
   }, [navigate]);
 
   /*
-   * 
     Create mock sessions
     Set up fetching on views and /api
     Update admin.py

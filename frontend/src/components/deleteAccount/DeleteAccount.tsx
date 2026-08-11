@@ -16,12 +16,13 @@ function DeleteProfile({
 
   type PopupKey = 'Check1' | 'Check2' | 'Check3';
   const [deleteFlags, setDeleteFlags] = useState<Record<PopupKey, boolean>>({
+    //the flag checks for deleting an account
     Check1: false,
     Check2: false,
     Check3: false,
   });
   const handle_DeleteFlags = (sect: PopupKey) => {
-    setDeleteFlags((prev) => ({ ...prev, [sect]: !prev[sect] }));
+    setDeleteFlags((prev) => ({ ...prev, [sect]: !prev[sect] })); //set flag to false
   };
   const resetDeleteFlags = () => {
     setDeleteFlags({
@@ -29,7 +30,7 @@ function DeleteProfile({
       Check2: false,
       Check3: false,
     });
-    ErrorClicked_handler(false);
+    ErrorClicked_handler(false); // remove popup
   };
 
   useEffect(() => {
@@ -39,7 +40,9 @@ function DeleteProfile({
       deleteFlags.Check2 == true &&
       deleteFlags.Check3 == true
     ) {
-      deleteUser().then(() => navigate('/login'));
+      deleteUser().then(() =>
+        navigate('/login', { state: { toast: 'Account deleted' } }),
+      ); /* Trigger TOAST message! */
     }
   }, [deleteFlags, navigate]);
 

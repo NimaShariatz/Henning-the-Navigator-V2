@@ -1,6 +1,7 @@
 const API_URL = 'http://127.0.0.1:8000';
 
 export async function getUser(): Promise<{ username: string }> {
+  // method: 'GET' not necassary as it's default behaviour anyways
   const res = await fetch(`${API_URL}/api/accounts/user/`, {
     headers: { Authorization: `Bearer ${localStorage.getItem('access')}` },
   });
