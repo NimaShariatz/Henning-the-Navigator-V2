@@ -5,7 +5,7 @@
 
 
 # ToDO
-- tests run by gh-pages
+- tests run by git actions
 - a dev and prod branch with live instances
 - gunicorn
 - NGINX
