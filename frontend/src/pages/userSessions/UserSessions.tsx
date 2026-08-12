@@ -4,6 +4,7 @@ import Menu from '../../components/menu/Menu';
 import { getUser } from '../../api/User';
 import styles from './UserSessions.module.css';
 import { sessionHeader } from '../../constants';
+import { lowResArras } from '../../constants';
 
 function UserSessions() {
   const [username, setUsername] = useState('');
@@ -84,9 +85,9 @@ function UserSessions() {
             </p>
           </div>
 
-          <div>
-            <p>Small image</p>
-            <p>Novosolinki</p>
+          <div className={styles.rightContainer}>
+            <img className={styles.lowResImg} src={lowResArras} />
+            <small className={styles.mapName}>Novosolinki</small>
           </div>
         </div>
       </div>

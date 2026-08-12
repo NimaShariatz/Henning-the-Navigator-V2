@@ -14,7 +14,7 @@ function Login() {
 
   const location = useLocation();
   const toastMessage = location.state?.toast;
-  console.log(toastMessage);
+  //console.log(toastMessage);
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
