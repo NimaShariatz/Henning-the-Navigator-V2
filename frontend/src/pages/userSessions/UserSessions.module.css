@@ -54,11 +54,13 @@
   gap: 2rem;
 }
 
+/* filter section */
 .filterContainer {
   width: 80%;
   padding-block: 1rem;
   padding-inline: 1rem;
   border-radius: 10px;
+  background-color: var(--light_yellow);
 }
 
 .filtersRow {
@@ -85,6 +87,13 @@
   background-color: var(--light_yellow);
   display: flex;
   justify-content: space-between;
+  border: 4px solid var(--medium_yellow);
+  transition: all 0.3s ease-in-out;
+}
+.sessionContainer:hover {
+  background: var(--medium_yellow);
+  border: 4px solid var(--light_yellow);
+  transform: translateY(-5px);
 }
 
 .shareLink {
@@ -97,12 +106,23 @@
   margin-left: 0.1rem;
 }
 
+/* right side */
 .rightContainer {
   height: 100%;
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+.rightContainer div {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-inline: 1rem;
+  padding-block: 1rem;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 .lowResImg {
@@ -114,4 +134,13 @@
 .mapName {
   font-weight: 600;
   padding-block: 0.25rem;
+}
+
+/* left side */
+.leftContainer {
+  width: 60%;
+}
+.leftContainer a {
+  display: flex;
+  width: fit-content;
 }

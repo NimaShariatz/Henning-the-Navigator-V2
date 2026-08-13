@@ -5,6 +5,7 @@ import { getUser } from '../../api/User';
 import styles from './UserSessions.module.css';
 import { sessionHeader } from '../../constants';
 import { lowResArras } from '../../constants';
+import { Link } from 'react-router';
 
 function UserSessions() {
   const [username, setUsername] = useState('');
@@ -65,8 +66,8 @@ function UserSessions() {
         </div>
 
         <div className={styles.sessionContainer}>
-          <div>
-            <h4>Novosolinki Raid Session</h4>
+          <div className={styles.leftContainer}>
+            <h2>Novosolinki Raid Session</h2>
             <p>Last Edit: March 22nd 2027</p>
             <p>Edit Permission: By Invite</p>
             <p className={styles.shareLink}>
@@ -78,16 +79,19 @@ function UserSessions() {
                 viewBox="0 0 24 24"
               >
                 <path
-                  fill="#0a0909"
+                  fill="var(--text_color)"
                   d="M11 17H7q-2.075 0-3.537-1.463T2 12t1.463-3.537T7 7h4v2H7q-1.25 0-2.125.875T4 12t.875 2.125T7 15h4zm-3-4v-2h8v2zm5 4v-2h4q1.25 0 2.125-.875T20 12t-.875-2.125T17 9h-4V7h4q2.075 0 3.538 1.463T22 12t-1.463 3.538T17 17z"
                 ></path>
               </svg>
             </p>
+            <Link to="/">Enter Session</Link>
           </div>
 
           <div className={styles.rightContainer}>
-            <img className={styles.lowResImg} src={lowResArras} />
-            <small className={styles.mapName}>Novosolinki</small>
+            <div>
+              <img className={styles.lowResImg} src={lowResArras} />
+              <small className={styles.mapName}>Novosolinki</small>
+            </div>
           </div>
         </div>
       </div>

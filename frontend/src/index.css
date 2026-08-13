@@ -1,14 +1,16 @@
 :root {
+  --background: #fffdf8;
+
   --logo_yellow: #ffc90e;
   --logo_black: #1d1d1d;
   --logo_white: #fdfdfd;
 
-  --background: #fffcf3;
   --text_color: #1d1d1d;
   --text_color_white: #fdfdfd;
   --hyperlink_color: #00d5d5;
   --active_color: #fdfdfd;
 
+  --medium_yellow: #ffedae;
   --light_yellow: #ffcb0e1b;
 
   --darkBG_1: rgba(38, 38, 38, 0.76);
