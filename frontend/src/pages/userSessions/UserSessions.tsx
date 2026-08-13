@@ -41,8 +41,8 @@ function UserSessions() {
 
       <div className={styles.coreContainer}>
         <div className={styles.filterContainer}>
-          <form>
-            <input />
+          <form className={styles.searchFormContainer}>
+            <input type="text" placeholder="Search session names" />
             <button>Search</button>
           </form>
 
@@ -52,7 +52,6 @@ function UserSessions() {
             </p>
 
             <p>
-              Create Session
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1rem"
@@ -61,30 +60,58 @@ function UserSessions() {
               >
                 <path d="M18 12.998h-5v5a1 1 0 0 1-2 0v-5H6a1 1 0 0 1 0-2h5v-5a1 1 0 0 1 2 0v5h5a1 1 0 0 1 0 2"></path>
               </svg>
+              Create Session
             </p>
           </div>
         </div>
 
         <div className={styles.sessionContainer}>
           <div className={styles.leftContainer}>
-            <h2>Novosolinki Raid Session</h2>
-            <p>Last Edit: March 22nd 2027</p>
-            <p>Edit Permission: By Invite</p>
-            <p className={styles.shareLink}>
-              Share link
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1rem"
-                height="1rem"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="var(--text_color)"
-                  d="M11 17H7q-2.075 0-3.537-1.463T2 12t1.463-3.537T7 7h4v2H7q-1.25 0-2.125.875T4 12t.875 2.125T7 15h4zm-3-4v-2h8v2zm5 4v-2h4q1.25 0 2.125-.875T20 12t-.875-2.125T17 9h-4V7h4q2.075 0 3.538 1.463T22 12t-1.463 3.538T17 17z"
-                ></path>
-              </svg>
-            </p>
-            <Link to="/">Enter Session</Link>
+            <div className={styles.upperLeft}>
+              <h2>Novosolinki Raid Session</h2>
+              <p>Last Edit: March 22nd 2027</p>
+              <p>Edit Permission: By Invite</p>
+              <p className={styles.shareLink}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1rem"
+                  height="1rem"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="none"
+                    stroke="var(--text_color)"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3z"
+                  ></path>
+                </svg>
+                Share link
+              </p>
+              <Link className={styles.enterSessionLink} to="/">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1rem"
+                  height="1rem"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    fill="currentcolor"
+                    d="m15 21l-6-2.1l-4.65 1.8q-.5.2-.925-.112T3 19.75v-14q0-.325.188-.575T3.7 4.8L9 3l6 2.1l4.65-1.8q.5-.2.925.113T21 4.25v14q0 .325-.187.575t-.513.375zm-1-2.45V6.85l-4-1.4v11.7zm2 0l3-1V5.7l-3 1.15zM5 18.3l3-1.15V5.45l-3 1zM16 6.85v11.7zm-8-1.4v11.7z"
+                  />
+                </svg>
+                Enter Session
+              </Link>
+            </div>
+            <div className={styles.upperBottom}>
+              <button>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zm2-4h2V8H9zm4 0h2V8h-2z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div className={styles.rightContainer}>

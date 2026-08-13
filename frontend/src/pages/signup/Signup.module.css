@@ -68,10 +68,14 @@
   border-radius: 6px;
   font-weight: 700;
   background-color: var(--logo_yellow);
+  outline: 3px solid transparent;
   cursor: pointer;
 }
 .signupButton:active {
   background-color: var(--active_color);
+}
+.signupButton:hover {
+  outline-color: var(--text_color_white);
 }
 
 .showPasswordButton {

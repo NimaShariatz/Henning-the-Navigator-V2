@@ -50,7 +50,7 @@
 }
 
 .optionsRow button:last-of-type {
-  background-color: rgb(255, 67, 53);
+  background-color: var(--delete_red);
   padding-inline: 1rem;
   padding-block: 0.25rem;
   border-radius: 5px;

@@ -62,7 +62,6 @@ function Menu() {
             {loggedIn ? (
               <>
                 <Link to="/user-sessions">
-                  Sessions
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path
                       stroke="currentColor"
@@ -78,10 +77,10 @@ function Menu() {
                       d="M64 128h32v32H64zm0 112h32v32H64zm0 112h32v32H64z"
                     ></path>
                   </svg>
+                  Sessions
                 </Link>
 
                 <button onClick={() => setErrorClicked(true)}>
-                  Delete Profile
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g fill="none" stroke="currentColor" strokeWidth={2}>
                       <path
@@ -91,19 +90,19 @@ function Menu() {
                       <circle cx={12} cy={7} r={3}></circle>
                     </g>
                   </svg>
+                  Delete Profile
                 </button>
 
                 <button onClick={handleSignOut}>
-                  Log out
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="m17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5M4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4z"></path>
                   </svg>
+                  Log out
                 </button>
               </>
             ) : (
               <>
                 <Link to="/signup">
-                  Signup
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
                       fillRule="evenodd"
@@ -111,15 +110,16 @@ function Menu() {
                       clipRule="evenodd"
                     ></path>
                   </svg>
+                  Signup
                 </Link>
                 <Link to="/login">
-                  Login
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
                       d="M12 21v-2h7V5h-7V3h7q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm-2-4l-1.375-1.45l2.55-2.55H3v-2h8.175l-2.55-2.55L10 7l5 5z"
                     ></path>
                   </svg>
+                  Login
                 </Link>
               </>
             )}
