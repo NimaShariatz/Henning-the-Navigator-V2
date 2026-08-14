@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import Menu from '../../components/menu/Menu';
 import { getUser } from '../../api/User';
 import styles from './UserSessions.module.css';
-import { sessionHeader } from '../../constants';
+import { sessionBg, sessionHeader } from '../../constants';
 import { lowResArras } from '../../constants';
 import { Link } from 'react-router';
 
@@ -66,6 +66,7 @@ function UserSessions() {
         </div>
 
         <div className={styles.sessionContainer}>
+          <img src={sessionBg} className={styles.sessionBackgroundImg} />
           <div className={styles.leftContainer}>
             <div className={styles.upperLeft}>
               <h2>Novosolinki Raid Session</h2>

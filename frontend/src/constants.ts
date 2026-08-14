@@ -1,6 +1,7 @@
 import HennLogo1 from './assets/img/Henning_logo.webp';
 import HennLogo2 from './assets/img/Henning_logo2.webp';
-import sessionHeader from './assets/img/session_header2.jpg';
+import sessionHeader from './assets/img/session/session_bg.avif'; //https://unsplash.com/photos/3d-render-abstract-white-paper-background-layers-flat-fiber-structures-holes-macro-texture-_HUUfJX7Qks
+import sessionBg from './assets/img/session/gis--contour-map2.png';
 
 import a20 from './assets/img/home/a20.jpg';
 import fw190 from './assets/img/home/fw190.jpg';
@@ -47,6 +48,7 @@ export {
   ww1,
   yak,
   sessionHeader,
+  sessionBg,
   Arras,
   Kuban,
   Lapino,
