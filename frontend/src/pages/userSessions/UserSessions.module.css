@@ -62,7 +62,6 @@
 }
 
 .searchFormContainer button {
-  min-width: 60px;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-weight: 700;
@@ -99,6 +98,24 @@
   margin-right: 0.1rem;
 }
 
+.deleteSessionsContainer {
+  display: flex;
+  width: 70%;
+  justify-content: end;
+}
+.deleteSessionsContainer button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: lightgray;
+  outline: 3px solid transparent;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.deleteSessionsContainer button:hover {
+  outline-color: var(--text_color_white);
+}
+
 .sessionContainer {
   height: 310px;
   padding-inline: 1rem;
@@ -133,6 +150,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .shareLink svg {
@@ -183,6 +201,7 @@
   border-radius: 4px;
   font-weight: 700;
   padding-inline: 0.25rem;
+  padding-right: 0.5rem;
   align-items: center;
 }
 .enterSessionLink:hover {

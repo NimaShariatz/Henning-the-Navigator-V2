@@ -65,6 +65,10 @@ function UserSessions() {
           </div>
         </div>
 
+        <div className={styles.deleteSessionsContainer}>
+          <button disabled>Delete Selected Sessions (0)</button>
+        </div>
+
         <div className={styles.sessionContainer}>
           <img src={sessionBg} className={styles.sessionBackgroundImg} />
           <div className={styles.leftContainer}>
@@ -88,7 +92,7 @@ function UserSessions() {
                     d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3z"
                   ></path>
                 </svg>
-                Share link
+                Share Link
               </p>
               <Link className={styles.enterSessionLink} to="/">
                 <svg
