@@ -116,8 +116,8 @@
   outline-color: var(--text_color_white);
 }
 
+/*--Session Container--*/
 .sessionContainer {
-  height: 310px;
   padding-inline: 1rem;
   padding-block: 1.1rem 1rem;
   width: 70%;
@@ -180,6 +180,7 @@
 .lowResImg {
   height: 100%;
   width: 100%;
+  max-height: 250px; /*height of .sessionContainer ends up being influenced by the max height set on the lowRes map img*/
   border-radius: 5px;
   object-fit: contain;
 }
@@ -236,4 +237,29 @@
 }
 .upperBottom button:hover svg path {
   fill: var(--delete_red);
+}
+
+@media (max-width: 720px) {
+  .filterContainer {
+    width: 95%;
+    padding-block: 1rem;
+    padding-inline: 1rem;
+    border-radius: 10px;
+    background-color: var(--light_yellow);
+  }
+  .filtersRow {
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+  }
+
+  .sessionContainer {
+    width: 95%;
+  }
+  .rightContainer {
+    display: none;
+  }
+  .leftContainer {
+    width: 100%;
+  }
 }
