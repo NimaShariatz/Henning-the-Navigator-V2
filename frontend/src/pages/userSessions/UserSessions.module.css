@@ -89,13 +89,22 @@
   align-items: center;
   padding-block: 1rem;
 }
-.filtersRow p:nth-child(2) {
+.createSessionButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--logo_yellow);
+  outline: 3px solid transparent;
+  cursor: pointer;
 }
-.filtersRow p:nth-child(2) svg {
+.createSessionButton svg {
   margin-right: 0.1rem;
+}
+.createSessionButton:hover {
+  outline-color: var(--text_color_white);
 }
 
 .deleteSessionsContainer {
@@ -251,6 +260,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: start;
+    gap: 1rem;
   }
 
   .sessionContainer {

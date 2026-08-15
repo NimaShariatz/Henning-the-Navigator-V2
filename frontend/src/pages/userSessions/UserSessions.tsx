@@ -6,10 +6,16 @@ import styles from './UserSessions.module.css';
 import { sessionBg, sessionHeader } from '../../constants';
 import { lowResArras } from '../../constants';
 import { Link } from 'react-router';
+import CreateSession from '../../components/createSession/CreateSession';
 
 function UserSessions() {
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
+
+  const [revealCreateSession, setCreateSessionClicked] = useState(false);
+  function RevealCreateSessionClicked_handler(input: boolean) {
+    setCreateSessionClicked(input);
+  }
 
   useEffect(() => {
     if (!localStorage.getItem('access')) {
@@ -34,6 +40,10 @@ function UserSessions() {
   return (
     <>
       <Menu />
+      <CreateSession
+        revealCreateSession={revealCreateSession}
+        RevealCreateSessionClicked_handler={RevealCreateSessionClicked_handler}
+      />
       <div className={styles.initialContainer}>
         <h1>{username}'s Sessions</h1>
         <img src={sessionHeader} />
@@ -51,7 +61,10 @@ function UserSessions() {
               Sort: Alphabetically [or by last updated] [or by date created]
             </p>
 
-            <p>
+            <button
+              className={styles.createSessionButton}
+              onClick={() => setCreateSessionClicked(true)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1rem"
@@ -61,7 +74,7 @@ function UserSessions() {
                 <path d="M18 12.998h-5v5a1 1 0 0 1-2 0v-5H6a1 1 0 0 1 0-2h5v-5a1 1 0 0 1 2 0v5h5a1 1 0 0 1 0 2"></path>
               </svg>
               Create Session
-            </p>
+            </button>
           </div>
         </div>
 
