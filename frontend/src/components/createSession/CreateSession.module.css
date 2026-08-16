@@ -15,3 +15,36 @@
   align-items: center;
   justify-content: center;
 }
+
+.sessionContainer {
+  width: 700px;
+  color: var(--logo_white);
+  background: var(--darkBG_1);
+  box-shadow: var(--boxshadow_1);
+  border-radius: 10px;
+  padding-block: 2rem;
+  padding-inline: 3rem;
+  border: 3px solid var(--logo_yellow);
+  backdrop-filter: 3px;
+  margin-bottom: 30vh;
+}
+.sessionNameContainer input {
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: none;
+  outline: 2px solid rgba(0, 0, 0, 1);
+  width: 350px;
+}
+.sessionNameContainer small {
+  padding-left: 0.7rem;
+  opacity: 0.7;
+}
+
+@media (max-width: 720px) {
+  .sessionContainer {
+    width: 90%;
+    margin-bottom: 20vh;
+    padding-inline: 1rem;
+    padding-block: 2rem;
+  }
+}

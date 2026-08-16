@@ -78,6 +78,7 @@
   border-radius: 3px;
   border: none;
   outline: 2px solid rgba(0, 0, 0, 1);
+  width: 350px;
 }
 .searchFormContainer input:focus {
   outline-color: var(--logo_yellow);
@@ -255,6 +256,9 @@
     padding-inline: 1rem;
     border-radius: 10px;
     background-color: var(--light_yellow);
+  }
+  .searchFormContainer input {
+    width: min(60%, 300px);
   }
   .filtersRow {
     flex-direction: column;
