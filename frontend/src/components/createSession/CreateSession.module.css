@@ -28,6 +28,10 @@
   backdrop-filter: 3px;
   margin-bottom: 30vh;
 }
+.sessionContainer h1 {
+  width: 100%;
+  text-align: center;
+}
 .sessionNameContainer input {
   padding: 6px 10px;
   border-radius: 3px;
@@ -38,6 +42,26 @@
 .sessionNameContainer small {
   padding-left: 0.7rem;
   opacity: 0.7;
+  user-select: none;
+  pointer-events: none;
+}
+
+.sessionPermissionStatusContainer {
+  display: flex;
+  margin-top: 1.5rem;
+}
+.sessionPermissionStatusContainer button {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--logo_yellow);
+  outline: 3px solid transparent;
+  margin-left: 1rem;
+  cursor: pointer;
+  font-size: 12px;
+}
+.sessionPermissionStatusContainer button:hover {
+  outline-color: var(--text_color_white);
 }
 
 @media (max-width: 720px) {

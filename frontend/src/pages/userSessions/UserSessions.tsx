@@ -43,6 +43,7 @@ function UserSessions() {
       <CreateSession
         revealCreateSession={revealCreateSession}
         RevealCreateSessionClicked_handler={RevealCreateSessionClicked_handler}
+        sectionTitle={'New Session'}
       />
       <div className={styles.initialContainer}>
         <h1>{username}'s Sessions</h1>
