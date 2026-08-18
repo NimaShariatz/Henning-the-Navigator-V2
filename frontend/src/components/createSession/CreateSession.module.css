@@ -78,7 +78,8 @@
   outline: 2px solid rgba(0, 0, 0, 1);
   width: 350px;
 }
-.usersContainer button {
+.sessionButton,
+.sessionCreateButton {
   padding: 0.3rem 0.5rem;
   border-radius: 6px;
   font-weight: 700;
@@ -87,32 +88,28 @@
   margin-left: 0.5rem;
   cursor: pointer;
 }
+.sessionButton:hover,
+.sessionCreateButton:hover {
+  outline-color: var(--text_color_white);
+}
+.sessionCreateButton {
+  margin-top: 0.5rem;
+}
 
-.userSearchList {
+.userList {
   margin-top: 1rem;
 }
-.userSearchList p {
+.userList div {
   background-color: var(--darkBG_1);
   padding: 0.5rem 1rem;
   margin-block: 1rem;
   border-radius: 5px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.userSearchList p:hover {
-  background-color: var(--darkBG_2);
-}
-
-.allowedToEditList {
-  margin-top: 1rem;
-}
-.allowedToEditList p {
-  background-color: var(--darkBG_1);
-  padding: 0.5rem 1rem;
-  margin-block: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.allowedToEditList p:hover {
+.userList div:hover {
   background-color: var(--darkBG_2);
 }
 
@@ -122,5 +119,11 @@
     margin-bottom: 20vh;
     padding-inline: 1rem;
     padding-block: 2rem;
+  }
+  .sessionNameContainer input {
+    width: 70%;
+  }
+  .usersContainer input {
+    width: 60%;
   }
 }

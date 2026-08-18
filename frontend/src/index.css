@@ -104,6 +104,10 @@ select,
 textarea {
   font: inherit;
 }
+input,
+textarea {
+  background-color: var(--logo_white);
+}
 
 ::-webkit-scrollbar {
   width: 5px;

@@ -27,19 +27,10 @@ function UserSessions() {
       .catch(() => navigate('/login'));
   }, [navigate]);
 
-  /*
-    Create mock sessions
-    Set up fetching on views and /api
-    Update admin.py
-    Create sessions with django admin
-    Update mock
-    Make search, delete, and create all functional
-    introduce pagination
-   */
-
   return (
     <>
       <Menu />
+      {/* have CreateSession be in a conditional. it can then be reused for the edit button by using a bunch of variable inputs*/}
       <CreateSession
         revealCreateSession={revealCreateSession}
         RevealCreateSessionClicked_handler={RevealCreateSessionClicked_handler}
