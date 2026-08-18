@@ -19,7 +19,21 @@ function CreateSession({
     const newValue = e.target.value;
     if (maxCharacRef.current)
       maxCharacRef.current.textContent = String(50 - newValue.length);
+    //console.log(newValue.length)
+    if (50 - newValue.length >= 0 && maxCharacRef.current) {
+      maxCharacRef.current.style.color = 'var(--text_color_white)';
+      console.log('blue!');
+    } else if (50 - newValue.length < 0 && maxCharacRef.current) {
+      maxCharacRef.current.style.color = 'var(--delete_red)';
+      console.log('red!');
+    }
   };
+
+  /*
+    import more variables... so that component can be reused for edit
+    add edit button to createsession sessions
+    search and invite list would be stored in a useState() list. that list would be used for the API call info.
+  */
 
   return (
     <>
@@ -58,6 +72,27 @@ function CreateSession({
                   </button>
                 )}
               </div>
+              {!permissionInviteOnly && (
+                <div className={styles.usersContainer}>
+                  <h6>Search Users</h6>
+                  <div>
+                    <input />
+                    <button>Search</button>
+                  </div>
+                  <div className={styles.userSearchList}>
+                    <p>someusername1234</p>
+                    <p>someusername1234</p>
+                    <p>someusername1234</p>
+                  </div>
+                  <div className={styles.allowedToEditList}>
+                    <h6>Users Allowed To Edit</h6>
+                    <p>someusername1234</p>
+                    <p>someusername1234</p>
+                    <p>someusername1234</p>
+                  </div>
+                </div>
+              )}
+              <button type="submit">Create</button>
             </form>
           </div>
         </div>

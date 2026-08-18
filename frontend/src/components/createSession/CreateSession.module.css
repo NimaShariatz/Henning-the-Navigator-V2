@@ -18,7 +18,7 @@
 
 .sessionContainer {
   width: 700px;
-  color: var(--logo_white);
+  color: var(--text_color_white);
   background: var(--darkBG_1);
   box-shadow: var(--boxshadow_1);
   border-radius: 10px;
@@ -27,6 +27,8 @@
   border: 3px solid var(--logo_yellow);
   backdrop-filter: 3px;
   margin-bottom: 30vh;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 .sessionContainer h1 {
   width: 100%;
@@ -49,6 +51,7 @@
 .sessionPermissionStatusContainer {
   display: flex;
   margin-top: 1.5rem;
+  align-items: center;
 }
 .sessionPermissionStatusContainer button {
   padding: 0.3rem 0.5rem;
@@ -56,12 +59,61 @@
   font-weight: 700;
   background-color: var(--logo_yellow);
   outline: 3px solid transparent;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   cursor: pointer;
   font-size: 12px;
 }
 .sessionPermissionStatusContainer button:hover {
   outline-color: var(--text_color_white);
+}
+.usersContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.usersContainer input {
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: none;
+  outline: 2px solid rgba(0, 0, 0, 1);
+  width: 350px;
+}
+.usersContainer button {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--logo_yellow);
+  outline: 3px solid transparent;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.userSearchList {
+  margin-top: 1rem;
+}
+.userSearchList p {
+  background-color: var(--darkBG_1);
+  padding: 0.5rem 1rem;
+  margin-block: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.userSearchList p:hover {
+  background-color: var(--darkBG_2);
+}
+
+.allowedToEditList {
+  margin-top: 1rem;
+}
+.allowedToEditList p {
+  background-color: var(--darkBG_1);
+  padding: 0.5rem 1rem;
+  margin-block: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.allowedToEditList p:hover {
+  background-color: var(--darkBG_2);
 }
 
 @media (max-width: 720px) {
