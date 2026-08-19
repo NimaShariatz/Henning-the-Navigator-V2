@@ -235,18 +235,37 @@
 .upperBottom {
   padding-top: 1rem;
   padding-inline: 0.25rem;
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
-.upperBottom button {
-  width: 1.25rem;
-  height: 1.25rem;
+.deleteButton,
+.editButton {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 3px;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
   cursor: pointer;
 }
-.upperBottom button svg path {
+.deleteButton svg path,
+.editButton svg path {
   fill: var(--text_color);
 }
-.upperBottom button:hover svg path {
+.deleteButton:hover svg path {
   fill: var(--delete_red);
+}
+.editButton:hover {
+  background-color: var(--logo_black);
+  color: var(--text_color_white);
+}
+.editButton:hover svg path {
+  fill: var(--text_color_white);
 }
 
 @media (max-width: 720px) {

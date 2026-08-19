@@ -34,6 +34,24 @@
   width: 100%;
   text-align: center;
 }
+
+.close {
+  display: flex;
+  justify-content: end;
+}
+.close button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  cursor: pointer;
+}
+.close button svg path {
+  fill: var(--logo_yellow);
+}
+.close button:hover svg path {
+  fill: var(--text_color_white);
+}
 .sessionNameContainer input {
   padding: 6px 10px;
   border-radius: 3px;
