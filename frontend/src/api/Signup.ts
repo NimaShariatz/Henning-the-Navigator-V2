@@ -1,4 +1,5 @@
-const API_URL = 'http://127.0.0.1:8000';
+import axios from 'axios';
+import api from './AxiosInstance';
 
 export interface SignupCredentials {
   username: string;
@@ -13,19 +14,16 @@ export interface AuthTokens {
 export async function signupUser(
   credentials: SignupCredentials,
 ): Promise<AuthTokens> {
-  const res = await fetch(`${API_URL}/api/accounts/register/`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials),
-  });
-
-  if (!res.ok) {
-    //if not 200 OK...
-    const data = await res.json();
-    console.log(data);
-    const messages = (Object.values(data) as string[][]).flat().join(' ');
-    throw new Error(messages);
+  try {
+    const res = await api.post('/api/accounts/register/', credentials);
+    return res.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response) {
+      const messages = (Object.values(err.response.data) as string[][])
+        .flat()
+        .join(' ');
+      throw new Error(messages, { cause: err });
+    }
+    throw err;
   }
-
-  return res.json();
 }

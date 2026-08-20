@@ -66,12 +66,15 @@
   border-radius: 6px;
   font-weight: 700;
   background-color: var(--logo_yellow);
-  outline: 3px solid transparent;
+  outline: 4px solid transparent;
   margin-left: 1rem;
   cursor: pointer;
 }
 .searchFormContainer button:hover {
   outline-color: var(--text_color_white);
+}
+.searchFormContainer button:active {
+  background-color: var(--active_color);
 }
 .searchFormContainer input {
   padding: 6px 10px;
@@ -98,7 +101,7 @@
   border-radius: 6px;
   font-weight: 700;
   background-color: var(--logo_yellow);
-  outline: 3px solid transparent;
+  outline: 4px solid transparent;
   cursor: pointer;
 }
 .createSessionButton svg {

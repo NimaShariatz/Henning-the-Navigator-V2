@@ -104,6 +104,9 @@ select,
 textarea {
   font: inherit;
 }
+button:active {
+  background-color: var(--active_color);
+}
 input,
 textarea {
   background-color: var(--logo_white);

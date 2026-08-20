@@ -84,6 +84,9 @@
 .sessionPermissionStatusContainer button:hover {
   outline-color: var(--text_color_white);
 }
+.sessionPermissionStatusContainer button:active {
+  background-color: var(--active_color);
+}
 .usersContainer {
   margin-top: 1rem;
   display: flex;

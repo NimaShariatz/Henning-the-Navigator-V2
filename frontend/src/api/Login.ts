@@ -1,4 +1,5 @@
-const API_URL = 'http://127.0.0.1:8000';
+import axios from 'axios';
+import api from './AxiosInstance';
 
 export interface LoginCredentials {
   username: string;
@@ -13,18 +14,17 @@ export interface AuthTokens {
 export async function loginUser(
   credentials: LoginCredentials,
 ): Promise<AuthTokens> {
-  const res = await fetch(`${API_URL}/api/token/`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials),
-  });
-
-  if (!res.ok) {
+  try {
+    const res = await api.post('/api/token/', credentials);
+    return res.data;
+  } catch (err: unknown) {
     //A wrong username/password will return a 401 from simplejwt with {"detail": "No active account found with the given credentials"}
-    const data = await res.json();
-    const messages = (Object.values(data) as string[][]).flat().join(' ');
-    throw new Error(messages);
+    if (axios.isAxiosError(err) && err.response) {
+      const messages = (Object.values(err.response.data) as string[][])
+        .flat()
+        .join(' ');
+      throw new Error(messages, { cause: err });
+    }
+    throw err;
   }
-
-  return res.json();
 }

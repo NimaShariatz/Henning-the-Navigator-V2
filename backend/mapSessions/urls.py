@@ -1,8 +1,7 @@
 from django.urls import path
-from .views import MapSessionView
-
-
+from .views import MapSessionListView, MapSessionDetailView
 
 urlpatterns = [
-  path('MapSession/<str:username>/<slug:slug>/', MapSessionView.as_view()), # would be /<uuid:pk>/ if you want the uuid in the URL
+  path('list/<str:username>/', MapSessionListView.as_view()),
+  path('MapSession/<str:username>/<slug:slug>/', MapSessionDetailView.as_view()),
 ]

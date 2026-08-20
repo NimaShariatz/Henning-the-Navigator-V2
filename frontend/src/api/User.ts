@@ -1,18 +1,10 @@
-const API_URL = 'http://127.0.0.1:8000';
+import api from './AxiosInstance';
 
 export async function getUser(): Promise<{ username: string }> {
-  // method: 'GET' not necassary as it's default behaviour anyways
-  const res = await fetch(`${API_URL}/api/accounts/user/`, {
-    headers: { Authorization: `Bearer ${localStorage.getItem('access')}` },
-  });
-  if (!res.ok) throw new Error('Failed to fetch user');
-  return res.json();
+  const res = await api.get('/api/accounts/user/');
+  return res.data;
 }
 
 export async function deleteUser() {
-  const res = await fetch(`${API_URL}/api/accounts/user/`, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${localStorage.getItem('access')}` },
-  });
-  if (!res.ok) throw new Error('Failed to delete user');
+  await api.delete('/api/accounts/user/');
 }
