@@ -3,30 +3,24 @@ import { useNavigate } from 'react-router';
 import Menu from '../../components/menu/Menu';
 import { getUser } from '../../api/User';
 import { BasicSessionData } from '../../api/Session';
+import type { SessionListItem } from '../../api/Session';
 import styles from './UserSessions.module.css';
 import { sessionBg, sessionHeader } from '../../constants';
 import { lowResArras } from '../../constants';
 import { Link } from 'react-router';
-import CreateSession from '../../components/createSession/CreateSession';
-
-type SessionListItem = {
-  slug: string;
-  title: string;
-  map_selected: string;
-  all_can_edit: boolean;
-  last_updated: string;
-};
+import EditCreateSession from '../../components/createSession/EditCreateSession';
 
 function UserSessions() {
-  const [username, setUsername] = useState('');
-  const [sessionData, setSessionData] = useState<SessionListItem[]>([]);
   const navigate = useNavigate();
 
-  const [revealCreateSession, setCreateSessionClicked] = useState(false);
-  function RevealCreateSessionClicked_handler(input: boolean) {
-    setCreateSessionClicked(input);
-  }
+  const [editingSession, setEditingSession] = useState<SessionListItem | null>(
+    null,
+  ); //is set when edit button is clicked
 
+  const [showCreateSession, setShowCreateSession] = useState(false);
+
+  const [username, setUsername] = useState('');
+  const [sessionData, setSessionData] = useState<SessionListItem[]>([]);
   useEffect(() => {
     if (!localStorage.getItem('access')) {
       navigate('/login');
@@ -40,18 +34,25 @@ function UserSessions() {
       .then((sessions) => setSessionData(sessions))
       .catch(() => navigate('/login'));
   }, [navigate]);
-  console.log(sessionData);
 
   return (
     <>
       <Menu />
+
+      {showCreateSession && (
+        <EditCreateSession
+          revealHandler={() => setShowCreateSession(false)}
+          sessionTitle="New Session"
+        />
+      )}
+
       {/* have CreateSession be in a conditional. it can then be reused for the edit button by using a bunch of variable inputs*/}
-      {revealCreateSession && (
-        <CreateSession
-          RevealCreateSessionClicked_handler={
-            RevealCreateSessionClicked_handler
-          }
-          sectionTitle={'New Session'}
+      {editingSession && (
+        <EditCreateSession
+          revealHandler={() => setEditingSession(null)}
+          sessionTitle="Edit Session"
+          sessionSlug={editingSession.slug}
+          sessionUsername={username}
         />
       )}
       <div className={styles.initialContainer}>
@@ -73,7 +74,7 @@ function UserSessions() {
 
             <button
               className={styles.createSessionButton}
-              onClick={() => setCreateSessionClicked(true)}
+              onClick={() => setShowCreateSession(true)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -97,9 +98,10 @@ function UserSessions() {
             <img src={sessionBg} className={styles.sessionBackgroundImg} />
             <div className={styles.leftContainer}>
               <div className={styles.upperLeft}>
-                <h2>Novosolinki Raid Session</h2>
-                <p>Last Edit: March 22nd 2027</p>
-                <p>Edit Permission: By Invite</p>
+                <h2>{session.title}</h2>
+                <p>{session.last_updated}</p>
+                {session.all_can_edit && <p>Edit Permission: All</p>}
+                {!session.all_can_edit && <p>Edit Permission: By Invite</p>}
                 <p className={styles.shareLink}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +142,12 @@ function UserSessions() {
                     <path d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zm2-4h2V8H9zm4 0h2V8h-2z"></path>
                   </svg>
                 </button>
-                <button className={styles.editButton}>
+                <button
+                  className={styles.editButton}
+                  onClick={() => setEditingSession(session)}
+                >
+                  {' '}
+                  {/* pass session data to the useState */}
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g fill="currentColor">
                       <path d="M8 7a1 1 0 0 1-1 1H6a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-1a1 1 0 0 1 2 0v1a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h1a1 1 0 0 1 1 1"></path>
@@ -154,7 +161,7 @@ function UserSessions() {
             <div className={styles.rightContainer}>
               <div>
                 <img className={styles.lowResImg} src={lowResArras} />
-                <small className={styles.mapName}>Novosolinki</small>
+                <small className={styles.mapName}>{session.map_selected}</small>
               </div>
             </div>
           </div>
