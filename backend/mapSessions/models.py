@@ -37,7 +37,7 @@ class MapSession(models.Model):
     (12, "Western Front"),
   ]
   map_selected = models.IntegerField(choices=MAP_OPTIONS)
-  sessionInfo = models.CharField(blank=True)
+  sessionInfo = models.CharField(blank=True, max_length=300)
 
   class Meta: # config options for a model
     unique_together = ['user', 'slug'] # **combination** of user and slug MUST BE UNIQUE!

@@ -26,8 +26,8 @@
   padding-inline: 3rem;
   border: 3px solid var(--logo_yellow);
   backdrop-filter: 3px;
-  margin-bottom: 30vh;
-  max-height: 60vh;
+  margin-bottom: 3vh;
+  max-height: 90vh;
   overflow-y: auto;
 }
 .sessionContainer h1 {
@@ -56,7 +56,6 @@
   padding: 6px 10px;
   border-radius: 3px;
   border: none;
-  outline: 2px solid rgba(0, 0, 0, 1);
   width: 350px;
 }
 .sessionNameContainer small {
@@ -87,6 +86,21 @@
 .sessionPermissionStatusContainer button:active {
   background-color: var(--active_color);
 }
+.sessionInfoContainer {
+  display: flex;
+  flex-direction: column;
+  margin-block: 1rem;
+}
+.sessionInfoContainer textarea {
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  padding: 1rem;
+  border: none;
+  resize: vertical;
+  background-color: var(--logo_white);
+}
+
 .usersContainer {
   margin-top: 1rem;
   display: flex;
@@ -96,7 +110,6 @@
   padding: 6px 10px;
   border-radius: 3px;
   border: none;
-  outline: 2px solid rgba(0, 0, 0, 1);
   width: 350px;
 }
 .sessionButton,
@@ -108,13 +121,14 @@
   outline: 3px solid transparent;
   margin-left: 0.5rem;
   cursor: pointer;
+  font-size: 20px;
 }
 .sessionButton:hover,
 .sessionCreateButton:hover {
   outline-color: var(--text_color_white);
 }
 .sessionCreateButton {
-  margin-top: 0.5rem;
+  margin-top: 2.5rem;
 }
 
 .userList {

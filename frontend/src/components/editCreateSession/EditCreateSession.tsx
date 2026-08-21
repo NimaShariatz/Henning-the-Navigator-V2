@@ -21,12 +21,15 @@ function EditCreateSession({
   const maxCharacRef = useRef<HTMLElement>(null);
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
+    namelengthCalc(newValue);
+  };
+  const namelengthCalc = (inputWord: string) => {
     if (maxCharacRef.current)
-      maxCharacRef.current.textContent = String(50 - newValue.length);
+      maxCharacRef.current.textContent = String(50 - inputWord.length);
     //console.log(newValue.length)
-    if (50 - newValue.length >= 0 && maxCharacRef.current) {
+    if (50 - inputWord.length >= 0 && maxCharacRef.current) {
       maxCharacRef.current.style.color = 'var(--text_color_white)';
-    } else if (50 - newValue.length < 0 && maxCharacRef.current) {
+    } else if (50 - inputWord.length < 0 && maxCharacRef.current) {
       maxCharacRef.current.style.color = 'var(--delete_red)';
     }
   };
@@ -37,6 +40,7 @@ function EditCreateSession({
       //if we have the fields, set invite boolean, the title, and a useState with all data
       SpecificSessionData(sessionUsername, sessionSlug).then((data) => {
         setNameInput(data.title);
+        namelengthCalc(data.title);
         SetPermissionInviteOnly(!data.all_can_edit);
         setSpecificSessionData(data);
       });
@@ -136,7 +140,7 @@ function EditCreateSession({
             </div>
             <h1>{sessionSlug ? 'Edit Session' : 'Create Session'}</h1>
             <form>
-              <label>Session Name</label>
+              <p>Session Name</p>
               <div className={styles.sessionNameContainer}>
                 <input
                   value={nameInput}
@@ -161,9 +165,15 @@ function EditCreateSession({
                   </button>
                 )}
               </div>
+
+              <div className={styles.sessionInfoContainer}>
+                <p>Session Info</p>
+                <textarea />
+              </div>
+
               {SessionUserList()}
               <button className={styles.sessionCreateButton} type="submit">
-                Create
+                {sessionSlug ? 'Update' : 'Create'}
               </button>
             </form>
           </div>

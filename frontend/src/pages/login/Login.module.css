@@ -53,10 +53,6 @@
   padding: 6px 10px;
   border-radius: 3px;
   border: none;
-  outline: 2px solid rgba(0, 0, 0, 1);
-}
-.form div input:focus {
-  outline-color: var(--logo_yellow);
 }
 
 .form a {
