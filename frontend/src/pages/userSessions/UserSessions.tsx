@@ -21,7 +21,7 @@ import {
   lowResWestern_front,
 } from '../../constants';
 import { Link } from 'react-router';
-import EditCreateSession from '../../components/createSession/EditCreateSession';
+import EditCreateSession from '../../components/editCreateSession/EditCreateSession';
 
 const mapImages: Record<string, string> = {
   Arras: lowResArras,
@@ -68,17 +68,13 @@ function UserSessions() {
       <Menu />
 
       {showCreateSession && (
-        <EditCreateSession
-          revealHandler={() => setShowCreateSession(false)}
-          sessionTitle="New Session"
-        />
+        <EditCreateSession revealHandler={() => setShowCreateSession(false)} />
       )}
 
       {/* have CreateSession be in a conditional. it can then be reused for the edit button by using a bunch of variable inputs*/}
       {editingSession && (
         <EditCreateSession
           revealHandler={() => setEditingSession(null)}
-          sessionTitle="Edit Session"
           sessionSlug={editingSession.slug}
           sessionUsername={username}
         />

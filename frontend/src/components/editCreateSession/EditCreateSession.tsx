@@ -4,14 +4,12 @@ import { SpecificSessionData } from '../../api/Session';
 import type { SessionDetailedItem } from '../../api/Session';
 interface SessionProps {
   revealHandler: (input: boolean) => void;
-  sessionTitle: string;
   sessionSlug?: string;
   sessionUsername?: string;
 }
 
 function EditCreateSession({
   revealHandler,
-  sessionTitle,
   sessionSlug,
   sessionUsername,
 }: SessionProps) {
@@ -33,6 +31,7 @@ function EditCreateSession({
     }
   };
 
+  //make the API call for detailed list
   useEffect(() => {
     if (sessionSlug && sessionUsername) {
       //if we have the fields, set invite boolean, the title, and a useState with all data
@@ -135,7 +134,7 @@ function EditCreateSession({
                 </svg>
               </button>
             </div>
-            <h1>{sessionTitle}</h1>
+            <h1>{sessionSlug ? 'Edit Session' : 'Create Session'}</h1>
             <form>
               <label>Session Name</label>
               <div className={styles.sessionNameContainer}>
