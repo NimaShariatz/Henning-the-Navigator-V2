@@ -7,4 +7,4 @@ a good source of maps: https://unwritten-record.blogs.archives.gov/2017/02/21/re
 # npm install
 - `react-router`: for page routing
 - `--save-dev prettier husky lint-staged` and `npx husky init` & `npx lint-staged` & back in root folder, `git config core.hooksPath frontend/.husky`: Prettier installation for code cleanup on commits.
-- `axios`: to make life easier with fetching and sending data with ReactJS
+- `axios`: to make life easier with fetching and sending data with ReactJS. Cleans up the syntax a bit in /api

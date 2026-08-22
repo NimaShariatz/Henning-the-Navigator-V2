@@ -19,6 +19,7 @@ function EditCreateSession({
   const [nameInput, setNameInput] = useState('');
   const [sessionInput, setSessionInput] = useState('');
   const [permissionInviteOnly, SetPermissionInviteOnly] = useState(false);
+  const [mapSelect, setMapSelect] = useState('');
   const [specificSessionData, setSpecificSessionData] =
     useState<SessionDetailedItem | null>(null);
 
@@ -58,6 +59,7 @@ function EditCreateSession({
         setNameInput(data.title);
         setSessionInput(data.sessionInfo);
         SetPermissionInviteOnly(!data.all_can_edit);
+        setMapSelect(data.map_selected);
         nameLengthCalc(data.title, 50, maxCharacRefName);
         nameLengthCalc(data.title, 300, maxCharacRefInfo);
 
@@ -94,7 +96,7 @@ function EditCreateSession({
             </div>
             <h1>{sessionSlug ? 'Edit Session' : 'Create Session'}</h1>
             <form>
-              <p>Session Name</p>
+              <h3 className={styles.sessionSectionTitle}>Session Name</h3>
               <div className={styles.sessionNameContainer}>
                 <input
                   value={nameInput}
@@ -108,14 +110,24 @@ function EditCreateSession({
               </div>
 
               <div className={styles.sessionMapSelectionContainer}>
-                <p>Map Selection</p>
+                <h3 className={styles.sessionSectionTitle}>Map Selection</h3>
                 <div className={styles.mapOptionsGrid}>
                   {Object.entries(lowResMapImages).map(([name, image]) => (
                     <div
                       key={name}
-                      style={{ backgroundImage: `url(${image})` }}
+                      style={{
+                        backgroundImage: `url(${image})`,
+                        outlineColor:
+                          mapSelect === name
+                            ? 'var(--logo_yellow)'
+                            : 'transparent',
+                        backgroundColor:
+                          mapSelect === name
+                            ? 'rgba(0, 0, 0, 0.1)'
+                            : 'rgba(0, 0, 0, 0.4)',
+                      }}
+                      onClick={() => setMapSelect(name)}
                     >
-                      {' '}
                       {/* needs onClick to set a useState, and onHover things. the usual. */}
                       <p>{name}</p>
                     </div>
@@ -124,7 +136,7 @@ function EditCreateSession({
               </div>
 
               <div className={styles.sessionInfoContainer}>
-                <p>Session Info</p>
+                <h3 className={styles.sessionSectionTitle}>Session Info</h3>
                 <textarea
                   value={sessionInput}
                   onChange={(e) => {
