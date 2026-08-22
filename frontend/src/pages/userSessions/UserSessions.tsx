@@ -35,6 +35,15 @@ function UserSessions() {
       .catch(() => navigate('/login'));
   }, [navigate]);
 
+  const formatTimestamp = (iso: string) =>
+    new Date(iso).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+
   return (
     <>
       <Menu />
@@ -95,7 +104,7 @@ function UserSessions() {
             <div className={styles.leftContainer}>
               <div className={styles.upperLeft}>
                 <h2>{session.title}</h2>
-                <p>{session.last_updated}</p>
+                <p>Last Updated: {formatTimestamp(session.last_updated)}</p>
                 {session.all_can_edit && <p>Edit Permission: All</p>}
                 {!session.all_can_edit && <p>Edit Permission: By Invite</p>}
                 <p className={styles.shareLink}>
