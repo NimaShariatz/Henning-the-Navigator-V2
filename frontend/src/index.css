@@ -117,7 +117,7 @@ textarea:focus {
   outline-color: var(--logo_yellow);
 }
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 6px;
