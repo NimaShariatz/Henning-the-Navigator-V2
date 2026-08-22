@@ -37,6 +37,21 @@ import Stalingrad from './assets/img/maps/Stalingrad.jpg';
 import Vluki from './assets/img/maps/Vluki.webp';
 import Western_front from './assets/img/maps/Western_front.webp';
 
+const lowResMapImages: Record<string, string> = {
+  Arras: lowResArras,
+  Kuban: lowResKuban,
+  Lapino: lowResLapino,
+  Moscow: lowResMoscow,
+  Normandy: lowResNormandy,
+  Novosokolniki: lowResNovosokolniki,
+  Odessa: lowResOdessa,
+  Prokhorovka: lowResProkhorovka,
+  Rheinland: lowResRheinland,
+  Stalingrad: lowResStalingrad,
+  Vluki: lowResVluki,
+  'Western Front': lowResWestern_front,
+};
+
 export {
   HennLogo1,
   HennLogo2,
@@ -73,4 +88,5 @@ export {
   lowResStalingrad,
   lowResVluki,
   lowResWestern_front,
+  lowResMapImages,
 };

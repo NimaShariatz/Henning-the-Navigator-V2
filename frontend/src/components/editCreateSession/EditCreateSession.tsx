@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import { SpecificSessionData } from '../../api/Session';
 import type { SessionDetailedItem } from '../../api/Session';
 import SessionUserList from './SessionUserList';
+import { lowResMapImages } from '../../constants';
 
 interface SessionProps {
   revealHandler: (input: boolean) => void;
@@ -105,18 +106,21 @@ function EditCreateSession({
 
                 <small ref={maxCharacRefName}>50</small>
               </div>
-              <div className={styles.sessionPermissionStatusContainer}>
-                <p>Edit status:</p>
-                {!permissionInviteOnly && (
-                  <button onClick={() => SetPermissionInviteOnly(true)}>
-                    All
-                  </button>
-                )}
-                {permissionInviteOnly && (
-                  <button onClick={() => SetPermissionInviteOnly(false)}>
-                    Invite Only
-                  </button>
-                )}
+
+              <div className={styles.sessionMapSelectionContainer}>
+                <p>Map Selection</p>
+                <div className={styles.mapOptionsGrid}>
+                  {Object.entries(lowResMapImages).map(([name, image]) => (
+                    <div
+                      key={name}
+                      style={{ backgroundImage: `url(${image})` }}
+                    >
+                      {' '}
+                      {/* needs onClick to set a useState, and onHover things. the usual. */}
+                      <p>{name}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className={styles.sessionInfoContainer}>
@@ -130,6 +134,20 @@ function EditCreateSession({
                   placeholder="General session information..."
                 />
                 <small ref={maxCharacRefInfo}>300</small>
+              </div>
+
+              <div className={styles.sessionPermissionStatusContainer}>
+                <p>Edit status:</p>
+                {!permissionInviteOnly && (
+                  <button onClick={() => SetPermissionInviteOnly(true)}>
+                    All
+                  </button>
+                )}
+                {permissionInviteOnly && (
+                  <button onClick={() => SetPermissionInviteOnly(false)}>
+                    Invite Only
+                  </button>
+                )}
               </div>
 
               <SessionUserList

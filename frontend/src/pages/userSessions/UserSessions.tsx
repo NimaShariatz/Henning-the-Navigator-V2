@@ -6,37 +6,9 @@ import { BasicSessionData } from '../../api/Session';
 import type { SessionListItem } from '../../api/Session';
 import styles from './UserSessions.module.css';
 import { sessionBg, sessionHeader } from '../../constants';
-import {
-  lowResArras,
-  lowResKuban,
-  lowResLapino,
-  lowResMoscow,
-  lowResNormandy,
-  lowResNovosokolniki,
-  lowResOdessa,
-  lowResProkhorovka,
-  lowResRheinland,
-  lowResStalingrad,
-  lowResVluki,
-  lowResWestern_front,
-} from '../../constants';
+import { HennLogo1, lowResMapImages } from '../../constants';
 import { Link } from 'react-router';
 import EditCreateSession from '../../components/editCreateSession/EditCreateSession';
-
-const mapImages: Record<string, string> = {
-  Arras: lowResArras,
-  Kuban: lowResKuban,
-  Lapino: lowResLapino,
-  Moscow: lowResMoscow,
-  Normandy: lowResNormandy,
-  Novosokolniki: lowResNovosokolniki,
-  Odessa: lowResOdessa,
-  Prokhorovka: lowResProkhorovka,
-  Rheinland: lowResRheinland,
-  Stalingrad: lowResStalingrad,
-  Vluki: lowResVluki,
-  'Western Front': lowResWestern_front,
-};
 
 function UserSessions() {
   const navigate = useNavigate();
@@ -185,7 +157,7 @@ function UserSessions() {
               <div>
                 <img
                   className={styles.lowResImg}
-                  src={mapImages[session.map_selected] ?? lowResArras}
+                  src={lowResMapImages[session.map_selected] ?? HennLogo1}
                 />
                 <small className={styles.mapName}>{session.map_selected}</small>
               </div>
