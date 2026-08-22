@@ -16,23 +16,36 @@ function EditCreateSession({
   sessionUsername,
 }: SessionProps) {
   const [nameInput, setNameInput] = useState('');
+  const [sessionInput, setSessionInput] = useState('');
   const [permissionInviteOnly, SetPermissionInviteOnly] = useState(false);
   const [specificSessionData, setSpecificSessionData] =
     useState<SessionDetailedItem | null>(null);
 
-  const maxCharacRef = useRef<HTMLElement>(null);
+  const maxCharacRefName = useRef<HTMLElement>(null);
+  const maxCharacRefInfo = useRef<HTMLTextAreaElement>(null);
+
+  const handleTextAreaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    nameLengthCalc(newValue, 300, maxCharacRefInfo);
+  };
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    namelengthCalc(newValue);
+    nameLengthCalc(newValue, 50, maxCharacRefName);
   };
-  const namelengthCalc = (inputWord: string) => {
-    if (maxCharacRef.current)
-      maxCharacRef.current.textContent = String(50 - inputWord.length);
+
+  const nameLengthCalc = (
+    inputWord: string,
+    maxLength: number,
+    textRef: React.RefObject<HTMLElement | null>,
+  ) => {
+    if (textRef.current)
+      textRef.current.textContent = String(maxLength - inputWord.length);
     //console.log(newValue.length)
-    if (50 - inputWord.length >= 0 && maxCharacRef.current) {
-      maxCharacRef.current.style.color = 'var(--text_color_white)';
-    } else if (50 - inputWord.length < 0 && maxCharacRef.current) {
-      maxCharacRef.current.style.color = 'var(--delete_red)';
+    if (maxLength - inputWord.length >= 0 && textRef.current) {
+      textRef.current.style.color = 'var(--text_color_white)';
+    } else if (maxLength - inputWord.length < 0 && textRef.current) {
+      textRef.current.style.color = 'var(--delete_red)';
     }
   };
 
@@ -42,8 +55,11 @@ function EditCreateSession({
       //if we have the fields, set invite boolean, the title, and a useState with all data
       SpecificSessionData(sessionUsername, sessionSlug).then((data) => {
         setNameInput(data.title);
-        namelengthCalc(data.title);
+        setSessionInput(data.sessionInfo);
         SetPermissionInviteOnly(!data.all_can_edit);
+        nameLengthCalc(data.title, 50, maxCharacRefName);
+        nameLengthCalc(data.title, 300, maxCharacRefInfo);
+
         setSpecificSessionData(data);
       });
     }
@@ -87,7 +103,7 @@ function EditCreateSession({
                   }}
                 />
 
-                <small ref={maxCharacRef}>50</small>
+                <small ref={maxCharacRefName}>50</small>
               </div>
               <div className={styles.sessionPermissionStatusContainer}>
                 <p>Edit status:</p>
@@ -105,7 +121,15 @@ function EditCreateSession({
 
               <div className={styles.sessionInfoContainer}>
                 <p>Session Info</p>
-                <textarea />
+                <textarea
+                  value={sessionInput}
+                  onChange={(e) => {
+                    setSessionInput(e.target.value);
+                    handleTextAreaInput(e);
+                  }}
+                  placeholder="General session information..."
+                />
+                <small ref={maxCharacRefInfo}>300</small>
               </div>
 
               <SessionUserList

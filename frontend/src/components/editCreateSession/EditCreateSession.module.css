@@ -90,6 +90,7 @@
   display: flex;
   flex-direction: column;
   margin-block: 1rem;
+  position: relative;
 }
 .sessionInfoContainer textarea {
   width: 100%;
@@ -98,7 +99,21 @@
   padding: 1rem;
   border: none;
   resize: vertical;
+  color: var(--text_color);
   background-color: var(--logo_white);
+}
+.sessionInfoContainer small {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  z-index: 2;
+  color: var(--text_color);
+  background-color: var(--darkBG_1);
+  padding-inline: 5px;
+  border-radius: 3px;
+  opacity: 0.7;
+  user-select: none;
+  pointer-events: none;
 }
 
 .usersContainer {
