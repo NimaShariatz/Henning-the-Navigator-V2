@@ -21,3 +21,18 @@ class MapSessionDetailSerializer(serializers.ModelSerializer): # a more detailed
   permitted_to_edit = serializers.SlugRelatedField(
     many=True, read_only=True, slug_field='username'
   )
+
+
+MAP_NAME_TO_INT = {label: value for value, label in MapSession.MAP_OPTIONS}
+
+class MapSessionWriteSerializer(serializers.ModelSerializer):
+  map_selected = serializers.CharField()  # accept string from frontend
+
+  class Meta:
+    model = MapSession
+    fields = ['title', 'map_selected', 'all_can_edit', 'sessionInfo']
+
+  def validate_map_selected(self, value):
+    if value not in MAP_NAME_TO_INT:
+      raise serializers.ValidationError("Invalid map name.")
+    return MAP_NAME_TO_INT[value]  # convert "Arras" → 1

@@ -21,19 +21,6 @@ function UserSessions() {
 
   const [username, setUsername] = useState('');
   const [sessionData, setSessionData] = useState<SessionListItem[]>([]);
-  useEffect(() => {
-    if (!localStorage.getItem('access')) {
-      navigate('/login');
-      return;
-    }
-    getUser() //calls getUser, sets username, calls BasicSessionData with the username as input. finally sets data in the useState
-      .then((data) => {
-        setUsername(data.username);
-        return BasicSessionData(data.username);
-      })
-      .then((sessions) => setSessionData(sessions))
-      .catch(() => navigate('/login'));
-  }, [navigate]);
 
   const formatTimestamp = (iso: string) =>
     new Date(iso).toLocaleString('en-US', {
@@ -44,20 +31,41 @@ function UserSessions() {
       minute: '2-digit',
     });
 
+  const fetchSessions = (user: string) =>
+    // get list of sessions
+    BasicSessionData(user).then((sessions) => setSessionData(sessions));
+
+  useEffect(() => {
+    if (!localStorage.getItem('access')) {
+      navigate('/login');
+      return;
+    }
+    getUser() //calls getUser, sets username, calls BasicSessionData with the username as input. finally sets data in the useState
+      .then((data) => {
+        setUsername(data.username);
+        return fetchSessions(data.username);
+      })
+      .catch(() => navigate('/login'));
+  }, [navigate]);
+
   return (
     <>
       <Menu />
 
       {showCreateSession && (
-        <EditCreateSession revealHandler={() => setShowCreateSession(false)} />
+        <EditCreateSession
+          revealHandler={() => setShowCreateSession(false)}
+          username={username}
+          onSuccess={() => fetchSessions(username)}
+        />
       )}
 
-      {/* have CreateSession be in a conditional. it can then be reused for the edit button by using a bunch of variable inputs*/}
       {editingSession && (
         <EditCreateSession
           revealHandler={() => setEditingSession(null)}
           sessionSlug={editingSession.slug}
           sessionUsername={username}
+          onSuccess={() => fetchSessions(username)}
         />
       )}
       <div className={styles.initialContainer}>

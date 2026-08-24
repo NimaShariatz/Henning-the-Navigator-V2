@@ -2,17 +2,22 @@ import styles from './EditCreateSession.module.css';
 import { useRef, useState, useEffect } from 'react';
 import { SpecificSessionData } from '../../api/Session';
 import type { SessionDetailedItem } from '../../api/Session';
+import { CreateSession, UpdateSession } from '../../api/Session';
 import SessionUserList from './SessionUserList';
 import { lowResMapImages } from '../../constants';
 
 interface SessionProps {
   revealHandler: (input: boolean) => void;
+  username?: string; // needed for create mode
+  onSuccess?: () => void; // triggers list re-fetch in parent
   sessionSlug?: string;
   sessionUsername?: string;
 }
 
 function EditCreateSession({
   revealHandler,
+  username,
+  onSuccess,
   sessionSlug,
   sessionUsername,
 }: SessionProps) {
@@ -68,6 +73,23 @@ function EditCreateSession({
     }
   }, [sessionSlug, sessionUsername]);
 
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const payload = {
+      title: nameInput,
+      map_selected: mapSelect,
+      all_can_edit: !permissionInviteOnly,
+      sessionInfo: sessionInput,
+    };
+    if (sessionSlug && sessionUsername) {
+      await UpdateSession(sessionUsername, sessionSlug, payload); //call api/UpdateSesson
+    } else if (username) {
+      await CreateSession(username, payload); //call api/CreateSession
+    }
+    revealHandler(false); // destroy EditCreateSession.tsx
+    onSuccess?.(); // fetch the sessions again!
+  }
+
   return (
     <>
       <div className={styles.createSessionContainer}>
@@ -95,7 +117,7 @@ function EditCreateSession({
               </button>
             </div>
             <h1>{sessionSlug ? 'Edit Session' : 'Create Session'}</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
               <h3 className={styles.sessionSectionTitle}>Session Name</h3>
               <div className={styles.sessionNameContainer}>
                 <input
