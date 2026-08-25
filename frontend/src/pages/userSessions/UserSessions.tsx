@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Menu from '../../components/menu/Menu';
 import { getUser } from '../../api/User';
-import { BasicSessionData } from '../../api/Session';
+import { BasicSessionData, deleteSession } from '../../api/Session';
 import type { SessionListItem } from '../../api/Session';
 import styles from './UserSessions.module.css';
 import { sessionBg, sessionHeader } from '../../constants';
@@ -21,6 +21,8 @@ function UserSessions() {
 
   const [username, setUsername] = useState('');
   const [sessionData, setSessionData] = useState<SessionListItem[]>([]);
+
+  const [deleteSelected, setDeleteSelected] = useState<{ slug: string }[]>([]);
 
   const formatTimestamp = (iso: string) =>
     new Date(iso).toLocaleString('en-US', {
@@ -47,6 +49,23 @@ function UserSessions() {
       })
       .catch(() => navigate('/login'));
   }, [navigate]);
+
+  const toggleDeleteSelected = (slug: string) => {
+    //if clicked, add to list. if already clicked, remove from list
+    setDeleteSelected((prev) =>
+      prev.some((item) => item.slug === slug)
+        ? prev.filter((item) => item.slug !== slug)
+        : [...prev, { slug, username }],
+    );
+  };
+
+  const deleteSelectedSessions = async () => {
+    await Promise.all(
+      deleteSelected.map((item) => deleteSession(username, item.slug)),
+    );
+    setDeleteSelected([]);
+    fetchSessions(username);
+  };
 
   return (
     <>
@@ -103,11 +122,47 @@ function UserSessions() {
         </div>
 
         <div className={styles.deleteSessionsContainer}>
-          <button disabled>Delete Selected Sessions (0)</button>
+          <button
+            className={styles.deleteSessionsButton}
+            disabled={deleteSelected.length === 0}
+            onClick={deleteSelectedSessions}
+            style={{
+              backgroundColor: deleteSelected.length
+                ? 'var(--delete_red)'
+                : 'var(--unavailable_gray)',
+              cursor: deleteSelected.length ? 'pointer' : 'auto',
+            }}
+          >
+            Delete Selected Sessions ({deleteSelected.length})
+          </button>
+          <div>
+            {deleteSelected.map((item) => {
+              const title =
+                sessionData.find((s) => s.slug === item.slug)?.title ??
+                item.slug;
+              return (
+                <button
+                  className={styles.token}
+                  key={item.slug}
+                  onClick={() => toggleDeleteSelected(item.slug)}
+                >
+                  {title}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {sessionData.map((session) => (
-          <div key={session.slug} className={styles.sessionContainer}>
+          <div
+            key={session.slug}
+            className={styles.sessionContainer}
+            style={
+              deleteSelected.some((item) => item.slug === session.slug)
+                ? { filter: 'grayscale(0.7)' }
+                : undefined
+            }
+          >
             <img src={sessionBg} className={styles.sessionBackgroundImg} />
             <div className={styles.leftContainer}>
               <div className={styles.upperLeft}>
@@ -150,7 +205,10 @@ function UserSessions() {
                 </Link>
               </div>
               <div className={styles.upperBottom}>
-                <button className={styles.deleteButton}>
+                <button
+                  onClick={() => toggleDeleteSelected(session.slug)}
+                  className={styles.deleteButton}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zm2-4h2V8H9zm4 0h2V8h-2z"></path>
                   </svg>
@@ -159,7 +217,6 @@ function UserSessions() {
                   className={styles.editButton}
                   onClick={() => setEditingSession(session)}
                 >
-                  {/* pass session data to the useState */}
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g fill="currentColor">
                       <path d="M8 7a1 1 0 0 1-1 1H6a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-1a1 1 0 0 1 2 0v1a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h1a1 1 0 0 1 1 1"></path>

@@ -114,19 +114,23 @@
 .deleteSessionsContainer {
   display: flex;
   width: 70%;
-  justify-content: end;
+  justify-content: space-between;
 }
-.deleteSessionsContainer button {
+.deleteSessionsButton {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-weight: 700;
-  background-color: lightgray;
-  outline: 3px solid transparent;
-  cursor: pointer;
-  opacity: 0.8;
+  outline: 4px solid transparent;
+  background-color: var(--unavailable_gray);
 }
-.deleteSessionsContainer button:hover {
-  outline-color: var(--text_color_white);
+.token {
+  padding: 0.5rem 1rem;
+  margin-left: 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  outline: 4px solid transparent;
+  background-color: var(--unavailable_gray);
+  cursor: pointer;
 }
 
 /*--Session Container--*/
@@ -144,6 +148,7 @@
   justify-content: space-between;
   transition: transform 0.15s ease-in-out;
   position: relative;
+  box-shadow: inset 0px 0px 2px 10px var(--light_yellow);
 }
 .sessionContainer:hover {
   transform: translateY(-5px);
@@ -289,7 +294,9 @@
     align-items: start;
     gap: 1rem;
   }
-
+  .deleteSessionsContainer {
+    width: 95%;
+  }
   .sessionContainer {
     width: 95%;
   }

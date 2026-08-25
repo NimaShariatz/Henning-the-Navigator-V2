@@ -15,8 +15,8 @@ export async function loginUser(
   credentials: LoginCredentials,
 ): Promise<AuthTokens> {
   try {
-    const res = await api.post('/api/token/', credentials);
-    return res.data;
+    const response = await api.post('/api/token/', credentials);
+    return response.data;
   } catch (err: unknown) {
     //A wrong username/password will return a 401 from simplejwt with {"detail": "No active account found with the given credentials"}
     if (axios.isAxiosError(err) && err.response) {

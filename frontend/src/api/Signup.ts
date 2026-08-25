@@ -15,8 +15,8 @@ export async function signupUser(
   credentials: SignupCredentials,
 ): Promise<AuthTokens> {
   try {
-    const res = await api.post('/api/accounts/register/', credentials);
-    return res.data;
+    const response = await api.post('/api/accounts/register/', credentials);
+    return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err) && err.response) {
       const messages = (Object.values(err.response.data) as string[][])

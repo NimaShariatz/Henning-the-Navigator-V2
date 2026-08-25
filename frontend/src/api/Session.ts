@@ -20,20 +20,22 @@ export interface SessionDetailedItem {
 
 /* get the list of sessions */
 export async function BasicSessionData(username: string) {
-  const res = await api.get(`/api/mapSessions/list/${username}/`);
-  return res.data;
+  const response = await api.get(`/api/mapSessions/list/${username}/`);
+  return response.data;
 }
 
 /* create a session */
 export async function CreateSession(username: string, data: object) {
-  const res = await api.post(`/api/mapSessions/list/${username}/`, data);
-  return res.data;
+  const response = await api.post(`/api/mapSessions/list/${username}/`, data);
+  return response.data;
 }
 
 /* get specific data on a session */
 export async function SpecificSessionData(username: string, slug: string) {
-  const res = await api.get(`/api/mapSessions/MapSession/${username}/${slug}/`);
-  return res.data;
+  const response = await api.get(
+    `/api/mapSessions/MapSession/${username}/${slug}/`,
+  );
+  return response.data;
 }
 
 /* update the fields of a session */
@@ -42,9 +44,16 @@ export async function UpdateSession(
   slug: string,
   data: object,
 ) {
-  const res = await api.patch(
+  const response = await api.patch(
     `/api/mapSessions/MapSession/${username}/${slug}/`,
     data,
   );
-  return res.data;
+  return response.data;
+}
+
+export async function deleteSession(username: string, slug: string) {
+  const response = await api.delete(
+    `/api/mapSessions/MapSession/${username}/${slug}/`,
+  );
+  return response.data;
 }

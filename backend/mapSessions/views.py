@@ -61,3 +61,11 @@ class MapSessionDetailView(APIView):
     serializer.is_valid(raise_exception=True) # runs all the alidation logic in MapSessionWriteSerializer, including validate_map_selected() which does the string to int conversion.
     serializer.save()
     return Response(serializer.data, status=200)
+  
+  
+  def delete(self, request, username, slug):
+    session = get_object_or_404(MapSession, user__username=username, slug=slug)
+    if request.user != session.user:
+        return Response(status=403)
+    session.delete()
+    return Response(status=204)
