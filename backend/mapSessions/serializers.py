@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import MapSession
+from django.utils.text import slugify
+
 
 # serializers.py handles data concerns: validates the input and creates the object.
 
@@ -36,3 +38,14 @@ class MapSessionWriteSerializer(serializers.ModelSerializer):
     if value not in MAP_NAME_TO_INT:
       raise serializers.ValidationError("Invalid map name.")
     return MAP_NAME_TO_INT[value]  # convert "Arras" → 1
+  
+  
+  def validate_title(self, value): # validate the title before the DB is touched, otherwise you get a wonky error message
+    user = self.context.get('user')
+    slug = slugify(value)
+    qs = MapSession.objects.filter(user=user, slug=slug)
+    if self.instance:  # exclude current session in edit mode
+        qs = qs.exclude(pk=self.instance.pk)
+    if qs.exists():
+        raise serializers.ValidationError("A session with this name already exists.")
+    return value

@@ -88,6 +88,7 @@ function UserSessions() {
           revealHandler={() => setShowCreateSession(false)}
           username={username}
           onSuccess={() => fetchSessions(username)}
+          showToast={() => showToast('New session created')}
         />
       )}
 
@@ -97,6 +98,7 @@ function UserSessions() {
           sessionSlug={editingSession.slug}
           sessionUsername={username}
           onSuccess={() => fetchSessions(username)}
+          showToast={() => showToast('Session edited')}
         />
       )}
       <div className={styles.initialContainer}>

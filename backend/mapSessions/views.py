@@ -29,7 +29,7 @@ class MapSessionListView(APIView):
     owner = get_object_or_404(User, username=username)
     if request.user != owner: # not the owner, then stop!
       return Response(status=403)
-    serializer = MapSessionWriteSerializer(data=request.data)
+    serializer = MapSessionWriteSerializer(data=request.data, context={'user': owner}) # for the context= the serializer doesnt know the user so pass it to the serializer
     serializer.is_valid(raise_exception=True)
     serializer.save(user=owner)
     return Response(serializer.data, status=201)

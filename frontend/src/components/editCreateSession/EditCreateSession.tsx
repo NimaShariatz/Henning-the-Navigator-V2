@@ -9,7 +9,8 @@ import { lowResMapImages } from '../../constants';
 interface SessionProps {
   revealHandler: (input: boolean) => void;
   username?: string; // needed for create mode
-  onSuccess?: () => void; // triggers list re-fetch in parent
+  onSuccess?: () => void; // triggers list re-fetch in parent. called later below!
+  showToast?: () => void;
   sessionSlug?: string;
   sessionUsername?: string;
 }
@@ -20,6 +21,7 @@ function EditCreateSession({
   onSuccess,
   sessionSlug,
   sessionUsername,
+  showToast,
 }: SessionProps) {
   const [nameInput, setNameInput] = useState('');
   const [sessionInput, setSessionInput] = useState('');
@@ -98,6 +100,7 @@ function EditCreateSession({
       }
       revealHandler(false); // destroy EditCreateSession.tsx
       onSuccess?.(); // fetch the sessions again!
+      showToast?.(); // do the toast
     } catch (err) {
       if (err instanceof Error) setError(err.message);
     }
