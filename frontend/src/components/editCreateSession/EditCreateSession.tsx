@@ -25,6 +25,7 @@ function EditCreateSession({
   const [sessionInput, setSessionInput] = useState('');
   const [permissionInviteOnly, SetPermissionInviteOnly] = useState(false);
   const [mapSelect, setMapSelect] = useState('');
+  const [error, setError] = useState('');
   const [specificSessionData, setSpecificSessionData] =
     useState<SessionDetailedItem | null>(null);
 
@@ -75,19 +76,31 @@ function EditCreateSession({
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (mapSelect === '') {
+      setError('Error: select a map');
+      return;
+    } else if (nameInput === '') {
+      setError('Error: set a session name');
+      return;
+    }
     const payload = {
       title: nameInput,
       map_selected: mapSelect,
       all_can_edit: !permissionInviteOnly,
       sessionInfo: sessionInput,
     };
-    if (sessionSlug && sessionUsername) {
-      await UpdateSession(sessionUsername, sessionSlug, payload); //call api/UpdateSesson
-    } else if (username) {
-      await CreateSession(username, payload); //call api/CreateSession
+
+    try {
+      if (sessionSlug && sessionUsername) {
+        await UpdateSession(sessionUsername, sessionSlug, payload); //call api/UpdateSesson
+      } else if (username) {
+        await CreateSession(username, payload); //call api/CreateSession
+      }
+      revealHandler(false); // destroy EditCreateSession.tsx
+      onSuccess?.(); // fetch the sessions again!
+    } catch (err) {
+      if (err instanceof Error) setError(err.message);
     }
-    revealHandler(false); // destroy EditCreateSession.tsx
-    onSuccess?.(); // fetch the sessions again!
   }
 
   return (
@@ -188,7 +201,11 @@ function EditCreateSession({
                 permissionType={permissionInviteOnly ? 'invite' : ''}
                 specificSessionData={specificSessionData}
               />
-
+              {error && (
+                <h5 className={styles.errorText} style={{ color: 'red' }}>
+                  {error}
+                </h5>
+              )}
               <button className={styles.sessionCreateButton} type="submit">
                 {sessionSlug ? 'Update' : 'Create'}
               </button>

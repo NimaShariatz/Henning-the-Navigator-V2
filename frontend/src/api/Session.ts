@@ -1,3 +1,4 @@
+import axios from 'axios';
 import api from './AxiosInstance';
 
 export interface SessionListItem {
@@ -26,8 +27,18 @@ export async function BasicSessionData(username: string) {
 
 /* create a session */
 export async function CreateSession(username: string, data: object) {
-  const response = await api.post(`/api/mapSessions/list/${username}/`, data);
-  return response.data;
+  try {
+    const response = await api.post(`/api/mapSessions/list/${username}/`, data);
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response) {
+      const messages = (Object.values(err.response.data) as string[][])
+        .flat()
+        .join(' ');
+      throw new Error(messages, { cause: err });
+    }
+    throw err;
+  }
 }
 
 /* get specific data on a session */

@@ -9,6 +9,7 @@ import { sessionBg, sessionHeader } from '../../constants';
 import { HennLogo1, lowResMapImages } from '../../constants';
 import { Link } from 'react-router';
 import EditCreateSession from '../../components/editCreateSession/EditCreateSession';
+import Toast from '../../components/toast/Toast';
 
 function UserSessions() {
   const navigate = useNavigate();
@@ -23,6 +24,12 @@ function UserSessions() {
   const [sessionData, setSessionData] = useState<SessionListItem[]>([]);
 
   const [deleteSelected, setDeleteSelected] = useState<{ slug: string }[]>([]);
+
+  const [toastMessage, setToastMessage] = useState('');
+  const showToast = (msg: string) => {
+    setToastMessage(msg); //reveal
+    setTimeout(() => setToastMessage(''), 6000); // toast is removed when message is empty due to conditional render
+  };
 
   const formatTimestamp = (iso: string) =>
     new Date(iso).toLocaleString('en-US', {
@@ -63,6 +70,11 @@ function UserSessions() {
     await Promise.all(
       deleteSelected.map((item) => deleteSession(username, item.slug)),
     );
+    if (deleteSelected.length > 1) {
+      showToast('Sessions Deleted');
+    } else {
+      showToast('Session Deleted');
+    }
     setDeleteSelected([]);
     fetchSessions(username);
   };
@@ -70,7 +82,7 @@ function UserSessions() {
   return (
     <>
       <Menu />
-
+      {toastMessage && <Toast ToastMessage={toastMessage} />}
       {showCreateSession && (
         <EditCreateSession
           revealHandler={() => setShowCreateSession(false)}

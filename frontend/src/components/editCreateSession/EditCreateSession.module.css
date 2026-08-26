@@ -138,6 +138,7 @@
   display: flex;
   margin-top: 1.5rem;
   align-items: center;
+  margin-bottom: 2.5rem;
 }
 .sessionPermissionStatusContainer button {
   padding: 0.3rem 0.5rem;
@@ -182,10 +183,6 @@
 .sessionCreateButton:hover {
   outline-color: var(--text_color_white);
 }
-.sessionCreateButton {
-  margin-top: 2.5rem;
-}
-
 .userList {
   margin-top: 1rem;
 }
@@ -201,6 +198,11 @@
 }
 .userList div:hover {
   background-color: var(--darkBG_2);
+}
+
+.errorText {
+  width: 100%;
+  text-align: center;
 }
 
 @media (max-width: 720px) {
