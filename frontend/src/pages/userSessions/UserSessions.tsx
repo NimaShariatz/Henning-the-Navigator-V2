@@ -45,10 +45,6 @@ function UserSessions() {
     BasicSessionData(user).then((sessions) => setSessionData(sessions));
 
   useEffect(() => {
-    if (!localStorage.getItem('access')) {
-      navigate('/login');
-      return;
-    }
     getUser() //calls getUser, sets username, calls BasicSessionData with the username as input. finally sets data in the useState
       .then((data) => {
         setUsername(data.username);
