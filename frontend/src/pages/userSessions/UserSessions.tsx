@@ -30,7 +30,7 @@ function UserSessions() {
   const [toastMessage, setToastMessage] = useState('');
   const showToast = (msg: string) => {
     setToastMessage(msg); //reveal
-    setTimeout(() => setToastMessage(''), 6000); // toast is removed when message is empty due to conditional render
+    setTimeout(() => setToastMessage(''), 4000); // toast is removed when message is empty due to conditional render
   };
 
   const formatTimestamp = (iso: string) =>
@@ -82,6 +82,7 @@ function UserSessions() {
       await navigator.clipboard.writeText(
         `${window.location.origin}/session/${username}/${sessionLink}`,
       ); //dynamically resolves to whatever the frontend is currently served, so wont need to change anything on deploy
+      showToast('Link copied');
     } catch (err) {
       console.error('Failed to copy text to clipboard', err);
     }

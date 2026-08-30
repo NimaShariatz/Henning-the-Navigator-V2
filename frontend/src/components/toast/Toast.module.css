@@ -12,7 +12,7 @@
   user-select: none;
   display: flex;
   transform: translateX(240px);
-  animation: animatInOut 6s ease-in-out;
+  animation: animatInOut 4s ease-in-out;
 }
 .ToastContainer small {
   text-align: center;
