@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: 'http://127.0.0.1:8000' });
+const baseURL = import.meta.env.VITE_API_URL;
+
+const api = axios.create({ baseURL: baseURL });
 
 // Attach JWT to every request automatically
 
@@ -23,10 +25,9 @@ api.interceptors.response.use(
       const refresh = localStorage.getItem('refresh'); // get refresh
       if (refresh) {
         try {
-          const { data } = await axios.post(
-            'http://127.0.0.1:8000/api/token/refresh/',
-            { refresh },
-          );
+          const { data } = await axios.post(`${baseURL}api/token/refresh/`, {
+            refresh,
+          });
           localStorage.setItem('access', data.access); //get a new access
           original.headers.Authorization = `Bearer ${data.access}`;
           return api(original); // retry the failed request. 401 should not occur

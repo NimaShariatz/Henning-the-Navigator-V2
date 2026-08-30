@@ -77,6 +77,16 @@ function UserSessions() {
     fetchSessions(username);
   };
 
+  const handleCopy = async (sessionLink: string) => {
+    try {
+      await navigator.clipboard.writeText(
+        `${window.location.origin}/session/${username}/${sessionLink}`,
+      ); //dynamically resolves to whatever the frontend is currently served, so wont need to change anything on deploy
+    } catch (err) {
+      console.error('Failed to copy text to clipboard', err);
+    }
+  };
+
   return (
     <>
       <Menu />
@@ -182,7 +192,10 @@ function UserSessions() {
                 <p>Last Updated: {formatTimestamp(session.last_updated)}</p>
                 {session.all_can_edit && <p>Edit Permission: All</p>}
                 {!session.all_can_edit && <p>Edit Permission: By Invite</p>}
-                <p className={styles.shareLink}>
+                <p
+                  className={styles.shareLink}
+                  onClick={() => handleCopy(session.slug)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="1rem"
@@ -200,7 +213,10 @@ function UserSessions() {
                   </svg>
                   Share Link
                 </p>
-                <Link className={styles.enterSessionLink} to="/">
+                <Link
+                  className={styles.enterSessionLink}
+                  to={`/session/${username}/${session.slug}`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="1rem"

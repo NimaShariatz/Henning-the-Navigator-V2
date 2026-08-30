@@ -4,12 +4,14 @@ import Home from './pages/home/Home';
 import Signup from './pages/signup/Signup';
 import Login from './pages/login/Login';
 import UserSessions from './pages/userSessions/UserSessions';
+import Session from './pages/session/session';
 
 const pageTitles: Record<string, string> = {
   '/': 'Henning the Navigator',
   '/signup': 'Sign up',
   '/login': 'Login',
-  '/user-sessions': 'Sessions',
+  '/user-sessions': 'User sessions',
+  '/session/:username/:slug': 'Session',
 };
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user-sessions" element={<UserSessions />} />
+        <Route path="/session/:username/:slug" element={<Session />} />
       </Routes>
     </>
   );
