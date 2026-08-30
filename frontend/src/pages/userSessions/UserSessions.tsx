@@ -23,7 +23,9 @@ function UserSessions() {
   const [username, setUsername] = useState('');
   const [sessionData, setSessionData] = useState<SessionListItem[]>([]);
 
-  const [deleteSelected, setDeleteSelected] = useState<{ slug: string }[]>([]);
+  const [deleteSelected, setDeleteSelected] = useState<
+    { slug: string; username: string }[]
+  >([]);
 
   const [toastMessage, setToastMessage] = useState('');
   const showToast = (msg: string) => {

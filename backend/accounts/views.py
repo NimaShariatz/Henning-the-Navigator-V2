@@ -3,7 +3,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from .serializers import RegisterSerializer
 from rest_framework.views import APIView
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 #views.py handles HTTP concerns: receives the request, returns a response, and generates tokens.
 
   
@@ -42,3 +43,23 @@ class UserView(APIView):
   def delete(self, request):
     request.user.delete()
     return Response(status=204)
+  
+  
+  
+  
+class UserSearchView(APIView):
+  permission_classes = [permissions.IsAuthenticated]
+  
+  # Purpose: for returning a list of users and such for the mapSessions permitted_to_edit list, and frontend search
+  # Input: GET /api/accounts/search/?q=<term>
+  # Output: JSON array of usernames matching the term (excludes the requester)
+  def get(self, request):
+    q = request.query_params.get('q', '').strip()
+    if not q:
+      return Response([], status=200)
+    usernames = (
+      User.objects.filter(username__icontains=q)
+      .exclude(pk=request.user.pk)
+      .values_list('username', flat=True)[:10]
+    )
+    return Response(list(usernames), status=200)

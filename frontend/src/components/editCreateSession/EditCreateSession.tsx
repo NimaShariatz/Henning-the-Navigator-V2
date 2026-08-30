@@ -15,6 +15,18 @@ interface SessionProps {
   sessionUsername?: string;
 }
 
+// default shape used in create mode, before any data is fetched
+const emptySessionData: SessionDetailedItem = {
+  slug: '',
+  title: '',
+  map_selected: '',
+  all_can_edit: true,
+  permitted_to_edit: [],
+  sessionInfo: '',
+  created_at: '',
+  last_updated: '',
+};
+
 function EditCreateSession({
   revealHandler,
   username,
@@ -23,13 +35,9 @@ function EditCreateSession({
   sessionUsername,
   showToast,
 }: SessionProps) {
-  const [nameInput, setNameInput] = useState('');
-  const [sessionInput, setSessionInput] = useState('');
-  const [permissionInviteOnly, SetPermissionInviteOnly] = useState(false);
-  const [mapSelect, setMapSelect] = useState('');
+  const [sessionData, setSessionData] =
+    useState<SessionDetailedItem>(emptySessionData);
   const [error, setError] = useState('');
-  const [specificSessionData, setSpecificSessionData] =
-    useState<SessionDetailedItem | null>(null);
 
   const maxCharacRefName = useRef<HTMLElement>(null);
   const maxCharacRefInfo = useRef<HTMLTextAreaElement>(null);
@@ -39,7 +47,7 @@ function EditCreateSession({
     nameLengthCalc(newValue, 300, maxCharacRefInfo);
   };
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputSessionName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     nameLengthCalc(newValue, 50, maxCharacRefName);
   };
@@ -49,47 +57,49 @@ function EditCreateSession({
     maxLength: number,
     textRef: React.RefObject<HTMLElement | null>,
   ) => {
-    if (textRef.current)
+    const overLimit = maxLength - inputWord.length < 0;
+    if (textRef.current) {
       textRef.current.textContent = String(maxLength - inputWord.length);
-    //console.log(newValue.length)
-    if (maxLength - inputWord.length >= 0 && textRef.current) {
-      textRef.current.style.color = 'var(--text_color_white)';
-    } else if (maxLength - inputWord.length < 0 && textRef.current) {
-      textRef.current.style.color = 'var(--delete_red)';
+      textRef.current.style.color = overLimit
+        ? 'var(--delete_red)'
+        : 'var(--text_color_white)';
     }
+    return overLimit;
   };
 
   //make the API call for detailed list
   useEffect(() => {
     if (sessionSlug && sessionUsername) {
-      //if we have the fields, set invite boolean, the title, and a useState with all data
       SpecificSessionData(sessionUsername, sessionSlug).then((data) => {
-        setNameInput(data.title);
-        setSessionInput(data.sessionInfo);
-        SetPermissionInviteOnly(!data.all_can_edit);
-        setMapSelect(data.map_selected);
+        //make the API call for detailed list
+        setSessionData(data);
         nameLengthCalc(data.title, 50, maxCharacRefName);
-        nameLengthCalc(data.title, 300, maxCharacRefInfo);
-
-        setSpecificSessionData(data);
+        nameLengthCalc(data.sessionInfo, 300, maxCharacRefInfo);
       });
     }
   }, [sessionSlug, sessionUsername]);
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (mapSelect === '') {
+    if (sessionData.map_selected === '') {
       setError('Error: select a map');
       return;
-    } else if (nameInput === '') {
+    } else if (sessionData.title === '') {
       setError('Error: set a session name');
+      return;
+    } else if (nameLengthCalc(sessionData.title, 50, maxCharacRefName)) {
+      setError('Error: session name beyond 50 character limit');
+      return;
+    } else if (nameLengthCalc(sessionData.sessionInfo, 300, maxCharacRefInfo)) {
+      setError('Error: session info beyond 300 character limit');
       return;
     }
     const payload = {
-      title: nameInput,
-      map_selected: mapSelect,
-      all_can_edit: !permissionInviteOnly,
-      sessionInfo: sessionInput,
+      title: sessionData.title,
+      map_selected: sessionData.map_selected,
+      all_can_edit: sessionData.all_can_edit,
+      sessionInfo: sessionData.sessionInfo,
+      permitted_to_edit: sessionData.permitted_to_edit,
     };
 
     try {
@@ -137,13 +147,15 @@ function EditCreateSession({
               <h3 className={styles.sessionSectionTitle}>Session Name</h3>
               <div className={styles.sessionNameContainer}>
                 <input
-                  value={nameInput}
+                  value={sessionData.title}
                   onChange={(e) => {
-                    setNameInput(e.target.value);
-                    handleInput(e);
+                    setSessionData((prev) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }));
+                    handleInputSessionName(e);
                   }}
                 />
-
                 <small ref={maxCharacRefName}>50</small>
               </div>
 
@@ -156,17 +168,21 @@ function EditCreateSession({
                       style={{
                         backgroundImage: `url(${image})`,
                         outlineColor:
-                          mapSelect === name
+                          sessionData.map_selected === name
                             ? 'var(--logo_yellow)'
                             : 'transparent',
                         backgroundColor:
-                          mapSelect === name
+                          sessionData.map_selected === name
                             ? 'rgba(0, 0, 0, 0.1)'
                             : 'rgba(0, 0, 0, 0.4)',
                       }}
-                      onClick={() => setMapSelect(name)}
+                      onClick={() =>
+                        setSessionData((prev) => ({
+                          ...prev,
+                          map_selected: name,
+                        }))
+                      }
                     >
-                      {/* needs onClick to set a useState, and onHover things. the usual. */}
                       <p>{name}</p>
                     </div>
                   ))}
@@ -176,9 +192,12 @@ function EditCreateSession({
               <div className={styles.sessionInfoContainer}>
                 <h3 className={styles.sessionSectionTitle}>Session Info</h3>
                 <textarea
-                  value={sessionInput}
+                  value={sessionData.sessionInfo}
                   onChange={(e) => {
-                    setSessionInput(e.target.value);
+                    setSessionData((prev) => ({
+                      ...prev,
+                      sessionInfo: e.target.value,
+                    }));
                     handleTextAreaInput(e);
                   }}
                   placeholder="General session information..."
@@ -188,21 +207,43 @@ function EditCreateSession({
 
               <div className={styles.sessionPermissionStatusContainer}>
                 <p>Edit status:</p>
-                {!permissionInviteOnly && (
-                  <button onClick={() => SetPermissionInviteOnly(true)}>
+                {sessionData.all_can_edit && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSessionData((prev) => ({
+                        ...prev,
+                        all_can_edit: false,
+                      }))
+                    }
+                  >
                     All
                   </button>
                 )}
-                {permissionInviteOnly && (
-                  <button onClick={() => SetPermissionInviteOnly(false)}>
+                {!sessionData.all_can_edit && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSessionData((prev) => ({
+                        ...prev,
+                        all_can_edit: true,
+                      }))
+                    }
+                  >
                     Invite Only
                   </button>
                 )}
               </div>
 
               <SessionUserList
-                permissionType={permissionInviteOnly ? 'invite' : ''}
-                specificSessionData={specificSessionData}
+                permissionType={!sessionData.all_can_edit ? 'invite' : ''}
+                editUsers={sessionData.permitted_to_edit}
+                setEditUsers={(users) =>
+                  setSessionData((prev) => ({
+                    ...prev,
+                    permitted_to_edit: users,
+                  }))
+                }
               />
               {error && (
                 <h5 className={styles.errorText} style={{ color: 'red' }}>

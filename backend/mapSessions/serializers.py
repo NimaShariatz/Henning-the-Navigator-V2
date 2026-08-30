@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import MapSession
 from django.utils.text import slugify
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # serializers.py handles data concerns: validates the input and creates the object.
 
@@ -28,11 +29,13 @@ class MapSessionDetailSerializer(serializers.ModelSerializer): # a more detailed
 MAP_NAME_TO_INT = {label: value for value, label in MapSession.MAP_OPTIONS}
 
 class MapSessionWriteSerializer(serializers.ModelSerializer):
-  map_selected = serializers.CharField()  # accept string from frontend
-
+  map_selected = serializers.CharField() # accept string from frontend
+  permitted_to_edit = serializers.SlugRelatedField(
+    many=True, slug_field='username', queryset=User.objects.all(), required=False
+  )
   class Meta:
     model = MapSession
-    fields = ['title', 'map_selected', 'all_can_edit', 'sessionInfo']
+    fields = ['title', 'map_selected', 'all_can_edit', 'sessionInfo', 'permitted_to_edit']
 
   def validate_map_selected(self, value):
     if value not in MAP_NAME_TO_INT:

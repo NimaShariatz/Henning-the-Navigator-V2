@@ -158,7 +158,7 @@
 }
 
 .usersContainer {
-  margin-top: 1rem;
+  margin-block: 1rem;
   display: flex;
   flex-direction: column;
 }
