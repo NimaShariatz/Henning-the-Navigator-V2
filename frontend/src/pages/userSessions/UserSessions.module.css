@@ -37,10 +37,12 @@
 .initialContainer h1 {
   z-index: 2;
   margin-left: 5vw;
+  max-width: 70%;
   padding-inline: 2vw;
   background-color: var(--text_color);
   border-radius: 10px;
   color: var(--logo_yellow);
+  word-break: break-all;
 }
 
 .coreContainer {
@@ -278,6 +280,9 @@
 }
 
 @media (max-width: 720px) {
+  .initialContainer h1 {
+    max-width: 95%;
+  }
   .filterContainer {
     width: 95%;
     padding-block: 1rem;

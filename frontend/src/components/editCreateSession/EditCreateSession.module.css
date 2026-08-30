@@ -195,6 +195,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  word-break: break-all;
 }
 .userList div:hover {
   background-color: var(--darkBG_2);
@@ -208,7 +209,7 @@
 @media (max-width: 720px) {
   .sessionContainer {
     width: 90%;
-    margin-bottom: 20vh;
+    margin-bottom: 0;
     padding-inline: 1rem;
     padding-block: 2rem;
   }

@@ -24,6 +24,7 @@ function SessionUserList({
 
   const searchUsers = async () => {
     if (!searchInput.trim()) return;
+    if (searchInput === '') return;
     const results = await searchUsersApi(searchInput);
     setSearchResults(results.filter((u) => !editUsers.includes(u)));
   };

@@ -37,6 +37,8 @@ function EditCreateSession({
 }: SessionProps) {
   const [sessionData, setSessionData] =
     useState<SessionDetailedItem>(emptySessionData);
+  const [originalSessionData, setOriginalSessionData] =
+    useState<SessionDetailedItem>(emptySessionData);
   const [error, setError] = useState('');
 
   const maxCharacRefName = useRef<HTMLElement>(null);
@@ -73,6 +75,7 @@ function EditCreateSession({
       SpecificSessionData(sessionUsername, sessionSlug).then((data) => {
         //make the API call for detailed list
         setSessionData(data);
+        setOriginalSessionData(data);
         nameLengthCalc(data.title, 50, maxCharacRefName);
         nameLengthCalc(data.sessionInfo, 300, maxCharacRefInfo);
       });
@@ -92,6 +95,9 @@ function EditCreateSession({
       return;
     } else if (nameLengthCalc(sessionData.sessionInfo, 300, maxCharacRefInfo)) {
       setError('Error: session info beyond 300 character limit');
+      return;
+    } else if (sessionData === originalSessionData) {
+      revealHandler(false);
       return;
     }
     const payload = {
