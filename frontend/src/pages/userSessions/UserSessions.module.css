@@ -95,6 +95,28 @@
   align-items: center;
   padding-block: 1rem;
 }
+.sortDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sortDiv button {
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 700;
+  background-color: var(--logo_yellow);
+  outline: 4px solid transparent;
+  font-size: 12px;
+  cursor: pointer;
+}
+.sortDiv button:hover {
+  outline-color: var(--text_color_white);
+}
+.sortDiv button:active {
+  background-color: var(--active_color);
+}
+
 .createSessionButton {
   display: inline-flex;
   align-items: center;

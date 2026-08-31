@@ -14,6 +14,10 @@ import Toast from '../../components/toast/Toast';
 function UserSessions() {
   const navigate = useNavigate();
 
+  const [searchInput, setSearchInput] = useState('');
+  const [appliedSearch, setAppliedSearch] = useState('');
+  const [sort, setSort] = useState('Last updated');
+
   const [editingSession, setEditingSession] = useState<SessionListItem | null>(
     null,
   ); //is set when edit button is clicked
@@ -88,6 +92,27 @@ function UserSessions() {
     }
   };
 
+  const sortStyle = () => {
+    if (sort === 'Last updated') {
+      setSort('Alphabetical');
+    } else if (sort === 'Alphabetical') {
+      setSort('Last updated');
+    }
+  };
+
+  const searchedSessions = sessionData.filter((s) =>
+    //search
+    s.title.toLowerCase().includes(appliedSearch.toLowerCase()),
+  );
+
+  const visibleSessions = [...searchedSessions].sort((a, b) => {
+    //sort
+    if (sort === 'Alphabetical') return a.title.localeCompare(b.title);
+    return (
+      new Date(b.last_updated).getTime() - new Date(a.last_updated).getTime()
+    );
+  });
+
   return (
     <>
       <Menu />
@@ -118,14 +143,21 @@ function UserSessions() {
       <div className={styles.coreContainer}>
         <div className={styles.filterContainer}>
           <form className={styles.searchFormContainer}>
-            <input type="text" placeholder="Search session names" />
-            <button>Search</button>
+            <input
+              type="text"
+              placeholder="Search session names"
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <button type="button" onClick={() => setAppliedSearch(searchInput)}>
+              Search
+            </button>
           </form>
 
           <div className={styles.filtersRow}>
-            <p>
-              Sort: Alphabetically [or by last updated] [or by date created]
-            </p>
+            <div className={styles.sortDiv}>
+              <p>Sort:</p>
+              <button onClick={() => sortStyle()}>{sort}</button>
+            </div>
 
             <button
               className={styles.createSessionButton}
@@ -176,7 +208,8 @@ function UserSessions() {
           </div>
         </div>
 
-        {sessionData.map((session) => (
+        {visibleSessions.map((session) => (
+          // can be sessionData if you dont want filtering
           <div
             key={session.slug}
             className={styles.sessionContainer}

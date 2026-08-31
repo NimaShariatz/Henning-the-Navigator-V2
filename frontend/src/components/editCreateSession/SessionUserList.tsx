@@ -36,10 +36,7 @@ function SessionUserList({
       <div className={styles.usersContainer}>
         <h6>Search Users</h6>
         <div>
-          <input
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
+          <input onChange={(e) => setSearchInput(e.target.value)} />
           <button
             type="button"
             className={styles.sessionButton}
@@ -50,7 +47,13 @@ function SessionUserList({
         </div>
         <div className={styles.userList}>
           {searchResults.map((user) => (
-            <div key={user} onClick={() => setEditUsers([...editUsers, user])}>
+            <div
+              key={user}
+              onClick={() => {
+                if (!editUsers.includes(user))
+                  setEditUsers([...editUsers, user]);
+              }}
+            >
               {user}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
