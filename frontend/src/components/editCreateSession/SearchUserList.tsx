@@ -10,7 +10,7 @@ interface SessionUserListProps {
   setEditUsers: (users: string[]) => void; // needed to mutate parent state
 }
 
-function SessionUserList({
+function SearchUserList({
   permissionType,
   //specificSessionData,
   editUsers,
@@ -95,4 +95,4 @@ function SessionUserList({
       </div>
     );
 }
-export default SessionUserList;
+export default SearchUserList;

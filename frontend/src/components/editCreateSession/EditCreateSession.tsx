@@ -3,8 +3,8 @@ import { useRef, useState, useEffect } from 'react';
 import { SpecificSessionData } from '../../api/Session';
 import type { SessionDetailedItem } from '../../api/Session';
 import { CreateSession, UpdateSession } from '../../api/Session';
-import SessionUserList from './SessionUserList';
 import { lowResMapImages } from '../../constants';
+import SearchUserList from './SearchUserList';
 
 interface SessionProps {
   revealHandler: (input: boolean) => void;
@@ -241,7 +241,7 @@ function EditCreateSession({
                 )}
               </div>
 
-              <SessionUserList
+              <SearchUserList
                 permissionType={!sessionData.all_can_edit ? 'invite' : ''}
                 editUsers={sessionData.permitted_to_edit}
                 setEditUsers={(users) =>
