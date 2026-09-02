@@ -52,6 +52,8 @@ const lowResMapImages: Record<string, string> = {
   'Western Front': lowResWestern_front,
 };
 
+import blenderTable from './assets/blender/threejsTable.glb';
+
 export {
   HennLogo1,
   HennLogo2,
@@ -89,4 +91,5 @@ export {
   lowResVluki,
   lowResWestern_front,
   lowResMapImages,
+  blenderTable,
 };

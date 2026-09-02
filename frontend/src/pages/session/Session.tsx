@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import { SpecificSessionData } from '../../api/Session';
 import type { SessionDetailedItem } from '../../api/Session';
 import styles from './Session.module.css';
+import { OrbitControls } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import Map from './Map';
 
 const emptySessionData: SessionDetailedItem = {
   slug: '',
@@ -25,10 +28,27 @@ function Session() {
     SpecificSessionData(username, slug).then(setSessionData);
   }, [username, slug]);
 
+  console.log(sessionData);
+
   return (
     <>
-      <h1>{sessionData.title}</h1>
-      <p className={styles.tempo}>hi!</p>
+      <div className={styles.canvasContainer}>
+        <Canvas camera={{ fov: 45, near: 0.1, far: 300 }}>
+          <OrbitControls
+            rotateSpeed={0.45}
+            makeDefault
+            maxDistance={8}
+            panSpeed={0.6}
+            target={[0, 0, 0]}
+            maxPolarAngle={1.5}
+            zoomSpeed={2}
+            zoomToCursor
+          />
+          <color args={['#000000']} attach="background" />
+
+          <Map />
+        </Canvas>
+      </div>
     </>
   );
 }
