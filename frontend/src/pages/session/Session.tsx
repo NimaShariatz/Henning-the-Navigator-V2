@@ -6,6 +6,7 @@ import styles from './Session.module.css';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import Map from './Map';
+import Menu from '../../components/menu/Menu';
 
 const emptySessionData: SessionDetailedItem = {
   slug: '',
@@ -33,12 +34,13 @@ function Session() {
   return (
     <>
       <div className={styles.canvasContainer}>
+        <Menu />
         <Canvas camera={{ fov: 45, near: 0.1, far: 300 }}>
           <OrbitControls
-            rotateSpeed={0.45}
+            rotateSpeed={0.4}
             makeDefault
             maxDistance={8}
-            panSpeed={0.6}
+            panSpeed={1}
             target={[0, 0, 0]}
             maxPolarAngle={1.5}
             zoomSpeed={2}

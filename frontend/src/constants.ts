@@ -33,7 +33,7 @@ import Novosokolniki from './assets/img/maps/Novosokolniki.webp';
 import Odessa from './assets/img/maps/Odessa.webp';
 import Prokhorovka from './assets/img/maps/Prokhorovka.webp';
 import Rheinland from './assets/img/maps/Rheinland.webp';
-import Stalingrad from './assets/img/maps/Stalingrad.jpg';
+import Stalingrad from './assets/img/maps/StalingradWarm.png'; // Need to add warmth to all the maps :( ... SAD
 import Vluki from './assets/img/maps/Vluki.webp';
 import Western_front from './assets/img/maps/Western_front.webp';
 
@@ -53,6 +53,7 @@ const lowResMapImages: Record<string, string> = {
 };
 
 import blenderTable from './assets/blender/threejsTable.glb';
+import blenderLamp from './assets/blender/threejsLampLowRough.glb';
 
 export {
   HennLogo1,
@@ -92,4 +93,5 @@ export {
   lowResWestern_front,
   lowResMapImages,
   blenderTable,
+  blenderLamp,
 };
