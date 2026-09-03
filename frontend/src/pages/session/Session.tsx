@@ -7,6 +7,8 @@ import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import Map from './Map';
 import Menu from '../../components/menu/Menu';
+import MapSettings from '../../components/mapComponents/MapSettings';
+import KeySelect from '../../components/mapComponents/KeySelect';
 
 const emptySessionData: SessionDetailedItem = {
   slug: '',
@@ -33,14 +35,14 @@ function Session() {
 
   return (
     <>
+      <Menu />
       <div className={styles.canvasContainer}>
-        <Menu />
         <Canvas camera={{ fov: 45, near: 0.1, far: 300 }}>
           <OrbitControls
             rotateSpeed={0.4}
             makeDefault
-            maxDistance={8}
-            panSpeed={1}
+            maxDistance={8.5}
+            panSpeed={1.35}
             target={[0, 0, 0]}
             maxPolarAngle={1.5}
             zoomSpeed={2}
@@ -50,6 +52,11 @@ function Session() {
 
           <Map />
         </Canvas>
+
+        <div className={styles.bottomLeftContainer}>
+          <KeySelect />
+          <MapSettings />
+        </div>
       </div>
     </>
   );

@@ -4,6 +4,16 @@ import { useRef } from 'react';
 import { Stalingrad, blenderTable, blenderLamp } from '../../constants';
 import { useTexture } from '@react-three/drei';
 
+/*
+- bottom left
+- shift, mouse, and scroll icons
+- Settings [scale and lighting]
+- bottom right
+- Waypoints, Targets, message, frontline. left and right chevrons switch.
+click opens a tooltip with options
+- Colors: blue, red, grey [neutral]
+*/
+
 function Map() {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -22,19 +32,19 @@ function Map() {
 
       <spotLight
         ref={spotLightHelper}
-        intensity={65}
+        intensity={60}
         color={'#e6e4de'}
         position={[0, 5.3, 0]}
-        penumbra={1.7}
-        angle={0.9}
+        penumbra={2}
+        angle={1.4}
       ></spotLight>
 
       <pointLight
         ref={pointLightHelper}
-        decay={1}
-        color={'#f4bb40'}
+        decay={0.7}
+        color={'#f8d892'}
         intensity={7}
-        position={[0, 6.3, 1]}
+        position={[0, 5, 0.6]}
       />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.355, 0]}>

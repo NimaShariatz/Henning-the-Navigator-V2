@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router';
 import { loginUser } from '../../api/Login';
 import { HennLogo2 } from '../../constants';
 import Toast from '../../components/toast/Toast';
+import { useEffect } from 'react';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -28,6 +29,8 @@ function Login() {
       if (err instanceof Error) setError(err.message);
     }
   }
+
+  useEffect(() => {}, []);
 
   return (
     <>
