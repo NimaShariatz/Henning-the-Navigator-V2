@@ -53,10 +53,8 @@ function Session() {
           <Map />
         </Canvas>
 
-        <div className={styles.bottomLeftContainer}>
-          <KeySelect />
-          <MapSettings />
-        </div>
+        <KeySelect />
+        <MapSettings />
       </div>
     </>
   );

@@ -42,7 +42,7 @@ function Map() {
       <pointLight
         ref={pointLightHelper}
         decay={0.7}
-        color={'#f8d892'}
+        color={'#fadfa3'}
         intensity={7}
         position={[0, 5, 0.6]}
       />
