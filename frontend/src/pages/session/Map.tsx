@@ -28,23 +28,23 @@ function Map() {
   return (
     <group position={[0, -0.8, -0.3]}>
       <primitive object={table.scene} position={[0, 0, 0]} scale={0.5} />
-      <primitive object={lamp.scene} position={[0, 4.5, 0]} scale={0.3} />
+      <primitive object={lamp.scene} position={[0, 6.5, 0]} scale={0.3} />
 
       <spotLight
         ref={spotLightHelper}
-        intensity={60}
-        color={'#e6e4de'}
-        position={[0, 5.3, 0]}
-        penumbra={2}
-        angle={1.4}
+        intensity={80}
+        color={'#f0ead8'}
+        position={[0, 7, 0]}
+        penumbra={1}
+        angle={0.7}
       ></spotLight>
 
       <pointLight
         ref={pointLightHelper}
-        decay={0.7}
-        color={'#fadfa3'}
-        intensity={7}
-        position={[0, 5, 0.6]}
+        decay={0.3}
+        color={'#f5e0b2'}
+        intensity={5}
+        position={[0, 7, 0.7]}
       />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.355, 0]}>
