@@ -24,18 +24,18 @@ import lowResStalingrad from './assets/img/lowResMaps/Stalingrad.jpg';
 import lowResVluki from './assets/img/lowResMaps/Vluki.jpg';
 import lowResWestern_front from './assets/img/lowResMaps/Western_front.jpg';
 
-import Arras from './assets/img/maps/Arras.webp';
-import Kuban from './assets/img/maps/Kuban.webp';
-import Lapino from './assets/img/maps/Lapino.webp';
-import Moscow from './assets/img/maps/Moscow.webp';
+import Arras from './assets/img/maps/Arras.jpg';
+import Kuban from './assets/img/maps/Kuban.jpg';
+import Lapino from './assets/img/maps/Lapino.jpg';
+import Moscow from './assets/img/maps/Moscow.jpg';
 import Normandy from './assets/img/maps/Normandy.jpg';
-import Novosokolniki from './assets/img/maps/Novosokolniki.webp';
-import Odessa from './assets/img/maps/Odessa.webp';
-import Prokhorovka from './assets/img/maps/Prokhorovka.webp';
-import Rheinland from './assets/img/maps/Rheinland.webp';
-import Stalingrad from './assets/img/maps/StalingradWarm.png'; // Need to add warmth to all the maps :( ... SAD
-import Vluki from './assets/img/maps/Vluki.webp';
-import Western_front from './assets/img/maps/Western_front.webp';
+import Novosokolniki from './assets/img/maps/Novosokolniki.jpg';
+import Odessa from './assets/img/maps/Odessa.jpg';
+import Prokhorovka from './assets/img/maps/Prokhorovka.jpg';
+import Rheinland from './assets/img/maps/Rheinland.jpg';
+import Stalingrad from './assets/img/maps/Stalingrad.jpg';
+import Vluki from './assets/img/maps/Vluki.jpg';
+import Western_front from './assets/img/maps/Western_front.jpg';
 
 const lowResMapImages: Record<string, string> = {
   Arras: lowResArras,
