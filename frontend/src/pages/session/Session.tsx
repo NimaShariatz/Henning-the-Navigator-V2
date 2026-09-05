@@ -12,6 +12,16 @@ import MapSettings from '../../components/mapComponents/MapSettings';
 import KeySelect from '../../components/mapComponents/KeySelect';
 import { useRef } from 'react';
 import * as THREE from 'three';
+import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
+
+export interface PerfStats {
+  fps: number;
+  frameMs: number;
+  calls: number;
+  triangles: number;
+  geometries: number;
+  textures: number;
+}
 
 const emptySessionData: SessionDetailedItem = {
   slug: '',
@@ -29,6 +39,8 @@ const DEFAULT_CAMERA_POSITION = new THREE.Vector3(0, 2, 4);
 const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 
 function Session() {
+  const [perf, setPerf] = useState<PerfStats | null>(null);
+
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
   const [sessionData, setSessionData] =
@@ -70,16 +82,23 @@ function Session() {
             panSpeed={1.35}
             target={DEFAULT_TARGET.toArray()}
             maxPolarAngle={1.5}
-            zoomSpeed={2}
-            zoomToCursor
+            zoomSpeed={5}
+            //zoomToCursor
           />
           <color args={['#000000']} attach="background" />
 
           <Map />
+          {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
         </Canvas>
 
         <KeySelect resetCamera={resetCamera} />
         <MapSettings />
+        {import.meta.env.DEV && perf && (
+          <div className={styles.perfOverlay}>
+            {perf.fps} fps · {perf.frameMs.toFixed(2)} ms · calls {perf.calls} ·
+            tris {perf.triangles} · geo {perf.geometries} · tex {perf.textures}
+          </div>
+        )}
       </div>
     </>
   );

@@ -53,7 +53,8 @@ const lowResMapImages: Record<string, string> = {
 };
 
 import blenderTable from './assets/blender/threejsTable.glb';
-import blenderLamp from './assets/blender/threejsLampLowRough.glb';
+import blenderLamp from './assets/blender/threejsLampBasic.glb';
+import blenderGear from './assets/blender/threejsSettings2.glb';
 
 export {
   HennLogo1,
@@ -94,4 +95,5 @@ export {
   lowResMapImages,
   blenderTable,
   blenderLamp,
+  blenderGear,
 };

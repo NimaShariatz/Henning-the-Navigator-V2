@@ -1,22 +1,18 @@
 import { useGLTF, useHelper } from '@react-three/drei';
 import * as THREE from 'three';
 import { useRef } from 'react';
-import { Stalingrad, blenderTable, blenderLamp } from '../../constants';
+import {
+  Stalingrad,
+  blenderTable,
+  blenderLamp,
+  blenderGear,
+} from '../../constants';
 import { useTexture } from '@react-three/drei';
-
-/*
-- bottom left
-- shift, mouse, and scroll icons
-- Settings [scale and lighting]
-- bottom right
-- Waypoints, Targets, message, frontline. left and right chevrons switch.
-click opens a tooltip with options
-- Colors: blue, red, grey [neutral]
-*/
 
 function Map() {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
+  const gear = useGLTF(blenderGear);
   const mapTexture = useTexture(Stalingrad);
 
   const pointLightHelper = useRef<THREE.PointLight>(null!);
@@ -28,11 +24,12 @@ function Map() {
   return (
     <group position={[0, -0.8, -0.3]}>
       <primitive object={table.scene} position={[0, 0, 0]} scale={0.5} />
-      <primitive object={lamp.scene} position={[0, 6.5, 0]} scale={0.3} />
+      <primitive object={lamp.scene} position={[0, 5.8, -0.4]} scale={0.25} />
+      <primitive object={gear.scene} position={[-3, 0.38, -3.5]} scale={0.25} />
 
       <spotLight
         ref={spotLightHelper}
-        intensity={80}
+        intensity={75}
         color={'#f0ead8'}
         position={[0, 7, 0]}
         penumbra={1}
@@ -45,6 +42,13 @@ function Map() {
         color={'#f5e0b2'}
         intensity={5}
         position={[0, 7, 0.7]}
+      />
+
+      <pointLight
+        decay={1}
+        color={'#edd08f'}
+        intensity={0.5}
+        position={[-3, 0.8, -3.6]}
       />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.355, 0]}>
