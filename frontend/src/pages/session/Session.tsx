@@ -46,6 +46,11 @@ function Session() {
   const [sessionData, setSessionData] =
     useState<SessionDetailedItem>(emptySessionData);
 
+  const [popupRevealer, setPopupRevealer] = useState({
+    settings: false,
+    flightInfo: false,
+  });
+
   useEffect(() => {
     if (!username || !slug) return;
     SpecificSessionData(username, slug).then(setSessionData);
@@ -60,6 +65,10 @@ function Session() {
     controls.object.position.copy(DEFAULT_CAMERA_POSITION);
     controls.target.copy(DEFAULT_TARGET);
     controls.update();
+  };
+
+  const revealSettingsSetter = () => {
+    setPopupRevealer((prev) => ({ ...prev, settings: !prev.settings }));
   };
 
   return (
@@ -87,12 +96,22 @@ function Session() {
           />
           <color args={['#000000']} attach="background" />
 
-          <Map />
+          <Map
+            revealSettingsSetter={() =>
+              setPopupRevealer((prev) => ({
+                ...prev,
+                settings: !prev.settings,
+              }))
+            }
+          />
           {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
         </Canvas>
 
         <KeySelect resetCamera={resetCamera} />
-        <Settings />
+        <Settings
+          revealSettings={popupRevealer.settings}
+          revealSettingsSetter={revealSettingsSetter}
+        />
         {/* 
         {import.meta.env.DEV && perf && (
           <div className={styles.perfOverlay}>

@@ -4,7 +4,11 @@ import { useRef } from 'react';
 import { Stalingrad, blenderTable, blenderLamp } from '../../constants';
 import Gear from './tableObjects/Gear';
 
-function Map() {
+interface MapProps {
+  revealSettingsSetter: () => void;
+}
+
+function Map({ revealSettingsSetter }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
   const mapTexture = useTexture(Stalingrad);
@@ -41,7 +45,7 @@ function Map() {
         <meshStandardMaterial map={mapTexture} toneMapped={false} />
       </mesh>
 
-      <Gear />
+      <Gear revealSettingsSetter={revealSettingsSetter} />
     </group>
   );
 }

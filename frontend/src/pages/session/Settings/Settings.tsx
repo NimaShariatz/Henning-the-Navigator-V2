@@ -1,9 +1,21 @@
 import styles from './Settings.module.css';
 
-function Settings() {
+interface SettingsProps {
+  revealSettings: boolean;
+  revealSettingsSetter: () => void;
+}
+
+function Settings({ revealSettings, revealSettingsSetter }: SettingsProps) {
+  console.log(revealSettings);
+
   return (
     <>
-      <p className={styles.tempo}></p>
+      {revealSettings && (
+        <div
+          className={styles.settingsContainer}
+          onClick={() => revealSettingsSetter()}
+        ></div>
+      )}
     </>
   );
 }

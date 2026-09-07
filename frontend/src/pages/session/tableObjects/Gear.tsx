@@ -3,20 +3,24 @@ import { blenderGear } from '../../../constants';
 //import * as THREE from 'three';
 //import { useRef } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
-//import type { ThreeEvent } from '@react-three/fiber'
+import type { ThreeEvent } from '@react-three/fiber';
 
-/*
+interface GearProps {
+  revealSettingsSetter: () => void;
+}
 
-          onClick={(e: ThreeEvent<PointerEvent>) => {
-            revealSettingsSetter()  
-          }}
-*/
-
-function Gear() {
+function Gear({ revealSettingsSetter }: GearProps) {
   const gear = useGLTF(blenderGear);
   return (
     <group position={[-3.5, 0.42, -4]}>
-      <primitive object={gear.scene} scale={0.3} />
+      <primitive
+        object={gear.scene}
+        scale={0.3}
+        onClick={(e: ThreeEvent<PointerEvent>) => {
+          revealSettingsSetter();
+          e.stopPropagation();
+        }}
+      />
       <pointLight
         decay={1}
         color={'#edd08f'}
