@@ -8,11 +8,11 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { Canvas } from '@react-three/fiber';
 import Map from './Map';
 import Menu from '../../components/menu/Menu';
-import MapSettings from '../../components/mapComponents/MapSettings';
 import KeySelect from '../../components/mapComponents/KeySelect';
 import { useRef } from 'react';
 import * as THREE from 'three';
-import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
+import Settings from './Settings/Settings';
+//import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 
 export interface PerfStats {
   fps: number;
@@ -39,7 +39,7 @@ const DEFAULT_CAMERA_POSITION = new THREE.Vector3(0, 2, 4);
 const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 
 function Session() {
-  const [perf, setPerf] = useState<PerfStats | null>(null);
+  //const [perf, setPerf] = useState<PerfStats | null>(null);
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
@@ -88,17 +88,19 @@ function Session() {
           <color args={['#000000']} attach="background" />
 
           <Map />
-          {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
+          {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
         </Canvas>
 
         <KeySelect resetCamera={resetCamera} />
-        <MapSettings />
+        <Settings />
+        {/* 
         {import.meta.env.DEV && perf && (
           <div className={styles.perfOverlay}>
             {perf.fps} fps · {perf.frameMs.toFixed(2)} ms · calls {perf.calls} ·
             tris {perf.triangles} · geo {perf.geometries} · tex {perf.textures}
           </div>
         )}
+        */}
       </div>
     </>
   );

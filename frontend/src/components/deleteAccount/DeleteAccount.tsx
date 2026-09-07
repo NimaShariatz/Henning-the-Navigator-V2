@@ -48,58 +48,57 @@ function DeleteProfile({
 
   return (
     <>
-      <div
-        style={{ display: errorClicked ? 'block' : 'none' }}
-        className={styles.deleteContainer}
-      >
-        <div
-          className={styles.outsideContainer}
-          onClick={() => ErrorClicked_handler(false)}
-        >
+      {errorClicked && (
+        <div className={styles.deleteContainer}>
           <div
-            className={styles.formContainer}
-            onClick={(e) => e.stopPropagation()}
+            className={styles.outsideContainer}
+            onClick={() => ErrorClicked_handler(false)}
           >
-            <h4>Delete Account</h4>
-            {!deleteFlags.Check1 && (
-              <>
-                <p>
-                  Are you sure you want to delete your account?{' '}
-                  <b>All created sessions will also be deleted.</b>
-                </p>
-                <div className={styles.optionsRow}>
-                  <button onClick={resetDeleteFlags}>No</button>
-                  <button onClick={() => handle_DeleteFlags('Check1')}>
-                    Yes
-                  </button>
-                </div>
-              </>
-            )}
-            {deleteFlags.Check1 && !deleteFlags.Check2 && (
-              <>
-                <p>Are you really really sure?</p>
-                <div className={styles.optionsRow}>
-                  <button onClick={resetDeleteFlags}>No</button>
-                  <button onClick={() => handle_DeleteFlags('Check2')}>
-                    Yes I'm sure
-                  </button>
-                </div>
-              </>
-            )}
-            {deleteFlags.Check2 && !deleteFlags.Check3 && (
-              <>
-                <p>Just checking that wasn't a muscle spasm.</p>
-                <div className={styles.optionsRow}>
-                  <button onClick={resetDeleteFlags}>No</button>
-                  <button onClick={() => handle_DeleteFlags('Check3')}>
-                    It's not a muscle spasm
-                  </button>
-                </div>
-              </>
-            )}
+            <div
+              className={styles.formContainer}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h4>Delete Account</h4>
+              {!deleteFlags.Check1 && (
+                <>
+                  <p>
+                    Are you sure you want to delete your account?{' '}
+                    <b>All created sessions will also be deleted.</b>
+                  </p>
+                  <div className={styles.optionsRow}>
+                    <button onClick={resetDeleteFlags}>No</button>
+                    <button onClick={() => handle_DeleteFlags('Check1')}>
+                      Yes
+                    </button>
+                  </div>
+                </>
+              )}
+              {deleteFlags.Check1 && !deleteFlags.Check2 && (
+                <>
+                  <p>Are you really really sure?</p>
+                  <div className={styles.optionsRow}>
+                    <button onClick={resetDeleteFlags}>No</button>
+                    <button onClick={() => handle_DeleteFlags('Check2')}>
+                      Yes I'm sure
+                    </button>
+                  </div>
+                </>
+              )}
+              {deleteFlags.Check2 && !deleteFlags.Check3 && (
+                <>
+                  <p>Just checking that wasn't a muscle spasm.</p>
+                  <div className={styles.optionsRow}>
+                    <button onClick={resetDeleteFlags}>No</button>
+                    <button onClick={() => handle_DeleteFlags('Check3')}>
+                      It's not a muscle spasm
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
