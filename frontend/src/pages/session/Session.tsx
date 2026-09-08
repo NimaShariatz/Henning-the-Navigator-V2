@@ -51,6 +51,11 @@ function Session() {
     flightInfo: false,
   });
 
+  const mapLightObjectValues: Record<string, number> = {
+    Spotlight: 60,
+    Pointlight: 6,
+  };
+
   useEffect(() => {
     if (!username || !slug) return;
     SpecificSessionData(username, slug).then(setSessionData);

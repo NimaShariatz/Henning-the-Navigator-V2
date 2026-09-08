@@ -4,6 +4,7 @@ import { blenderGear } from '../../../constants';
 //import { useRef } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
 import type { ThreeEvent } from '@react-three/fiber';
+import { useState } from 'react';
 
 interface GearProps {
   revealSettingsSetter: () => void;
@@ -11,6 +12,8 @@ interface GearProps {
 
 function Gear({ revealSettingsSetter }: GearProps) {
   const gear = useGLTF(blenderGear);
+  const [revealHTML, setRevealHTML] = useState(false);
+
   return (
     <group position={[-3.5, 0.42, -4]}>
       <primitive
@@ -20,6 +23,16 @@ function Gear({ revealSettingsSetter }: GearProps) {
           revealSettingsSetter();
           e.stopPropagation();
         }}
+        onPointerEnter={(e: ThreeEvent<PointerEvent>) => {
+          document.body.style.cursor = 'pointer';
+          setRevealHTML(true);
+          e.stopPropagation();
+        }}
+        onPointerLeave={(e: ThreeEvent<PointerEvent>) => {
+          document.body.style.cursor = 'default';
+          setRevealHTML(false);
+          e.stopPropagation();
+        }}
       />
       <pointLight
         decay={1}
@@ -27,9 +40,15 @@ function Gear({ revealSettingsSetter }: GearProps) {
         intensity={0.5}
         position={[0, 0.5, 0]}
       />
-      <Html wrapperClass={styles.tableObjectHTML} center position={[0, 0.6, 0]}>
-        <p>Settings</p>
-      </Html>
+      {revealHTML && (
+        <Html
+          wrapperClass={styles.tableObjectHTML}
+          center
+          position={[0, 0.5, 0]}
+        >
+          <p>Settings</p>
+        </Html>
+      )}
     </group>
   );
 }

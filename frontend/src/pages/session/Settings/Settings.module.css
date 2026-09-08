@@ -1,9 +1,103 @@
 .settingsContainer {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
-  background-color: red;
-  z-index: 1000;
+  z-index: var(--settings_index);
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--darkBG_2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: auto;
+}
+
+.innerContainer {
+  width: 700px;
+  color: var(--logo_white);
+  background: var(--darkBG_1);
+  box-shadow: var(--boxshadow_1);
+  border-radius: 10px;
+  padding-block: 2rem;
+  padding-inline: 3rem;
+  border: 3px solid var(--logo_yellow);
+  backdrop-filter: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.settingsOption {
+  margin-block: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+.leftIncrement,
+.rightIncrement {
+  width: 2rem;
+  height: 2rem;
+  margin-inline: 0.4rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transform: rotate(180deg);
+  padding: 0.15rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: transparent;
+}
+.rightIncrement {
+  transform: rotate(0);
+}
+.leftIncrement:hover,
+.rightIncrement:hover {
+  background-color: var(--darkBG_1);
+}
+.leftIncrement svg,
+.rightIncrement svg {
+  fill: var(--logo_yellow);
+}
+.leftIncrement:active svg,
+.rightIncrement:active svg {
+  fill: var(--active_color);
+}
+.download {
+  background-color: var(--logo_yellow);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-inline: 0.7rem;
+}
+.download svg {
+  fill: var(--text_color);
+  margin-left: 0.4rem;
+}
+.close {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+}
+.close button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  cursor: pointer;
+}
+.close button svg path {
+  fill: var(--logo_yellow);
+}
+.close button:hover svg path {
+  fill: var(--text_color_white);
+}
+
+@media (max-width: 720px) {
+  .innerContainer {
+    width: 90%;
+    padding-inline: 1rem;
+    padding-block: 2rem;
+  }
 }

@@ -55,10 +55,10 @@ function DeleteProfile({
             onClick={() => ErrorClicked_handler(false)}
           >
             <div
-              className={styles.formContainer}
+              className={styles.innerContainer}
               onClick={(e) => e.stopPropagation()}
             >
-              <h4>Delete Account</h4>
+              <h1>Delete Account</h1>
               {!deleteFlags.Check1 && (
                 <>
                   <p>
