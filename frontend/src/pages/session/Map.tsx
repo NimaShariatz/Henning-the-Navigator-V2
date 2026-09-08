@@ -6,9 +6,10 @@ import Gear from './tableObjects/Gear';
 
 interface MapProps {
   revealSettingsSetter: () => void;
+  mapLightObjectValues: Record<string, number>;
 }
 
-function Map({ revealSettingsSetter }: MapProps) {
+function Map({ revealSettingsSetter, mapLightObjectValues }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
   const mapTexture = useTexture(Stalingrad);
@@ -19,13 +20,13 @@ function Map({ revealSettingsSetter }: MapProps) {
   useHelper(spotLightHelper, THREE.SpotLightHelper, 'hotpink');
 
   return (
-    <group position={[0, -0.8, -0.3]}>
+    <group position={[0, -1, -0.3]}>
       <primitive object={table.scene} position={[0, 0, 0]} scale={0.6} />
       <primitive object={lamp.scene} position={[0, 5.8, -0.4]} scale={0.3} />
 
       <spotLight
         ref={spotLightHelper}
-        intensity={60}
+        intensity={mapLightObjectValues.Spotlight}
         color={'#f0ead8'}
         position={[0, 7, 0]}
         penumbra={1}
@@ -34,9 +35,9 @@ function Map({ revealSettingsSetter }: MapProps) {
 
       <pointLight
         ref={pointLightHelper}
+        intensity={mapLightObjectValues.Pointlight}
         decay={0.3}
         color={'#f5e0b2'}
-        intensity={6}
         position={[0, 7, 0.7]}
       />
 

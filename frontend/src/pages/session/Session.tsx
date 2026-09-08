@@ -51,17 +51,18 @@ function Session() {
     flightInfo: false,
   });
 
-  const mapLightObjectValues: Record<string, number> = {
+  const [mapLightObjectValues, setMapLightObjectValues] = useState<
+    Record<string, number>
+  >({
     Spotlight: 60,
     Pointlight: 6,
-  };
+    gearScale: 1,
+  });
 
   useEffect(() => {
     if (!username || !slug) return;
     SpecificSessionData(username, slug).then(setSessionData);
   }, [username, slug]);
-
-  console.log(sessionData);
 
   const resetCamera = () => {
     const controls = controlsRef.current;
@@ -108,6 +109,7 @@ function Session() {
                 settings: !prev.settings,
               }))
             }
+            mapLightObjectValues={mapLightObjectValues}
           />
           {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
         </Canvas>
@@ -116,6 +118,8 @@ function Session() {
         <Settings
           revealSettings={popupRevealer.settings}
           revealSettingsSetter={revealSettingsSetter}
+          mapLightObjectValues={mapLightObjectValues}
+          setMapLightObjectValues={setMapLightObjectValues}
         />
         {/* 
         {import.meta.env.DEV && perf && (

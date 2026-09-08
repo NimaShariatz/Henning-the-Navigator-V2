@@ -1,11 +1,46 @@
 import styles from './Settings.module.css';
+import { useState } from 'react';
 
 interface SettingsProps {
   revealSettings: boolean;
   revealSettingsSetter: () => void;
+  mapLightObjectValues: Record<string, number>;
+  setMapLightObjectValues: React.Dispatch<
+    React.SetStateAction<Record<string, number>>
+  >;
 }
 
-function Settings({ revealSettings, revealSettingsSetter }: SettingsProps) {
+// per-brightness-level step for each light, chosen so level * step = default intensity at level 3
+
+function Settings({
+  revealSettings,
+  revealSettingsSetter,
+  mapLightObjectValues,
+  setMapLightObjectValues,
+}: SettingsProps) {
+  const [brightnessValue, setBrightnessValue] = useState(5);
+
+  const adjustBrightness = (input: number) => {
+    if (
+      (brightnessValue === 10 && input === 1) ||
+      (brightnessValue === 1 && input === -1)
+    ) {
+      return;
+    }
+
+    setMapLightObjectValues((prev) => ({
+      ...prev,
+      Spotlight: prev.Spotlight + input * 2,
+      Pointlight: prev.Pointlight + input / 4,
+    }));
+    setBrightnessValue(brightnessValue + input);
+    console.log(mapLightObjectValues);
+
+    //const updatedLight: Record<string, number> = {"Spotlight": (mapLightObjectValues.Spotlight + (input * 2)), "Pointlight": (mapLightObjectValues.Pointlight + (input/4))}
+    //setMapLightObjectValues(updatedLight)
+    //setBrightnessValue(brightnessValue + input)
+  };
+
   return (
     <>
       {revealSettings && (
@@ -36,7 +71,10 @@ function Settings({ revealSettings, revealSettingsSetter }: SettingsProps) {
             <h1>Settings</h1>
             <div className={styles.settingsOption}>
               <h5>Brightness:</h5>
-              <button className={styles.leftIncrement}>
+              <button
+                className={styles.leftIncrement}
+                onClick={() => adjustBrightness(-1)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"
@@ -50,9 +88,12 @@ function Settings({ revealSettings, revealSettingsSetter }: SettingsProps) {
                 </svg>
               </button>
 
-              <h6>3</h6>
+              <h6>{brightnessValue}</h6>
 
-              <button className={styles.rightIncrement}>
+              <button
+                className={styles.rightIncrement}
+                onClick={() => adjustBrightness(1)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"
