@@ -3,13 +3,19 @@ import * as THREE from 'three';
 import { useRef } from 'react';
 import { Stalingrad, blenderTable, blenderLamp } from '../../constants';
 import Gear from './tableObjects/Gear';
+import Clipboard from './tableObjects/Clipboard';
 
 interface MapProps {
   revealSettingsSetter: () => void;
   mapLightObjectValues: Record<string, number>;
+  revealFlightInfoSetter: () => void;
 }
 
-function Map({ revealSettingsSetter, mapLightObjectValues }: MapProps) {
+function Map({
+  revealSettingsSetter,
+  mapLightObjectValues,
+  revealFlightInfoSetter,
+}: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
   const mapTexture = useTexture(Stalingrad);
@@ -21,8 +27,8 @@ function Map({ revealSettingsSetter, mapLightObjectValues }: MapProps) {
 
   return (
     <group position={[0, -1, -0.3]}>
-      <primitive object={table.scene} position={[0, 0, 0]} scale={0.6} />
-      <primitive object={lamp.scene} position={[0, 5.8, -0.4]} scale={0.3} />
+      <primitive object={table.scene} position={[0, 0, 0]} scale={0.7} />
+      <primitive object={lamp.scene} position={[0, 5.8, -0.4]} scale={0.35} />
 
       <spotLight
         ref={spotLightHelper}
@@ -37,16 +43,17 @@ function Map({ revealSettingsSetter, mapLightObjectValues }: MapProps) {
         ref={pointLightHelper}
         intensity={mapLightObjectValues.Pointlight}
         decay={0.3}
-        color={'#f5e0b2'}
+        color={'#faeaca'}
         position={[0, 7, 0.7]}
       />
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.41, 0]}>
-        <planeGeometry args={[9, 5.77479]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.485, 0]}>
+        <planeGeometry args={[10.5, 6.73725]} />
         <meshStandardMaterial map={mapTexture} toneMapped={false} />
       </mesh>
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
+      <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />
     </group>
   );
 }

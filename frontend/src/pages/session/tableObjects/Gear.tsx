@@ -1,4 +1,4 @@
-import styles from './Gear.module.css';
+import styles from './tableObjects.module.css';
 import { blenderGear } from '../../../constants';
 //import * as THREE from 'three';
 //import { useRef } from 'react';
@@ -15,7 +15,7 @@ function Gear({ revealSettingsSetter }: GearProps) {
   const [revealHTML, setRevealHTML] = useState(false);
 
   return (
-    <group position={[-3.5, 0.42, -4]}>
+    <group position={[-4.3, 0.47, -5]}>
       <primitive
         object={gear.scene}
         scale={0.3}

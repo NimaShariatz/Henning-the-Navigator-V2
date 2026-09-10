@@ -11,7 +11,8 @@ import Menu from '../../components/menu/Menu';
 import KeySelect from '../../components/mapComponents/KeySelect';
 import { useRef } from 'react';
 import * as THREE from 'three';
-import Settings from './Settings/Settings';
+import Settings from './settings/Settings';
+import FlightInfo from './flightInfo/FlightInfo';
 //import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 
 export interface PerfStats {
@@ -54,8 +55,8 @@ function Session() {
   const [mapLightObjectValues, setMapLightObjectValues] = useState<
     Record<string, number>
   >({
-    Spotlight: 60,
-    Pointlight: 6,
+    Spotlight: 25,
+    Pointlight: 8.2,
     gearScale: 1,
   });
 
@@ -75,6 +76,9 @@ function Session() {
 
   const revealSettingsSetter = () => {
     setPopupRevealer((prev) => ({ ...prev, settings: !prev.settings }));
+  };
+  const revealFlightInfoSetter = () => {
+    setPopupRevealer((prev) => ({ ...prev, flightInfo: !prev.flightInfo }));
   };
 
   return (
@@ -103,13 +107,9 @@ function Session() {
           <color args={['#000000']} attach="background" />
 
           <Map
-            revealSettingsSetter={() =>
-              setPopupRevealer((prev) => ({
-                ...prev,
-                settings: !prev.settings,
-              }))
-            }
+            revealSettingsSetter={revealSettingsSetter}
             mapLightObjectValues={mapLightObjectValues}
+            revealFlightInfoSetter={revealFlightInfoSetter}
           />
           {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
         </Canvas>
@@ -120,6 +120,10 @@ function Session() {
           revealSettingsSetter={revealSettingsSetter}
           mapLightObjectValues={mapLightObjectValues}
           setMapLightObjectValues={setMapLightObjectValues}
+        />
+        <FlightInfo
+          revealFlightInfo={popupRevealer.flightInfo}
+          revealFlightInfoSetter={revealFlightInfoSetter}
         />
         {/* 
         {import.meta.env.DEV && perf && (

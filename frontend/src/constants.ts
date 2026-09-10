@@ -33,7 +33,7 @@ import Novosokolniki from './assets/img/maps/Novosokolniki.jpg';
 import Odessa from './assets/img/maps/Odessa.jpg';
 import Prokhorovka from './assets/img/maps/Prokhorovka.jpg';
 import Rheinland from './assets/img/maps/Rheinland.jpg';
-import Stalingrad from './assets/img/maps/Stalingrad.jpg';
+import Stalingrad from './assets/img/maps/StalingradSaturate.png';
 import Vluki from './assets/img/maps/Vluki.jpg';
 import Western_front from './assets/img/maps/Western_front.jpg';
 
@@ -55,6 +55,7 @@ const lowResMapImages: Record<string, string> = {
 import blenderTable from './assets/blender/threejsTable.glb';
 import blenderLamp from './assets/blender/threejsLampBasic.glb';
 import blenderGear from './assets/blender/threejsSettings2.glb';
+import blenderClipboard from './assets/blender/threejsClipboard.glb';
 
 export {
   HennLogo1,
@@ -96,4 +97,5 @@ export {
   blenderTable,
   blenderLamp,
   blenderGear,
+  blenderClipboard,
 };
