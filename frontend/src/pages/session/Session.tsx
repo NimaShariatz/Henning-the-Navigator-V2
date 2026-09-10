@@ -110,6 +110,8 @@ function Session() {
             revealSettingsSetter={revealSettingsSetter}
             mapLightObjectValues={mapLightObjectValues}
             revealFlightInfoSetter={revealFlightInfoSetter}
+            sessionMap={sessionData.map_selected}
+            sessionTitle={sessionData.title}
           />
           {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
         </Canvas>
@@ -124,6 +126,7 @@ function Session() {
         <FlightInfo
           revealFlightInfo={popupRevealer.flightInfo}
           revealFlightInfoSetter={revealFlightInfoSetter}
+          sessionData={sessionData.sessionInfo}
         />
         {/* 
         {import.meta.env.DEV && perf && (

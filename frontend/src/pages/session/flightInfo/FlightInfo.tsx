@@ -3,13 +3,14 @@ import styles from './FlightInfo.module.css';
 interface FlightInfoProps {
   revealFlightInfo: boolean;
   revealFlightInfoSetter: () => void;
+  sessionData: string;
 }
 
 function FlightInfo({
   revealFlightInfo,
   revealFlightInfoSetter,
+  sessionData,
 }: FlightInfoProps) {
-  console.log(revealFlightInfo);
   return (
     <>
       {revealFlightInfo && (
@@ -36,6 +37,8 @@ function FlightInfo({
                 </svg>
               </button>
             </div>
+            <h1>Flight Info</h1>
+            <p className={styles.flightInfo}>{sessionData}</p>
           </div>
         </div>
       )}

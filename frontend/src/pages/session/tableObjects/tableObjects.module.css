@@ -2,13 +2,16 @@
   background-color: var(--darkBG_1);
   outline: 3px solid var(--logo_yellow);
   font-weight: 800;
-  pointer-events: none;
   font-size: 18px;
   color: var(--text_color_white);
   padding-block: 0.5rem;
   padding-inline: 0.8rem;
   border-radius: 6px;
-  user-select: none;
   white-space: nowrap; /* no new lines*/
   display: inline-block; /* no new lines*/
+}
+.tableObjectHTML {
+  /* placing it in .tableObjectHTML > div p wont really prevent the html popup from interacting with the cursor...(getting in the way) */
+  pointer-events: none;
+  user-select: none;
 }

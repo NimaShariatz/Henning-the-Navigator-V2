@@ -3,6 +3,7 @@ import { useGLTF, Html } from '@react-three/drei';
 import { blenderClipboard } from '../../../constants';
 import { useState } from 'react';
 import type { ThreeEvent } from '@react-three/fiber';
+import * as THREE from 'three';
 
 interface ClipboardProps {
   revealFlightInfoSetter: () => void;
@@ -13,10 +14,10 @@ function Clipboard({ revealFlightInfoSetter }: ClipboardProps) {
   const [revealHTML, setRevealHTML] = useState(false);
   return (
     <>
-      <group position={[4.8, 0.48, -5.2]}>
+      <group position={[4.8, 0.48, -5.4]}>
         <primitive
           object={clipboard.scene}
-          rotation={[0, 1, 0]}
+          rotation={[0, THREE.MathUtils.degToRad(60), 0]}
           scale={0.9}
           onClick={(e: ThreeEvent<PointerEvent>) => {
             revealFlightInfoSetter();

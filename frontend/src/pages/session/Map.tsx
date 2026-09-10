@@ -1,20 +1,26 @@
-import { useGLTF, useHelper, useTexture } from '@react-three/drei';
+import { useGLTF, useHelper, useTexture, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import { useRef } from 'react';
 import { Stalingrad, blenderTable, blenderLamp } from '../../constants';
 import Gear from './tableObjects/Gear';
 import Clipboard from './tableObjects/Clipboard';
+import fontPath900 from '../../fonts/saira/saira-v21-latin-900.ttf';
+import fontPath600 from '../../fonts/saira/saira-v21-latin-600.ttf';
 
 interface MapProps {
   revealSettingsSetter: () => void;
   mapLightObjectValues: Record<string, number>;
   revealFlightInfoSetter: () => void;
+  sessionMap: string;
+  sessionTitle: string;
 }
 
 function Map({
   revealSettingsSetter,
   mapLightObjectValues,
   revealFlightInfoSetter,
+  sessionMap,
+  sessionTitle,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -29,6 +35,24 @@ function Map({
     <group position={[0, -1, -0.3]}>
       <primitive object={table.scene} position={[0, 0, 0]} scale={0.7} />
       <primitive object={lamp.scene} position={[0, 5.8, -0.4]} scale={0.35} />
+      <Text
+        position={[-0, 0.5, -5.3]}
+        rotation={[THREE.MathUtils.degToRad(-90), 0, 0]}
+        font={fontPath900}
+        color="white"
+        fontSize={1}
+      >
+        {sessionMap}
+      </Text>
+      <Text
+        position={[-0, 0.5, -4.6]}
+        rotation={[THREE.MathUtils.degToRad(-90), 0, 0]}
+        font={fontPath600}
+        color="white"
+        fontSize={0.3}
+      >
+        {sessionTitle}
+      </Text>
 
       <spotLight
         ref={spotLightHelper}
