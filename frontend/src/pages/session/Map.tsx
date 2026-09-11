@@ -6,6 +6,7 @@ import Gear from './tableObjects/Gear';
 import Clipboard from './tableObjects/Clipboard';
 import fontPath900 from '../../fonts/saira/saira-v21-latin-900.ttf';
 import fontPath600 from '../../fonts/saira/saira-v21-latin-600.ttf';
+import { useThree } from '@react-three/fiber';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -24,7 +25,10 @@ function Map({
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
-  const mapTexture = useTexture(Stalingrad);
+  const { gl } = useThree();
+  const mapTexture = useTexture(Stalingrad, (texture) => {
+    (texture as THREE.Texture).anisotropy = gl.capabilities.getMaxAnisotropy();
+  });
 
   const pointLightHelper = useRef<THREE.PointLight>(null!);
   const spotLightHelper = useRef<THREE.PointLight>(null!);
@@ -33,10 +37,10 @@ function Map({
 
   return (
     <group position={[0, -1, -0.3]}>
-      <primitive object={table.scene} position={[0, 0, 0]} scale={0.7} />
-      <primitive object={lamp.scene} position={[0, 5.8, -0.4]} scale={0.35} />
+      <primitive object={table.scene} position={[0, 0, 0]} scale={0.85} />
+      <primitive object={lamp.scene} position={[0, 5.8, -0.4]} scale={0.45} />
       <Text
-        position={[-0, 0.5, -5.3]}
+        position={[-0, 0.58, -6]}
         rotation={[THREE.MathUtils.degToRad(-90), 0, 0]}
         font={fontPath900}
         color="white"
@@ -45,11 +49,11 @@ function Map({
         {sessionMap}
       </Text>
       <Text
-        position={[-0, 0.5, -4.6]}
+        position={[-0, 0.58, -5]}
         rotation={[THREE.MathUtils.degToRad(-90), 0, 0]}
         font={fontPath600}
         color="white"
-        fontSize={0.3}
+        fontSize={0.4}
       >
         {sessionTitle}
       </Text>
@@ -58,7 +62,7 @@ function Map({
         ref={spotLightHelper}
         intensity={mapLightObjectValues.Spotlight}
         color={'#f0ead8'}
-        position={[0, 7, 0]}
+        position={[0, 7.5, 0.3]}
         penumbra={1}
         angle={0.7}
       ></spotLight>
@@ -68,11 +72,11 @@ function Map({
         intensity={mapLightObjectValues.Pointlight}
         decay={0.3}
         color={'#faeaca'}
-        position={[0, 7, 0.7]}
+        position={[0, 7.7, 1.3]}
       />
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.485, 0]}>
-        <planeGeometry args={[10.5, 6.73725]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.58, 0]}>
+        <planeGeometry args={[13, 8.34136]} />
         <meshStandardMaterial map={mapTexture} toneMapped={false} />
       </mesh>
 

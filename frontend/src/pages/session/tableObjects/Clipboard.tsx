@@ -14,11 +14,11 @@ function Clipboard({ revealFlightInfoSetter }: ClipboardProps) {
   const [revealHTML, setRevealHTML] = useState(false);
   return (
     <>
-      <group position={[4.8, 0.48, -5.4]}>
+      <group position={[5.8, 0.58, -6.8]}>
         <primitive
           object={clipboard.scene}
           rotation={[0, THREE.MathUtils.degToRad(60), 0]}
-          scale={0.9}
+          scale={1.3}
           onClick={(e: ThreeEvent<PointerEvent>) => {
             revealFlightInfoSetter();
             e.stopPropagation();

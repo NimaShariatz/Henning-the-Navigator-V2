@@ -15,10 +15,10 @@ function Gear({ revealSettingsSetter }: GearProps) {
   const [revealHTML, setRevealHTML] = useState(false);
 
   return (
-    <group position={[-4.3, 0.47, -5]}>
+    <group position={[-5.5, 0.57, -6.2]}>
       <primitive
         object={gear.scene}
-        scale={0.3}
+        scale={0.5}
         onClick={(e: ThreeEvent<PointerEvent>) => {
           revealSettingsSetter();
           e.stopPropagation();
