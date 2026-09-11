@@ -14,7 +14,7 @@ function Clipboard({ revealFlightInfoSetter }: ClipboardProps) {
   const [revealHTML, setRevealHTML] = useState(false);
   return (
     <>
-      <group position={[5.8, 0.58, -6.8]}>
+      <group position={[6.2, 0.63, -7.1]}>
         <primitive
           object={clipboard.scene}
           rotation={[0, THREE.MathUtils.degToRad(60), 0]}

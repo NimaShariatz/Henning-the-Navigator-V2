@@ -51,6 +51,20 @@ const lowResMapImages: Record<string, string> = {
   Vluki: lowResVluki,
   'Western Front': lowResWestern_front,
 };
+const MapImages: Record<string, string> = {
+  Arras: Arras,
+  Kuban: Kuban,
+  Lapino: Lapino,
+  Moscow: Moscow,
+  Normandy: Normandy,
+  Novosokolniki: Novosokolniki,
+  Odessa: Odessa,
+  Prokhorovka: Prokhorovka,
+  Rheinland: Rheinland,
+  Stalingrad: Stalingrad,
+  Vluki: Vluki,
+  'Western Front': Western_front,
+};
 
 import blenderTable from './assets/blender/threejsTable.glb';
 import blenderLamp from './assets/blender/threejsLampBasic.glb';
@@ -94,6 +108,7 @@ export {
   lowResVluki,
   lowResWestern_front,
   lowResMapImages,
+  MapImages,
   blenderTable,
   blenderLamp,
   blenderGear,

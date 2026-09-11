@@ -56,7 +56,7 @@ function Session() {
     Record<string, number>
   >({
     Spotlight: 25,
-    Pointlight: 8.2,
+    Pointlight: 8,
     gearScale: 1,
   });
 
