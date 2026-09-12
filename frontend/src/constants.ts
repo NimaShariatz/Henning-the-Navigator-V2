@@ -24,18 +24,18 @@ import lowResStalingrad from './assets/img/lowResMaps/Stalingrad.jpg';
 import lowResVluki from './assets/img/lowResMaps/Vluki.jpg';
 import lowResWestern_front from './assets/img/lowResMaps/Western_front.jpg';
 
-import Arras from './assets/img/maps/Arras.jpg';
-import Kuban from './assets/img/maps/Kuban.jpg';
-import Lapino from './assets/img/maps/Lapino.jpg';
-import Moscow from './assets/img/maps/Moscow.jpg';
-import Normandy from './assets/img/maps/Normandy.jpg';
-import Novosokolniki from './assets/img/maps/Novosokolniki.jpg';
-import Odessa from './assets/img/maps/Odessa.jpg';
-import Prokhorovka from './assets/img/maps/Prokhorovka.jpg';
-import Rheinland from './assets/img/maps/Rheinland.jpg';
-import Stalingrad from './assets/img/maps/StalingradSaturate.png';
-import Vluki from './assets/img/maps/Vluki.jpg';
-import Western_front from './assets/img/maps/Western_front.jpg';
+import Arras from './assets/img/maps/ArrasSaturate50.jpg';
+import Kuban from './assets/img/maps/KubanSaturate50.png';
+import Lapino from './assets/img/maps/LapinoSaturate50.jpg';
+import Moscow from './assets/img/maps/MoscowSaturate50.jpg';
+import Normandy from './assets/img/maps/NormandySaturate50.jpg';
+import Novosokolniki from './assets/img/maps/NovosokolnikiSaturate50.jpg';
+import Odessa from './assets/img/maps/OdessaSaturate50.jpg';
+import Prokhorovka from './assets/img/maps/ProkhorovkaSaturate50.jpg';
+import Rheinland from './assets/img/maps/RheinlandSaturate50.jpg';
+import Stalingrad from './assets/img/maps/StalingradSaturate50.jpg';
+import Vluki from './assets/img/maps/VlukiSaturate50.jpg';
+import Western_front from './assets/img/maps/Western_frontSaturate50.jpg';
 
 const lowResMapImages: Record<string, string> = {
   Arras: lowResArras,
@@ -64,6 +64,21 @@ const MapImages: Record<string, string> = {
   Stalingrad: Stalingrad,
   Vluki: Vluki,
   'Western Front': Western_front,
+};
+const MapImagesSizes: Record<string, { xLenght: number; yHeight: number }> = {
+  // max sizes possible due to table size restrictions: 14.2, 12.5
+  Arras: { xLenght: 12.5, yHeight: 12.5 },
+  Kuban: { xLenght: 14.2, yHeight: 9.810617 },
+  Lapino: { xLenght: 12.493888, yHeight: 12.5 },
+  Moscow: { xLenght: 12.458947, yHeight: 12.5 },
+  Normandy: { xLenght: 11.21148, yHeight: 12.5 },
+  Novosokolniki: { xLenght: 12.506112, yHeight: 12.5 },
+  Odessa: { xLenght: 12.502014, yHeight: 12.5 },
+  Prokhorovka: { xLenght: 12.505974, yHeight: 12.5 },
+  Rheinland: { xLenght: 14.2, yHeight: 10.7068 },
+  Stalingrad: { xLenght: 14.2, yHeight: 8.983 },
+  Vluki: { xLenght: 14.2, yHeight: 8.8010779 },
+  'Western Front': { xLenght: 14.2, yHeight: 11.15126 },
 };
 
 import blenderTable from './assets/blender/threejsTable.glb';
@@ -109,6 +124,7 @@ export {
   lowResWestern_front,
   lowResMapImages,
   MapImages,
+  MapImagesSizes,
   blenderTable,
   blenderLamp,
   blenderGear,

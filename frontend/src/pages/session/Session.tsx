@@ -55,7 +55,7 @@ function Session() {
   const [mapLightObjectValues, setMapLightObjectValues] = useState<
     Record<string, number>
   >({
-    Spotlight: 25,
+    Spotlight: 4,
     Pointlight: 8,
     gearScale: 1,
   });
@@ -97,7 +97,7 @@ function Session() {
             ref={controlsRef}
             rotateSpeed={0.4}
             makeDefault
-            maxDistance={8.5}
+            maxDistance={12}
             panSpeed={1.35}
             target={DEFAULT_TARGET.toArray()}
             maxPolarAngle={1.5}

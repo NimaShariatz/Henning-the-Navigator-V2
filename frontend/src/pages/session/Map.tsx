@@ -1,7 +1,12 @@
 import { useGLTF, useHelper, useTexture, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import { useRef } from 'react';
-import { blenderTable, blenderLamp, MapImages } from '../../constants';
+import {
+  blenderTable,
+  blenderLamp,
+  MapImages,
+  MapImagesSizes,
+} from '../../constants';
 import Gear from './tableObjects/Gear';
 import Clipboard from './tableObjects/Clipboard';
 import fontPath900 from '../../fonts/saira/saira-v21-latin-900.ttf';
@@ -37,7 +42,7 @@ function Map({
   useHelper(spotLightHelper, THREE.SpotLightHelper, 'hotpink');
 
   return (
-    <group position={[0, -1, -0.3]}>
+    <group position={[0, -1, -1.5]}>
       <primitive object={table.scene} position={[0, 0, 0]} scale={0.92} />
       <primitive object={lamp.scene} position={[0, 6.2, -0.4]} scale={0.45} />
       <Text
@@ -50,7 +55,7 @@ function Map({
         {sessionMap}
       </Text>
       <Text
-        position={[-0, 0.63, -6]}
+        position={[-0, 0.63, -6.2]}
         rotation={[THREE.MathUtils.degToRad(-90), 0, 0]}
         font={fontPath600}
         color="white"
@@ -65,7 +70,7 @@ function Map({
         color={'#f0ead8'}
         position={[0, 8, 0.3]}
         penumbra={1}
-        angle={0.7}
+        angle={0.9}
       ></spotLight>
 
       <pointLight
@@ -76,8 +81,13 @@ function Map({
         position={[0, 7.9, 1.3]}
       />
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.63, 0]}>
-        <planeGeometry args={[14.2, 9.1113]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.63, 1]}>
+        <planeGeometry
+          args={[
+            MapImagesSizes[sessionMap].xLenght,
+            MapImagesSizes[sessionMap].yHeight,
+          ]}
+        />
         <meshStandardMaterial map={mapTexture} toneMapped={false} />
       </mesh>
 
