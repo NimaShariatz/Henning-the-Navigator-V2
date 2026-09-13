@@ -8,6 +8,7 @@
   align-items: center;
   gap: 1rem;
   user-select: none;
+  pointer-events: none;
 }
 
 .shift {
@@ -30,6 +31,7 @@
   opacity: 0.3;
   background-color: var(--medium_yellow);
   cursor: pointer;
+  pointer-events: all;
   outline: 3px solid transparent;
 }
 .resetButton:hover {
@@ -38,4 +40,10 @@
 }
 .resetButton:active {
   background-color: var(--active_color);
+}
+
+@media (max-width: 720px) {
+  .keySelectContainer {
+    display: none;
+  }
 }

@@ -8,11 +8,12 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { Canvas } from '@react-three/fiber';
 import Map from './Map';
 import Menu from '../../components/menu/Menu';
-import KeySelect from '../../components/mapComponents/KeySelect';
+import KeySelect from './keySelect/KeySelect';
 import { useRef } from 'react';
 import * as THREE from 'three';
 import Settings from './settings/Settings';
 import FlightInfo from './flightInfo/FlightInfo';
+import Selection from './selection/Selection';
 //import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 
 export interface PerfStats {
@@ -116,7 +117,9 @@ function Session() {
           {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
         </Canvas>
 
+        <Selection />
         <KeySelect resetCamera={resetCamera} />
+
         <Settings
           revealSettings={popupRevealer.settings}
           revealSettingsSetter={revealSettingsSetter}
@@ -128,6 +131,7 @@ function Session() {
           revealFlightInfoSetter={revealFlightInfoSetter}
           sessionData={sessionData.sessionInfo}
         />
+
         {/* 
         {import.meta.env.DEV && perf && (
           <div className={styles.perfOverlay}>
