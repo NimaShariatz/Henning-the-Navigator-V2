@@ -1,6 +1,7 @@
-import { useGLTF, useHelper, useTexture, Text } from '@react-three/drei';
+import { useGLTF, useTexture, Text } from '@react-three/drei';
 import * as THREE from 'three';
-import { useRef } from 'react';
+//import { useRef } from 'react';
+//import { useHelper } from '@react-three/drei';
 import {
   blenderTable,
   blenderLamp,
@@ -36,10 +37,10 @@ function Map({
     (texture as THREE.Texture).anisotropy = gl.capabilities.getMaxAnisotropy();
   });
 
-  const pointLightHelper = useRef<THREE.PointLight>(null!);
-  const spotLightHelper = useRef<THREE.PointLight>(null!);
-  useHelper(pointLightHelper, THREE.PointLightHelper, 0.3, 'teal');
-  useHelper(spotLightHelper, THREE.SpotLightHelper, 'hotpink');
+  //const pointLightHelper = useRef<THREE.PointLight>(null!);
+  //const spotLightHelper = useRef<THREE.PointLight>(null!);
+  //useHelper(pointLightHelper, THREE.PointLightHelper, 0.3, 'teal');
+  //useHelper(spotLightHelper, THREE.SpotLightHelper, 'hotpink');
 
   return (
     <group position={[0, -1, -1.5]}>
@@ -65,7 +66,6 @@ function Map({
       </Text>
 
       <spotLight
-        ref={spotLightHelper}
         intensity={mapLightObjectValues.Spotlight}
         color={'#f0ead8'}
         position={[0, 8, 0.3]}
@@ -74,7 +74,6 @@ function Map({
       ></spotLight>
 
       <pointLight
-        ref={pointLightHelper}
         intensity={mapLightObjectValues.Pointlight}
         decay={0.3}
         color={'#faeaca'}
