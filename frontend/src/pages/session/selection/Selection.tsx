@@ -1,9 +1,11 @@
 import styles from './Selection.module.css';
 import { useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
 
 function Selection() {
+  const [revealColorPicker, setColorPicker] = useState(false);
+  const [color, setColor] = useState('#b32aa9');
   const [changeOptions, setChangeOptions] = useState(1);
-
   const ChangeOptionsHandler = () => {
     // 1 = targets
     // 2 = waypoints
@@ -17,7 +19,29 @@ function Selection() {
 
   return (
     <div className={styles.overallContainer}>
-      <p>asd</p>
+      {!revealColorPicker && changeOptions === 1 && (
+        <div
+          className={styles.rgba}
+          onClick={() => setColorPicker(true)}
+          style={{ backgroundColor: color }}
+        ></div>
+      )}
+      {revealColorPicker && changeOptions === 1 && (
+        <div className={styles.rgbaContainer}>
+          <div className={styles.colorDefaultRow}>
+            <button onClick={() => setColor('#f62a2a')}>Red</button>
+            <button onClick={() => setColor('#1f7ce0')}>Blue</button>
+            <button onClick={() => setColor('#dcdcdc')}>Grey</button>
+          </div>
+          <HexColorPicker color={color} onChange={setColor} />
+          <button
+            className={styles.doneButton}
+            onClick={() => setColorPicker(false)}
+          >
+            Done
+          </button>
+        </div>
+      )}
       <div className={styles.selectionContainer}>
         <button className={styles.changeOptions} onClick={ChangeOptionsHandler}>
           <svg
@@ -38,7 +62,7 @@ function Selection() {
             <>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="85%"
                   height="85%"
@@ -57,7 +81,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="75%"
                   height="75%"
@@ -72,7 +96,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="75%"
                   height="75%"
@@ -83,7 +107,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="75%"
                   height="75%"
@@ -94,7 +118,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 30 30"
                 >
@@ -103,7 +127,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="75%"
                   height="75%"
@@ -121,7 +145,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="85%"
                   height="85%"
@@ -132,7 +156,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="75%"
                   height="75%"
@@ -143,7 +167,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="80%"
                   height="80%"
@@ -154,7 +178,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="87%"
                   height="87%"
@@ -168,7 +192,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="85%"
                   height="85%"
@@ -183,7 +207,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="80%"
                   height="80%"
@@ -197,7 +221,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="88%"
                   height="88%"
@@ -212,7 +236,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="73%"
                   height="73%"
@@ -223,7 +247,7 @@ function Selection() {
               </button>
               <button className={styles.targetButton}>
                 <svg
-                  fill="red"
+                  fill={color}
                   xmlns="http://www.w3.org/2000/svg"
                   width="90%"
                   height="90%"

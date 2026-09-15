@@ -11,6 +11,69 @@
   pointer-events: none;
 }
 
+.rgba {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  pointer-events: all;
+}
+
+.rgbaContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background-color: var(--darkBG_1);
+  gap: 1rem;
+  pointer-events: all;
+}
+.colorDefaultRow {
+  display: flex;
+  gap: 0.5rem;
+}
+.colorDefaultRow button {
+  padding-inline: 5px;
+  padding-block: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+  pointer-events: all;
+}
+.colorDefaultRow button:nth-child(1) {
+  background-color: var(--red_target);
+}
+.colorDefaultRow button:nth-child(2) {
+  background-color: var(--blue_target);
+}
+.colorDefaultRow button:nth-child(3) {
+  background-color: var(--grey_target);
+}
+.colorDefaultRow button:active {
+  background-color: var(--active_color);
+}
+:global(.react-colorful) {
+  /* the CSS Module interferes with the classnames for <RgbaColorPicker/>. so we add :global() to opt those selectors out of local scoping*/
+  gap: 5px;
+}
+
+:global(.react-colorful__saturation-pointer),
+:global(.react-colorful__hue-pointer) {
+  cursor: pointer;
+}
+
+.doneButton {
+  width: 100%;
+  border-radius: 5px;
+  background-color: var(--logo_yellow);
+  font-weight: 700;
+  cursor: pointer;
+  padding-block: 5px;
+}
+
 .selectionContainer {
   display: flex;
   flex-direction: column;

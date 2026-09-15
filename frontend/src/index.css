@@ -34,10 +34,9 @@
   --waypoint_navigation: #ffc90e;
   --waypoint_navigation_id_color: #ebc84cd0;
 
-  --red_target: #d22929;
-  --red_target_background: #fb7b7b4a;
-  --blue_target: #0b62bf;
-  --blue_target_background: #4272ec4c;
+  --red_target: #f62a2a;
+  --blue_target: #1f7ce0;
+  --grey_target: #dcdcdc;
 
   /* z-index and units */
   --menu_height: 60px;
