@@ -14,6 +14,7 @@ import * as THREE from 'three';
 import Settings from './settings/Settings';
 import FlightInfo from './flightInfo/FlightInfo';
 import Selection from './selection/Selection';
+import type { OptionKey, OptionSelected } from '../../helpers/optionTypes';
 //import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 
 export interface PerfStats {
@@ -42,6 +43,40 @@ const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 
 function Session() {
   //const [perf, setPerf] = useState<PerfStats | null>(null);
+
+  const [optionSelected, setOptionSelected] = useState<OptionSelected>({
+    startPoint: false,
+    navigationPoint: false,
+    targetPoint: false,
+    egressPoint: false,
+    radar: false,
+    factory: false,
+    city: false,
+    railyard: false,
+    train: false,
+    oildepot: false,
+    tank: false,
+    ship: false,
+    bridge: false,
+    truck: false,
+    defence: false,
+    artillary: false,
+    airfield: false,
+    antiair: false,
+    unknown: false,
+    comment: false,
+    frontline: false,
+  });
+  const selectOption = (option: OptionKey) => {
+    setOptionSelected((prev: OptionSelected) => {
+      // takes in one of the options as input, sets it true, and sets every other option to false
+      const next = { ...prev };
+      for (const key of Object.keys(next) as OptionKey[]) {
+        next[key] = key === option;
+      }
+      return next;
+    });
+  };
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
@@ -117,7 +152,10 @@ function Session() {
           {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
         </Canvas>
 
-        <Selection />
+        <Selection
+          optionSelected={optionSelected}
+          selectOption={selectOption}
+        />
         <KeySelect resetCamera={resetCamera} />
 
         <Settings

@@ -1,15 +1,21 @@
 import styles from './Selection.module.css';
 import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
+import type { OptionKey, OptionSelected } from '../../../helpers/optionTypes';
 
-function Selection() {
+interface selectionProps {
+  optionSelected: OptionSelected;
+  selectOption: (option: OptionKey) => void;
+}
+
+function Selection({ optionSelected, selectOption }: selectionProps) {
   const [revealColorPicker, setColorPicker] = useState(false);
-  const [color, setColor] = useState('#b32aa9');
+  const [color, setColor] = useState('#f62a2a');
   const [changeOptions, setChangeOptions] = useState(1);
   const ChangeOptionsHandler = () => {
     // 1 = targets
     // 2 = waypoints
-    // 3 = frontline
+    // 3 = miscellanous
     if (changeOptions == 3) {
       setChangeOptions(1);
       return;
@@ -60,7 +66,15 @@ function Selection() {
         <div className={styles.optionsContainer}>
           {changeOptions === 1 && ( // Targets
             <>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('radar')}
+                style={{
+                  outlineColor: optionSelected.radar
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +93,15 @@ function Selection() {
                   </g>
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('factory')}
+                style={{
+                  outlineColor: optionSelected.factory
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +116,15 @@ function Selection() {
                   <path d="M22 22H2V10l7-3v2l5-2v3h3l1-8h3l1 8zM12 9.95l-5 2V10l-3 1.32V20h16v-8h-8zM11 18h2v-4h-2zm-4 0h2v-4H7zm10-4h-2v4h2z" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('city')}
+                style={{
+                  outlineColor: optionSelected.city
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +135,15 @@ function Selection() {
                   <path d="M19 15h-2v-2h2m0 6h-2v-2h2M13 7h-2V5h2m0 6h-2V9h2m0 6h-2v-2h2m0 6h-2v-2h2m-6-6H5V9h2m0 6H5v-2h2m0 6H5v-2h2m8-6V5l-3-3l-3 3v2H3v14h18V11z" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('railyard')}
+                style={{
+                  outlineColor: optionSelected.railyard
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +154,15 @@ function Selection() {
                   <path d="M18 112v39h38v-39zm102 0v39h48v-39zm112 0v39h48v-39zm112 0v39h48v-39zm112 0v39h38v-39zM18 169v30h476v-30zm0 48v78h38v-78zm102 0v78h48v-78zm112 0v78h48v-78zm112 0v78h48v-78zm112 0v78h38v-78zM18 313v30h476v-30zm0 48v39h38v-39zm102 0v39h48v-39zm112 0v39h48v-39zm112 0v39h48v-39zm112 0v39h38v-39z" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('train')}
+                style={{
+                  outlineColor: optionSelected.train
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +171,15 @@ function Selection() {
                   <path d="M4.25 12.68v-.32c0-.1.03-.18.1-.25s.15-.1.25-.1h7.58c.1 0 .18.03.25.1s.1.15.1.25v.32c0 .1-.03.18-.1.25s-.15.1-.25.1h-.44v1.65h2.12c.02-.28.14-.52.35-.71s.46-.29.75-.29s.53.1.74.29s.32.43.35.71h1.32v-3.39a.52.52 0 0 1-.35-.16c-.1-.1-.15-.23-.15-.37v-.31c0-.14.05-.27.16-.38s.24-.16.39-.16h1.99c.15 0 .28.05.38.16s.15.23.15.38v.31c0 .14-.05.27-.14.37s-.2.16-.34.16v3.39h1.56c.27 0 .51.1.71.3s.3.44.3.71v2.93l3.73 4.87h-4.74v-3.04h-.71c.11.26.16.54.16.83c0 .61-.21 1.12-.64 1.56c-.43.43-.95.65-1.55.65c-.61 0-1.12-.22-1.56-.65a2.13 2.13 0 0 1-.65-1.56c0-.29.05-.57.16-.83h-1c.11.27.17.55.17.83c0 .61-.22 1.12-.65 1.56s-.95.65-1.56.65s-1.12-.22-1.55-.65s-.64-.95-.64-1.56c0-.29.05-.57.16-.83H9.97c.12.29.18.57.18.83c0 .61-.22 1.12-.65 1.56s-.95.65-1.56.65s-1.12-.22-1.56-.65s-.65-.95-.65-1.56c0-.29.06-.57.17-.84c-.24-.04-.45-.15-.61-.34s-.24-.41-.24-.66v-.86h-.02v-5.55H4.6c-.1 0-.18-.03-.25-.1a.33.33 0 0 1-.1-.25m2.05 3.94c0 .21.07.39.22.54s.33.22.54.22H8.5c.21 0 .39-.07.53-.22s.22-.33.22-.54v-2.3a.7.7 0 0 0-.22-.53a.7.7 0 0 0-.53-.22H7.07c-.21 0-.39.07-.54.23c-.15.15-.22.32-.22.52v2.3zm9.48-11.19c0 .41.16.76.47 1.04c0 .2.09.43.26.68s.36.4.56.44c.04.22.15.41.31.57c.16.15.36.25.59.3c-.11.11-.16.24-.16.39q0 .27.18.45t.45.18c.18 0 .33-.06.46-.19c.13-.12.19-.28.19-.45c0-.02 0-.05-.01-.09s-.01-.08-.01-.1h.03c.21 0 .39-.08.54-.23s.23-.34.23-.55c0-.1-.04-.22-.12-.38c.17-.09.31-.25.41-.47h.45c.39-.02.73-.17 1-.45c.28-.28.42-.61.42-1.01q0-.51-.33-.9c-.22-.26-.5-.43-.83-.52c-.08-.4-.29-.73-.62-.99s-.71-.39-1.12-.39s-.77.13-1.08.38s-.52.58-.62.97h-.11q-.615 0-1.08.39c-.31.25-.46.57-.46.93" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('oildepot')}
+                style={{
+                  outlineColor: optionSelected.oildepot
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -143,7 +197,15 @@ function Selection() {
                   />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('tank')}
+                style={{
+                  outlineColor: optionSelected.tank
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +216,15 @@ function Selection() {
                   <path d="M30 13v-2H18.618l-.723-1.447A1 1 0 0 0 17 9H9a1 1 0 0 0-1 1v5H4v2h18.638l3.6 3H3a1 1 0 0 0-1 1v2a5.006 5.006 0 0 0 5 5h18a5.006 5.006 0 0 0 5-5v-2a1 1 0 0 0-.36-.769l-6-5A1 1 0 0 0 23 15h-2.382l-1-2Zm-2 10a3.003 3.003 0 0 1-3 3H7a3.003 3.003 0 0 1-3-3v-1h24Zm-18-8v-4h6.382l2 4Z" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('ship')}
+                style={{
+                  outlineColor: optionSelected.ship
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +235,15 @@ function Selection() {
                   <path d="M9 4h5.446a1 1 0 0 1 .848.47L18.75 10h4.408a.5.5 0 0 1 .439.74L19.637 18H19a6 6 0 0 1-1.535-.198L20.63 12H3.4l1.048 5.824A6 6 0 0 1 3 18h-.545l-1.24-6.821A1 1 0 0 1 2.197 10H3V5a1 1 0 0 1 1-1h1V1h4zm-4 6h11.392l-2.5-4H5zM3 20a5.98 5.98 0 0 0 4-1.528A5.98 5.98 0 0 0 11 20a5.98 5.98 0 0 0 4-1.528A5.98 5.98 0 0 0 19 20h2v2h-2a7.96 7.96 0 0 1-4-1.07A7.96 7.96 0 0 1 11 22a7.96 7.96 0 0 1-4-1.07A7.96 7.96 0 0 1 3 22H1v-2z" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('bridge')}
+                style={{
+                  outlineColor: optionSelected.bridge
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +254,15 @@ function Selection() {
                   <path d="M18 151v18h37v30h18v-30h46v30h18v-30h46v30h18v-30h46v30h18v-30h46v30h18v-30h46v30h18v-30h46v30h18v-30h37v-18zm0 66v30h23v179.1c7.95-1.8 15.9-3.1 23-3.1c13.18 0 24.7 4.6 35.2 8.6c1.3.5 2.5 1 3.8 1.4V284.3l37.2-37.3h231.5l37.3 36.7V433c1.3-.4 2.5-.9 3.8-1.4c10.5-4 22-8.6 35.2-8.6c7.1 0 15.1 1.3 23 3.1V247h23v-30zm46 226c-16.54.8-31.84 5.3-46 9.4v18.8c2.59-.8 5.39-1.7 8.35-2.6C39.27 464.7 55.18 461 64 461s18.3 3.4 28.8 7.4s22 8.6 35.2 8.6s24.7-4.6 35.2-8.6s20-7.4 28.8-7.4s18.3 3.4 28.8 7.4s22 8.6 35.2 8.6s24.7-4.6 35.2-8.6s20-7.4 28.8-7.4s18.3 3.4 28.8 7.4s22 8.6 35.2 8.6s24.7-4.6 35.2-8.6s20-7.4 28.8-7.4s24.7 3.7 37.6 7.6c3 .9 5.8 1.8 8.4 2.6v-18.8c-14.8-4-32-9.2-46-9.4c-13.2 0-24.7 4.6-35.2 8.6s-20 7.4-28.8 7.4s-18.3-3.4-28.8-7.4s-22-8.6-35.2-8.6s-24.7 4.6-35.2 8.6s-20 7.4-28.8 7.4s-18.3-3.4-28.8-7.4s-22-8.6-35.2-8.6s-24.7 4.6-35.2 8.6s-20 7.4-28.8 7.4s-18.3-3.4-28.8-7.4S77.18 443 64 443" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('truck')}
+                style={{
+                  outlineColor: optionSelected.truck
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +276,15 @@ function Selection() {
                   />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('defence')}
+                style={{
+                  outlineColor: optionSelected.defence
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +299,15 @@ function Selection() {
                   <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91c4.59-1.15 8-5.86 8-10.91V5zm6 9.09c0 4-2.55 7.7-6 8.83c-3.45-1.13-6-4.82-6-8.83v-4.7l6-2.25l6 2.25z" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('artillary')}
+                style={{
+                  outlineColor: optionSelected.artillary
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -219,7 +321,15 @@ function Selection() {
                   />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('airfield')}
+                style={{
+                  outlineColor: optionSelected.airfield
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -234,7 +344,15 @@ function Selection() {
                   <path d="M12 21.933A9.933 9.933 0 1 1 21.933 12A9.944 9.944 0 0 1 12 21.933m0-18.866A8.933 8.933 0 1 0 20.933 12A8.943 8.943 0 0 0 12 3.067" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('antiair')}
+                style={{
+                  outlineColor: optionSelected.antiair
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -245,7 +363,15 @@ function Selection() {
                   <path d="m472.7 22.8l-38.5 44.91L448 84.24l48-34.65zm-50.4 55.05L312.2 178.7l-25.3 8.1l-66.3 69.6l22.8 24.7l69.3-65.4l12.9-21.5L435.7 93.27zm-8.7 72.65l-19.9 25.6l10.3 13.4l26.6-19.6zm-32.4 37.1l-68.5 62.3l-16 3.6l-42.1 39.2l20.7 22.3l43.6-39.5l6.4-13.8l65.2-62.4zm-245.8 67.3c-26.6.3-52.06 25.8-52.33 52.4c-.33 17.8 9.08 34.4 24.53 43.3l23.6-7.6c-18-2.1-31.59-17.5-31.39-35.7c0-19.7 15.89-35.7 35.59-35.7c10-.2 19.5 3.8 26.4 11v-17c-8-4.7-17.1-11-26.4-10.7m44.5 8.2v78.5L120.5 365v23.5h145v-55.2l-65.4-70.2zM87.51 407.2l-43.29 43h13.47l11.54 8l35.57-27.3h107.6l11.5 19.3H245l6.1-19.3h23.4l97.3 28.2l9.6-8.9h16l-106.5-43zm-50.68 59.9l-20.85 22.1h62.55l-20.84-22.1zm187.07 0L203 489.2h62.9L245 467.1zm160.7 0l-19.3 22.1h61L407 467.1z" />
                 </svg>
               </button>
-              <button className={styles.targetButton}>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('unknown')}
+                style={{
+                  outlineColor: optionSelected.unknown
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
@@ -264,7 +390,15 @@ function Selection() {
           )}
           {changeOptions === 2 && ( // Waypoints
             <>
-              <button className={styles.waypointButton}>
+              <button
+                className={styles.waypointButton}
+                onClick={() => selectOption('startPoint')}
+                style={{
+                  outlineColor: optionSelected.startPoint
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="85%"
@@ -302,7 +436,15 @@ function Selection() {
                   />
                 </svg>
               </button>
-              <button className={styles.waypointButton}>
+              <button
+                className={styles.waypointButton}
+                onClick={() => selectOption('navigationPoint')}
+                style={{
+                  outlineColor: optionSelected.navigationPoint
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="85%"
@@ -310,7 +452,7 @@ function Selection() {
                   viewBox="0 0 24 24"
                 >
                   <defs>
-                    <mask id="point-start">
+                    <mask id="point-navigation">
                       <g fill="none">
                         <path
                           stroke="#ffffff"
@@ -336,11 +478,19 @@ function Selection() {
                   <path
                     fill="var(--waypoint_navigation)"
                     d="M0 0h24v24H0z"
-                    mask="url(#point-start)"
+                    mask="url(#point-navigation)"
                   />
                 </svg>
               </button>
-              <button className={styles.waypointButton}>
+              <button
+                className={styles.waypointButton}
+                onClick={() => selectOption('targetPoint')}
+                style={{
+                  outlineColor: optionSelected.targetPoint
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="85%"
@@ -348,7 +498,7 @@ function Selection() {
                   viewBox="0 0 24 24"
                 >
                   <defs>
-                    <mask id="point-start">
+                    <mask id="point-target">
                       <g fill="none">
                         <path
                           stroke="#ffffff"
@@ -374,11 +524,19 @@ function Selection() {
                   <path
                     fill="var(--waypoint_target)"
                     d="M0 0h24v24H0z"
-                    mask="url(#point-start)"
+                    mask="url(#point-target)"
                   />
                 </svg>
               </button>
-              <button className={styles.waypointButton}>
+              <button
+                className={styles.waypointButton}
+                onClick={() => selectOption('egressPoint')}
+                style={{
+                  outlineColor: optionSelected.egressPoint
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="85%"
@@ -386,7 +544,7 @@ function Selection() {
                   viewBox="0 0 24 24"
                 >
                   <defs>
-                    <mask id="point-start">
+                    <mask id="point-extraction">
                       <g fill="none">
                         <path
                           stroke="#ffffff"
@@ -412,7 +570,7 @@ function Selection() {
                   <path
                     fill="var(--waypoint_extraction)"
                     d="M0 0h24v24H0z"
-                    mask="url(#point-start)"
+                    mask="url(#point-extraction)"
                   />
                 </svg>
               </button>
@@ -420,7 +578,15 @@ function Selection() {
           )}
           {changeOptions === 3 && ( // Waypoints
             <>
-              <button className={styles.miscButton}>
+              <button
+                className={styles.miscButton}
+                onClick={() => selectOption('comment')}
+                style={{
+                  outlineColor: optionSelected.comment
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="70%"
@@ -444,7 +610,15 @@ function Selection() {
                   </g>
                 </svg>
               </button>
-              <button className={styles.miscButton}>
+              <button
+                className={styles.miscButton}
+                onClick={() => selectOption('frontline')}
+                style={{
+                  outlineColor: optionSelected.frontline
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="70%"

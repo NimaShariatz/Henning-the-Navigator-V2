@@ -19,6 +19,10 @@
   padding: 0;
   margin: 0;
   pointer-events: all;
+  outline: 3px solid transparent;
+}
+.rgba:hover {
+  outline-color: var(--active_color);
 }
 
 .rgbaContainer {
@@ -42,6 +46,7 @@
   border-radius: 5px;
   cursor: pointer;
   pointer-events: all;
+  font-weight: 600;
 }
 .colorDefaultRow button:nth-child(1) {
   background-color: var(--red_target);
@@ -129,4 +134,34 @@
   align-items: center;
   background-color: var(--darkBG_2);
   cursor: pointer;
+  outline: 3px solid transparent;
+}
+.targetButton:hover,
+.waypointButton:hover,
+.miscButton:hover {
+  outline-color: var(--active_color);
+}
+
+@media (max-width: 720px) {
+  .overallContainer {
+    gap: 0.5rem;
+  }
+  .optionsContainer {
+    gap: 0.5rem;
+    padding-inline: 0.5rem;
+    padding-block: 1rem;
+  }
+  .targetButton,
+  .waypointButton,
+  .miscButton {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+  .rgba {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .selectionContainer {
+    gap: 0.2rem;
+  }
 }
