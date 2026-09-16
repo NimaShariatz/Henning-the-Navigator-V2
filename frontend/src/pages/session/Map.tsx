@@ -13,6 +13,7 @@ import Clipboard from './tableObjects/Clipboard';
 import fontPath900 from '../../fonts/saira/saira-v21-latin-900.ttf';
 import fontPath600 from '../../fonts/saira/saira-v21-latin-600.ttf';
 import { useThree } from '@react-three/fiber';
+import { useState } from 'react';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -41,6 +42,13 @@ function Map({
   //const spotLightHelper = useRef<THREE.PointLight>(null!);
   //useHelper(pointLightHelper, THREE.PointLightHelper, 0.3, 'teal');
   //useHelper(spotLightHelper, THREE.SpotLightHelper, 'hotpink');
+
+  const [targetpoints, setTargetpoints] = useState<
+    { id: number; x: number; y: number; type: string }[]
+  >([]);
+  const mapClicked = (x: number, y: number) => {
+    console.log(x, y);
+  };
 
   return (
     <group position={[0, -1, -1.5]}>
@@ -80,7 +88,17 @@ function Map({
         position={[0, 7.9, 1.3]}
       />
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.63, 1]}>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0.63, 1]}
+        onClick={(event) => {
+          event.stopPropagation();
+          const { xLenght, yHeight } = MapImagesSizes[sessionMap];
+          const x = (event.uv!.x - 0.5) * xLenght;
+          const y = (event.uv!.y - 0.5) * yHeight;
+          mapClicked(x, y);
+        }}
+      >
         <planeGeometry
           args={[
             MapImagesSizes[sessionMap].xLenght,

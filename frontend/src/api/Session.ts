@@ -62,6 +62,7 @@ export async function UpdateSession(
   return response.data;
 }
 
+// delete session
 export async function deleteSession(username: string, slug: string) {
   const response = await api.delete(
     `/api/mapSessions/MapSession/${username}/${slug}/`,

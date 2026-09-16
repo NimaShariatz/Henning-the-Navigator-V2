@@ -67,16 +67,6 @@ function Session() {
     comment: false,
     frontline: false,
   });
-  const selectOption = (option: OptionKey) => {
-    setOptionSelected((prev: OptionSelected) => {
-      // takes in one of the options as input, sets it true, and sets every other option to false
-      const next = { ...prev };
-      for (const key of Object.keys(next) as OptionKey[]) {
-        next[key] = key === option;
-      }
-      return next;
-    });
-  };
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
@@ -95,6 +85,19 @@ function Session() {
     Pointlight: 8,
     gearScale: 1,
   });
+
+  const selectOption = (option: OptionKey) => {
+    setOptionSelected((prev: OptionSelected) => {
+      const next = { ...prev };
+      const isCurrentlyTrue = prev[option];
+      for (const key of Object.keys(next) as OptionKey[]) {
+        // takes in one of the options as input, sets it true, and sets every other option to false
+        // toggle off if the clicked option was already active
+        next[key] = isCurrentlyTrue ? false : key === option;
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!username || !slug) return;
