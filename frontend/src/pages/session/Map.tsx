@@ -19,6 +19,7 @@ import {
   TARGET_OPTION_KEYS,
   WAYPOINT_OPTION_KEYS,
 } from '../../helpers/optionTypes';
+import Waypoint from './waypoint/Waypoint';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -51,22 +52,30 @@ function Map({
   //useHelper(spotLightHelper, THREE.SpotLightHelper, 'hotpink');
 
   const [targetpoints, setTargetpoints] = useState<
-    { id: number; x: number; y: number; z: number; type: string }[]
+    {
+      id: number;
+      x: number;
+      y: number;
+      z: number;
+      rotation: number;
+      type: string;
+    }[]
   >([]);
   const [waypoints, setWaypoints] = useState<
     {
       id: number;
       x: number;
       y: number;
-      rotation: number;
       type: string;
-      name: string;
     }[]
   >([]);
   const [comments, setComments] = useState<
     { id: number; x: number; y: number; text: string }[]
   >([]);
+  //
+  //
   const mapClicked = (x: number, y: number) => {
+    // onClick....
     //if the thing true is a waypoint
     const activeWaypointType = WAYPOINT_OPTION_KEYS.find(
       (key) => optionSelected[key],
@@ -79,9 +88,7 @@ function Map({
             : 1,
         x,
         y,
-        rotation: 0,
         type: activeWaypointType,
-        name: '',
       };
       setWaypoints([...waypoints, newWaypoint]);
       //console.log(waypoints)
@@ -160,25 +167,31 @@ function Map({
         position={[0, 7.9, 1.3]}
       />
 
-      <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, 0.63, 1]}
-        onClick={(event) => {
-          event.stopPropagation();
-          const { xLenght, yHeight } = MapImagesSizes[sessionMap];
-          const x = (event.uv!.x - 0.5) * xLenght;
-          const y = (event.uv!.y - 0.5) * yHeight;
-          mapClicked(x, y);
-        }}
-      >
-        <planeGeometry
-          args={[
-            MapImagesSizes[sessionMap].xLenght,
-            MapImagesSizes[sessionMap].yHeight,
-          ]}
-        />
-        <meshStandardMaterial map={mapTexture} toneMapped={false} />
-      </mesh>
+      <group position={[0, 0.63, 1]}>
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          onClick={(event) => {
+            event.stopPropagation();
+            const { xLenght, yHeight } = MapImagesSizes[sessionMap];
+            const x = (event.uv!.x - 0.5) * xLenght;
+            const y = -(event.uv!.y - 0.5) * yHeight;
+            mapClicked(x, y);
+          }}
+        >
+          <planeGeometry
+            args={[
+              MapImagesSizes[sessionMap].xLenght,
+              MapImagesSizes[sessionMap].yHeight,
+            ]}
+          />
+          <meshStandardMaterial map={mapTexture} toneMapped={false} />
+        </mesh>
+        {waypoints.map((point) => (
+          <group key={point.id} position={[point.x, 0.05, point.y]}>
+            <Waypoint waypointType={point.type} />
+          </group>
+        ))}
+      </group>
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
       <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />
