@@ -14,6 +14,11 @@ import fontPath900 from '../../fonts/saira/saira-v21-latin-900.ttf';
 import fontPath600 from '../../fonts/saira/saira-v21-latin-600.ttf';
 import { useThree } from '@react-three/fiber';
 import { useState } from 'react';
+import type { OptionSelected } from '../../helpers/optionTypes';
+import {
+  TARGET_OPTION_KEYS,
+  WAYPOINT_OPTION_KEYS,
+} from '../../helpers/optionTypes';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -21,6 +26,7 @@ interface MapProps {
   revealFlightInfoSetter: () => void;
   sessionMap: string;
   sessionTitle: string;
+  optionSelected: OptionSelected;
 }
 
 function Map({
@@ -29,6 +35,7 @@ function Map({
   revealFlightInfoSetter,
   sessionMap,
   sessionTitle,
+  optionSelected,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -44,10 +51,75 @@ function Map({
   //useHelper(spotLightHelper, THREE.SpotLightHelper, 'hotpink');
 
   const [targetpoints, setTargetpoints] = useState<
-    { id: number; x: number; y: number; type: string }[]
+    { id: number; x: number; y: number; z: number; type: string }[]
+  >([]);
+  const [waypoints, setWaypoints] = useState<
+    {
+      id: number;
+      x: number;
+      y: number;
+      rotation: number;
+      type: string;
+      name: string;
+    }[]
+  >([]);
+  const [comments, setComments] = useState<
+    { id: number; x: number; y: number; text: string }[]
   >([]);
   const mapClicked = (x: number, y: number) => {
-    console.log(x, y);
+    //if the thing true is a waypoint
+    const activeWaypointType = WAYPOINT_OPTION_KEYS.find(
+      (key) => optionSelected[key],
+    );
+    if (activeWaypointType) {
+      const newWaypoint = {
+        id:
+          waypoints.length > 0
+            ? Math.max(...waypoints.map((w) => w.id)) + 1
+            : 1,
+        x,
+        y,
+        rotation: 0,
+        type: activeWaypointType,
+        name: '',
+      };
+      setWaypoints([...waypoints, newWaypoint]);
+      //console.log(waypoints)
+      return;
+    }
+    //if the thing true is a target
+    const activeTargetType = TARGET_OPTION_KEYS.find(
+      (key) => optionSelected[key],
+    );
+    if (activeTargetType) {
+      const newTarget = {
+        id:
+          targetpoints.length > 0
+            ? Math.max(...targetpoints.map((t) => t.id)) + 1
+            : 1,
+        x,
+        y,
+        z: 0,
+        rotation: 0,
+        type: activeTargetType,
+        name: '',
+      };
+      setTargetpoints([...targetpoints, newTarget]);
+      //console.log(targetpoints)
+      return;
+    }
+    // the thing true is comment
+    if (optionSelected.comment) {
+      const newComment = {
+        id:
+          comments.length > 0 ? Math.max(...comments.map((c) => c.id)) + 1 : 1,
+        x,
+        y,
+        text: '',
+      };
+      setComments([...comments, newComment]);
+      return;
+    }
   };
 
   return (

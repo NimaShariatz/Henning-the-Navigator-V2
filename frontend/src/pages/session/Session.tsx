@@ -151,6 +151,7 @@ function Session() {
             revealFlightInfoSetter={revealFlightInfoSetter}
             sessionMap={sessionData.map_selected}
             sessionTitle={sessionData.title}
+            optionSelected={optionSelected}
           />
           {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
         </Canvas>
