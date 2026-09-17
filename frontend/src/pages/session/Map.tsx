@@ -14,12 +14,13 @@ import fontPath900 from '../../fonts/saira/saira-v21-latin-900.ttf';
 import fontPath600 from '../../fonts/saira/saira-v21-latin-600.ttf';
 import { useThree } from '@react-three/fiber';
 import { useState } from 'react';
-import type { OptionSelected } from '../../helpers/optionTypes';
+import type { OptionSelected } from '../../constants';
 import {
   TARGET_OPTION_KEYS,
   WAYPOINT_OPTION_KEYS,
-} from '../../helpers/optionTypes';
-import Waypoint from './waypoint/Waypoint';
+  WAYPOINT_COLORS,
+} from '../../constants';
+import { Instances, Instance } from '@react-three/drei';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -186,11 +187,20 @@ function Map({
           />
           <meshStandardMaterial map={mapTexture} toneMapped={false} />
         </mesh>
-        {waypoints.map((point) => (
-          <group key={point.id} position={[point.x, 0.05, point.y]}>
-            <Waypoint waypointType={point.type} />
-          </group>
-        ))}
+        <Instances limit={100}>
+          {/* Since all waypoints share the same geometry and only differ by position/color, you can render them all in a single draw call using instancing.
+          So this avoides a ridicoulus amount of draw calls which would tank FPS*/}
+          <octahedronGeometry args={[0.06, 0]} />
+          <meshLambertMaterial transparent opacity={0.725} />
+          {waypoints.map((point) => (
+            <Instance
+              key={point.id}
+              position={[point.x, 0.05, point.y]}
+              rotation={[THREE.MathUtils.degToRad(180), 0, 0]}
+              color={WAYPOINT_COLORS[point.type] ?? '#ffc90e'}
+            />
+          ))}
+        </Instances>
       </group>
 
       <Gear revealSettingsSetter={revealSettingsSetter} />

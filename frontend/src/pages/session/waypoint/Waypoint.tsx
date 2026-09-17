@@ -1,4 +1,4 @@
-import './waypoint.module.css';
+import './Waypoint.module.css';
 import * as THREE from 'three';
 
 interface waypointProps {

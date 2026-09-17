@@ -81,6 +81,63 @@ const MapImagesSizes: Record<string, { xLenght: number; yHeight: number }> = {
   'Western Front': { xLenght: 14.2, yHeight: 11.15126 },
 };
 
+export type OptionKey =
+  | 'startPoint'
+  | 'navigationPoint'
+  | 'targetPoint'
+  | 'egressPoint'
+  | 'radar'
+  | 'factory'
+  | 'city'
+  | 'railyard'
+  | 'train'
+  | 'oildepot'
+  | 'tank'
+  | 'ship'
+  | 'bridge'
+  | 'truck'
+  | 'defence'
+  | 'artillary'
+  | 'airfield'
+  | 'antiair'
+  | 'unknown'
+  | 'comment'
+  | 'frontline';
+
+export type OptionSelected = Record<OptionKey, boolean>;
+
+export const TARGET_OPTION_KEYS: OptionKey[] = [
+  'radar',
+  'factory',
+  'city',
+  'railyard',
+  'train',
+  'oildepot',
+  'tank',
+  'ship',
+  'bridge',
+  'truck',
+  'defence',
+  'artillary',
+  'airfield',
+  'antiair',
+  'unknown',
+];
+
+export const WAYPOINT_OPTION_KEYS: OptionKey[] = [
+  'startPoint',
+  'navigationPoint',
+  'targetPoint',
+  'egressPoint',
+];
+
+export const WAYPOINT_COLORS: Record<string, string> = {
+  startPoint: '#33b9ea',
+  navigationPoint: '#ffc90e',
+  targetPoint: '#ae3232',
+  egressPoint: '#2ee31e',
+};
+
 import blenderTable from './assets/blender/threejsTable.glb';
 import blenderLamp from './assets/blender/threejsLampBasic.glb';
 import blenderGear from './assets/blender/threejsSettings2.glb';

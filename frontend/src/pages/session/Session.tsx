@@ -14,8 +14,8 @@ import * as THREE from 'three';
 import Settings from './settings/Settings';
 import FlightInfo from './flightInfo/FlightInfo';
 import Selection from './selection/Selection';
-import type { OptionKey, OptionSelected } from '../../helpers/optionTypes';
-//import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
+import type { OptionKey, OptionSelected } from '../../constants';
+import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 
 export interface PerfStats {
   fps: number;
@@ -42,7 +42,7 @@ const DEFAULT_CAMERA_POSITION = new THREE.Vector3(0, 2, 4);
 const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 
 function Session() {
-  //const [perf, setPerf] = useState<PerfStats | null>(null);
+  const [perf, setPerf] = useState<PerfStats | null>(null);
 
   const [optionSelected, setOptionSelected] = useState<OptionSelected>({
     startPoint: false,
@@ -153,7 +153,7 @@ function Session() {
             sessionTitle={sessionData.title}
             optionSelected={optionSelected}
           />
-          {/*{import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}*/}
+          {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
         </Canvas>
 
         <Selection
@@ -174,14 +174,12 @@ function Session() {
           sessionData={sessionData.sessionInfo}
         />
 
-        {/* 
         {import.meta.env.DEV && perf && (
           <div className={styles.perfOverlay}>
             {perf.fps} fps · {perf.frameMs.toFixed(2)} ms · calls {perf.calls} ·
             tris {perf.triangles} · geo {perf.geometries} · tex {perf.textures}
           </div>
         )}
-        */}
       </div>
     </>
   );
