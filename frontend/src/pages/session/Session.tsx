@@ -14,7 +14,13 @@ import * as THREE from 'three';
 import Settings from './settings/Settings';
 import FlightInfo from './flightInfo/FlightInfo';
 import Selection from './selection/Selection';
-import type { OptionKey, OptionSelected } from '../../constants';
+import type {
+  Commentpoint,
+  OptionKey,
+  OptionSelected,
+  Targetpoint,
+  Waypoint,
+} from '../../constants';
 import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 
 export interface PerfStats {
@@ -46,7 +52,7 @@ function Session() {
 
   const [optionSelected, setOptionSelected] = useState<OptionSelected>({
     startPoint: false,
-    navigationPoint: false,
+    ingressPoint: false,
     targetPoint: false,
     egressPoint: false,
     radar: false,
@@ -67,6 +73,9 @@ function Session() {
     comment: false,
     frontline: false,
   });
+  const [waypoints, setWaypoints] = useState<Waypoint[]>([]); // see constants .tsx for its structure
+  const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
+  const [comments, setComments] = useState<Commentpoint[]>([]); // see constants .tsx for its structure
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
@@ -152,6 +161,12 @@ function Session() {
             sessionMap={sessionData.map_selected}
             sessionTitle={sessionData.title}
             optionSelected={optionSelected}
+            waypoints={waypoints}
+            setWaypoints={setWaypoints}
+            targets={targets}
+            setTargets={setTargets}
+            comments={comments}
+            setComments={setComments}
           />
           {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
         </Canvas>

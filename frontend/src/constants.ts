@@ -83,7 +83,7 @@ const MapImagesSizes: Record<string, { xLenght: number; yHeight: number }> = {
 
 export type OptionKey =
   | 'startPoint'
-  | 'navigationPoint'
+  | 'ingressPoint'
   | 'targetPoint'
   | 'egressPoint'
   | 'radar'
@@ -124,16 +124,37 @@ export const TARGET_OPTION_KEYS: OptionKey[] = [
   'unknown',
 ];
 
+export interface Waypoint {
+  id: number;
+  x: number;
+  y: number;
+  type: string;
+}
+export interface Targetpoint {
+  id: number;
+  x: number;
+  y: number;
+  z: number;
+  rotation: number;
+  type: string;
+}
+export interface Commentpoint {
+  id: number;
+  x: number;
+  y: number;
+  text: string;
+}
+
 export const WAYPOINT_OPTION_KEYS: OptionKey[] = [
   'startPoint',
-  'navigationPoint',
+  'ingressPoint',
   'targetPoint',
   'egressPoint',
 ];
 
 export const WAYPOINT_COLORS: Record<string, string> = {
   startPoint: '#33b9ea',
-  navigationPoint: '#ffc90e',
+  ingressPoint: '#ffc90e',
   targetPoint: '#ae3232',
   egressPoint: '#2ee31e',
 };

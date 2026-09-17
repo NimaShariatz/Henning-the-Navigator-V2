@@ -1,4 +1,11 @@
-import { useGLTF, useTexture, Text } from '@react-three/drei';
+import {
+  useGLTF,
+  useTexture,
+  Text,
+  Html,
+  Instances,
+  Instance,
+} from '@react-three/drei';
 import * as THREE from 'three';
 //import { useRef } from 'react';
 //import { useHelper } from '@react-three/drei';
@@ -13,14 +20,18 @@ import Clipboard from './tableObjects/Clipboard';
 import fontPath900 from '../../fonts/saira/saira-v21-latin-900.ttf';
 import fontPath600 from '../../fonts/saira/saira-v21-latin-600.ttf';
 import { useThree } from '@react-three/fiber';
-import { useState } from 'react';
-import type { OptionSelected } from '../../constants';
+import type {
+  Commentpoint,
+  OptionSelected,
+  Targetpoint,
+  Waypoint,
+} from '../../constants';
 import {
   TARGET_OPTION_KEYS,
   WAYPOINT_OPTION_KEYS,
   WAYPOINT_COLORS,
 } from '../../constants';
-import { Instances, Instance } from '@react-three/drei';
+import styles from './Session.module.css';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -29,6 +40,12 @@ interface MapProps {
   sessionMap: string;
   sessionTitle: string;
   optionSelected: OptionSelected;
+  waypoints: Waypoint[];
+  setWaypoints: React.Dispatch<React.SetStateAction<Waypoint[]>>;
+  targets: Targetpoint[];
+  setTargets: React.Dispatch<React.SetStateAction<Targetpoint[]>>;
+  comments: Commentpoint[];
+  setComments: React.Dispatch<React.SetStateAction<Commentpoint[]>>;
 }
 
 function Map({
@@ -38,6 +55,12 @@ function Map({
   sessionMap,
   sessionTitle,
   optionSelected,
+  waypoints,
+  setWaypoints,
+  targets,
+  setTargets,
+  comments,
+  setComments,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -52,29 +75,6 @@ function Map({
   //useHelper(pointLightHelper, THREE.PointLightHelper, 0.3, 'teal');
   //useHelper(spotLightHelper, THREE.SpotLightHelper, 'hotpink');
 
-  const [targetpoints, setTargetpoints] = useState<
-    {
-      id: number;
-      x: number;
-      y: number;
-      z: number;
-      rotation: number;
-      type: string;
-    }[]
-  >([]);
-  const [waypoints, setWaypoints] = useState<
-    {
-      id: number;
-      x: number;
-      y: number;
-      type: string;
-    }[]
-  >([]);
-  const [comments, setComments] = useState<
-    { id: number; x: number; y: number; text: string }[]
-  >([]);
-  //
-  //
   const mapClicked = (x: number, y: number) => {
     // onClick....
     //if the thing true is a waypoint
@@ -101,10 +101,7 @@ function Map({
     );
     if (activeTargetType) {
       const newTarget = {
-        id:
-          targetpoints.length > 0
-            ? Math.max(...targetpoints.map((t) => t.id)) + 1
-            : 1,
+        id: targets.length > 0 ? Math.max(...targets.map((t) => t.id)) + 1 : 1,
         x,
         y,
         z: 0,
@@ -112,7 +109,7 @@ function Map({
         type: activeTargetType,
         name: '',
       };
-      setTargetpoints([...targetpoints, newTarget]);
+      setTargets([...targets, newTarget]);
       //console.log(targetpoints)
       return;
     }
@@ -187,7 +184,9 @@ function Map({
           />
           <meshStandardMaterial map={mapTexture} toneMapped={false} />
         </mesh>
-        <Instances limit={100}>
+        <Instances limit={100} frustumCulled={false}>
+          {' '}
+          {/* max 100. frustumCalled turned off so it still renders on orbit zoom */}
           {/* Since all waypoints share the same geometry and only differ by position/color, you can render them all in a single draw call using instancing.
           So this avoides a ridicoulus amount of draw calls which would tank FPS*/}
           <octahedronGeometry args={[0.06, 0]} />
@@ -195,10 +194,25 @@ function Map({
           {waypoints.map((point) => (
             <Instance
               key={point.id}
-              position={[point.x, 0.05, point.y]}
+              position={[point.x, 0.06, point.y]}
               rotation={[THREE.MathUtils.degToRad(180), 0, 0]}
               color={WAYPOINT_COLORS[point.type] ?? '#ffc90e'}
-            />
+            >
+              <Html
+                center
+                wrapperClass={styles.waypointTextHTML}
+                position={[0, -0.1, 0]}
+              >
+                <p
+                  style={{
+                    outlineColor:
+                      WAYPOINT_COLORS[point.type] ?? 'var(--logo_yellow)',
+                  }}
+                >
+                  {point.id}
+                </p>
+              </Html>
+            </Instance>
           ))}
         </Instances>
       </group>

@@ -1,7 +1,7 @@
 import styles from './Selection.module.css';
 import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
-import type { OptionKey, OptionSelected } from '../../../helpers/optionTypes';
+import type { OptionKey, OptionSelected } from '../../../constants';
 
 interface selectionProps {
   optionSelected: OptionSelected;
@@ -438,9 +438,9 @@ function Selection({ optionSelected, selectOption }: selectionProps) {
               </button>
               <button
                 className={styles.waypointButton}
-                onClick={() => selectOption('navigationPoint')}
+                onClick={() => selectOption('ingressPoint')}
                 style={{
-                  outlineColor: optionSelected.navigationPoint
+                  outlineColor: optionSelected.ingressPoint
                     ? 'var(--active_color)'
                     : 'transparent',
                 }}
@@ -452,7 +452,7 @@ function Selection({ optionSelected, selectOption }: selectionProps) {
                   viewBox="0 0 24 24"
                 >
                   <defs>
-                    <mask id="point-navigation">
+                    <mask id="point-ingress">
                       <g fill="none">
                         <path
                           stroke="#ffffff"
@@ -476,9 +476,9 @@ function Selection({ optionSelected, selectOption }: selectionProps) {
                     </mask>
                   </defs>
                   <path
-                    fill="var(--waypoint_navigation)"
+                    fill="var(--waypoint_ingress)"
                     d="M0 0h24v24H0z"
-                    mask="url(#point-navigation)"
+                    mask="url(#point-ingress)"
                   />
                 </svg>
               </button>
