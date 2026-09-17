@@ -41,11 +41,20 @@ interface MapProps {
   sessionTitle: string;
   optionSelected: OptionSelected;
   waypoints: Waypoint[];
-  setWaypoints: React.Dispatch<React.SetStateAction<Waypoint[]>>;
+  addWaypoint: (x: number, y: number, type: string) => void;
+  //setWaypoints: React.Dispatch<React.SetStateAction<Waypoint[]>>;
   targets: Targetpoint[];
-  setTargets: React.Dispatch<React.SetStateAction<Targetpoint[]>>;
+  addTarget: (
+    x: number,
+    y: number,
+    z: number,
+    rotation: number,
+    type: string,
+  ) => void;
+  //setTargets: React.Dispatch<React.SetStateAction<Targetpoint[]>>;
   comments: Commentpoint[];
-  setComments: React.Dispatch<React.SetStateAction<Commentpoint[]>>;
+  addComment: (x: number, y: number, text: string) => void;
+  //setComments: React.Dispatch<React.SetStateAction<Commentpoint[]>>;
 }
 
 function Map({
@@ -56,11 +65,14 @@ function Map({
   sessionTitle,
   optionSelected,
   waypoints,
-  setWaypoints,
-  targets,
-  setTargets,
-  comments,
-  setComments,
+  addWaypoint,
+  //setWaypoints,
+  //targets, --- UNCOMMENT WHEN READY
+  addTarget,
+  //setTargets,
+  //comments, --- UNCOMMENT WHEN READY
+  addComment,
+  //setComments,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -82,16 +94,7 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeWaypointType) {
-      const newWaypoint = {
-        id:
-          waypoints.length > 0
-            ? Math.max(...waypoints.map((w) => w.id)) + 1
-            : 1,
-        x,
-        y,
-        type: activeWaypointType,
-      };
-      setWaypoints([...waypoints, newWaypoint]);
+      addWaypoint(x, y, activeWaypointType);
       //console.log(waypoints)
       return;
     }
@@ -100,29 +103,13 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeTargetType) {
-      const newTarget = {
-        id: targets.length > 0 ? Math.max(...targets.map((t) => t.id)) + 1 : 1,
-        x,
-        y,
-        z: 0,
-        rotation: 0,
-        type: activeTargetType,
-        name: '',
-      };
-      setTargets([...targets, newTarget]);
+      addTarget(x, y, 0, 0, activeTargetType);
       //console.log(targetpoints)
       return;
     }
     // the thing true is comment
     if (optionSelected.comment) {
-      const newComment = {
-        id:
-          comments.length > 0 ? Math.max(...comments.map((c) => c.id)) + 1 : 1,
-        x,
-        y,
-        text: '',
-      };
-      setComments([...comments, newComment]);
+      addComment(x, y, 'some kewl new text');
       return;
     }
   };
@@ -135,7 +122,7 @@ function Map({
         position={[-0, 0.63, -7]}
         rotation={[THREE.MathUtils.degToRad(-90), 0, 0]}
         font={fontPath900}
-        color="white"
+        color="#fdfdfd"
         fontSize={1}
       >
         {sessionMap}
@@ -144,7 +131,7 @@ function Map({
         position={[-0, 0.63, -6.2]}
         rotation={[THREE.MathUtils.degToRad(-90), 0, 0]}
         font={fontPath600}
-        color="white"
+        color="#fdfdfd"
         fontSize={0.35}
       >
         {sessionTitle}

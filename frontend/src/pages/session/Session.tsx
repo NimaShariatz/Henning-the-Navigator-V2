@@ -76,6 +76,46 @@ function Session() {
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]); // see constants .tsx for its structure
   const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
   const [comments, setComments] = useState<Commentpoint[]>([]); // see constants .tsx for its structure
+  const addWaypoint = (x: number, y: number, type: string) => {
+    const newWaypoint = {
+      id:
+        waypoints.length > 0 ? Math.max(...waypoints.map((w) => w.id)) + 1 : 1,
+      x: x,
+      y: y,
+      type: type,
+    };
+    setWaypoints([...waypoints, newWaypoint]);
+  };
+
+  const addTarget = (
+    x: number,
+    y: number,
+    z: number,
+    rotation: number,
+    type: string,
+  ) => {
+    const newTarget = {
+      id:
+        waypoints.length > 0 ? Math.max(...waypoints.map((w) => w.id)) + 1 : 1,
+      x: x,
+      y: y,
+      z: z,
+      rotation: rotation,
+      type: type,
+    };
+    setTargets([...targets, newTarget]);
+  };
+
+  const addComment = (x: number, y: number, text: string) => {
+    const newComment = {
+      id:
+        waypoints.length > 0 ? Math.max(...waypoints.map((w) => w.id)) + 1 : 1,
+      x: x,
+      y: y,
+      text: text,
+    };
+    setComments([...comments, newComment]);
+  };
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
@@ -162,11 +202,14 @@ function Session() {
             sessionTitle={sessionData.title}
             optionSelected={optionSelected}
             waypoints={waypoints}
-            setWaypoints={setWaypoints}
+            addWaypoint={addWaypoint}
+            //setWaypoints={setWaypoints}
             targets={targets}
-            setTargets={setTargets}
+            addTarget={addTarget}
+            //setTargets={setTargets}
             comments={comments}
-            setComments={setComments}
+            addComment={addComment}
+            //setComments={setComments}
           />
           {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
         </Canvas>
