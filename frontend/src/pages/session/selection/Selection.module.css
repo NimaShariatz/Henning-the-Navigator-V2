@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: end;
   gap: 1rem;
-  z-index: 1;
+  z-index: var(--selection_index);
   user-select: none;
   pointer-events: none;
 }

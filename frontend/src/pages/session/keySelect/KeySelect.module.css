@@ -2,7 +2,7 @@
   position: absolute;
   bottom: 10px;
   left: 10px;
-  z-index: 1;
+  z-index: var(--selection_index);
   display: flex;
   justify-content: center;
   align-items: center;

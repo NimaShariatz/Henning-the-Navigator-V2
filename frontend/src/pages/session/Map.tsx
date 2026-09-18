@@ -189,6 +189,7 @@ function Map({
                 center
                 wrapperClass={styles.waypointTextHTML}
                 position={[0, -0.1, 0]}
+                zIndexRange={[1, 0]} // default is [16777271, 0]
               >
                 <p
                   style={{

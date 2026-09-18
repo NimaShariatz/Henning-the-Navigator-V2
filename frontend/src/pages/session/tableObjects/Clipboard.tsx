@@ -39,6 +39,7 @@ function Clipboard({ revealFlightInfoSetter }: ClipboardProps) {
             wrapperClass={styles.tableObjectHTML}
             center
             position={[0, 0.35, 0]}
+            zIndexRange={[1, 0]} // default is [16777271, 0]
           >
             <p>Flight Info</p>
           </Html>

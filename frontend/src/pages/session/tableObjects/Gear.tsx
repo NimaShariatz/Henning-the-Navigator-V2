@@ -45,6 +45,7 @@ function Gear({ revealSettingsSetter }: GearProps) {
           wrapperClass={styles.tableObjectHTML}
           center
           position={[0, 0.5, 0]}
+          zIndexRange={[1, 0]} // default is [16777271, 0]
         >
           <p>Settings</p>
         </Html>
