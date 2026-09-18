@@ -100,6 +100,7 @@ export type OptionKey =
   | 'artillary'
   | 'airfield'
   | 'antiair'
+  | 'parachute'
   | 'unknown'
   | 'comment'
   | 'frontline';
@@ -121,6 +122,7 @@ export const TARGET_OPTION_KEYS: OptionKey[] = [
   'artillary',
   'airfield',
   'antiair',
+  'parachute',
   'unknown',
 ];
 

@@ -49,6 +49,23 @@ const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 
 function Session() {
   const [perf, setPerf] = useState<PerfStats | null>(null);
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+  const { username, slug } = useParams<{ username: string; slug: string }>();
+  const [sessionData, setSessionData] =
+    useState<SessionDetailedItem>(emptySessionData);
+
+  const [popupRevealer, setPopupRevealer] = useState({
+    settings: false,
+    flightInfo: false,
+  });
+
+  const [mapLightObjectValues, setMapLightObjectValues] = useState<
+    Record<string, number>
+  >({
+    Spotlight: 4,
+    Pointlight: 8,
+    gearScale: 1,
+  });
 
   const [optionSelected, setOptionSelected] = useState<OptionSelected>({
     startPoint: false,
@@ -69,6 +86,7 @@ function Session() {
     artillary: false,
     airfield: false,
     antiair: false,
+    parachute: false,
     unknown: false,
     comment: false,
     frontline: false,
@@ -117,23 +135,15 @@ function Session() {
     setComments([...comments, newComment]);
   };
 
-  const controlsRef = useRef<OrbitControlsImpl>(null);
-  const { username, slug } = useParams<{ username: string; slug: string }>();
-  const [sessionData, setSessionData] =
-    useState<SessionDetailedItem>(emptySessionData);
-
-  const [popupRevealer, setPopupRevealer] = useState({
-    settings: false,
-    flightInfo: false,
-  });
-
-  const [mapLightObjectValues, setMapLightObjectValues] = useState<
-    Record<string, number>
-  >({
-    Spotlight: 4,
-    Pointlight: 8,
-    gearScale: 1,
-  });
+  const clearWaypoints = () => {
+    setWaypoints([]);
+  };
+  const clearTargets = () => {
+    setTargets([]);
+  };
+  const clearComments = () => {
+    setComments([]);
+  };
 
   const selectOption = (option: OptionKey) => {
     setOptionSelected((prev: OptionSelected) => {
@@ -217,6 +227,9 @@ function Session() {
         <Selection
           optionSelected={optionSelected}
           selectOption={selectOption}
+          clearWaypoints={clearWaypoints}
+          clearTargets={clearTargets}
+          clearComments={clearComments}
         />
         <KeySelect resetCamera={resetCamera} />
 
