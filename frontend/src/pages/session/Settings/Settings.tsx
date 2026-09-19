@@ -19,26 +19,31 @@ function Settings({
   setMapLightObjectValues,
 }: SettingsProps) {
   const [brightnessValue, setBrightnessValue] = useState(5);
+  const [scaleValue, setScaleValue] = useState(3);
 
   const adjustBrightness = (input: number) => {
-    if (
-      (brightnessValue === 10 && input === 1) ||
-      (brightnessValue === 1 && input === -1)
-    ) {
-      return;
-    }
-
+    setBrightnessValue(brightnessValue + input);
     setMapLightObjectValues((prev) => ({
       ...prev,
-      Spotlight: prev.Spotlight + input * 2,
-      Pointlight: prev.Pointlight + input / 4,
+      Spotlight: prev.Spotlight + input * 0.75,
+      Pointlight: prev.Pointlight + input * 1.4,
     }));
-    setBrightnessValue(brightnessValue + input);
-    console.log(mapLightObjectValues);
-
     //const updatedLight: Record<string, number> = {"Spotlight": (mapLightObjectValues.Spotlight + (input * 2)), "Pointlight": (mapLightObjectValues.Pointlight + (input/4))}
     //setMapLightObjectValues(updatedLight)
     //setBrightnessValue(brightnessValue + input)
+    console.log(
+      mapLightObjectValues.Spotlight,
+      mapLightObjectValues.Pointlight,
+    );
+  };
+
+  const adjustScale = (input: number) => {
+    setScaleValue(scaleValue + input);
+    setMapLightObjectValues((prev) => ({
+      ...prev,
+      scaleFactor: prev.scaleFactor + input * 0.25,
+    }));
+    console.log(mapLightObjectValues.scaleFactor);
   };
 
   return (
@@ -74,6 +79,10 @@ function Settings({
               <button
                 className={styles.leftIncrement}
                 onClick={() => adjustBrightness(-1)}
+                disabled={brightnessValue === 0}
+                style={{
+                  cursor: brightnessValue === 0 ? 'not-allowed' : 'pointer',
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -93,6 +102,10 @@ function Settings({
               <button
                 className={styles.rightIncrement}
                 onClick={() => adjustBrightness(1)}
+                disabled={brightnessValue === 10}
+                style={{
+                  cursor: brightnessValue === 10 ? 'not-allowed' : 'pointer',
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +122,12 @@ function Settings({
             </div>
             <div className={styles.settingsOption}>
               <h5>Scale:</h5>
-              <button className={styles.leftIncrement}>
+              <button
+                className={styles.leftIncrement}
+                onClick={() => adjustScale(-1)}
+                disabled={scaleValue === 0}
+                style={{ cursor: scaleValue === 0 ? 'not-allowed' : 'pointer' }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"
@@ -123,9 +141,14 @@ function Settings({
                 </svg>
               </button>
 
-              <h6>3</h6>
+              <h6>{scaleValue}</h6>
 
-              <button className={styles.rightIncrement}>
+              <button
+                className={styles.rightIncrement}
+                onClick={() => adjustScale(1)}
+                disabled={scaleValue === 5}
+                style={{ cursor: scaleValue === 5 ? 'not-allowed' : 'pointer' }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"

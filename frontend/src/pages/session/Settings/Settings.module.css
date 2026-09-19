@@ -63,6 +63,11 @@
 .rightIncrement:active svg {
   fill: var(--active_color);
 }
+.leftIncrement:disabled svg,
+.rightIncrement:disabled svg {
+  fill: var(--unavailable_gray);
+}
+
 .download {
   background-color: var(--logo_yellow);
   border-radius: 7px;

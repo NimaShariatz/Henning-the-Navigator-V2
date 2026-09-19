@@ -64,7 +64,7 @@ function Session() {
   >({
     Spotlight: 4,
     Pointlight: 8,
-    gearScale: 1,
+    scaleFactor: 1,
   });
 
   const [optionSelected, setOptionSelected] = useState<OptionSelected>({

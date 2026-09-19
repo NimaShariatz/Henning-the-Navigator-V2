@@ -81,10 +81,7 @@ function Selection({
               </g>
             </svg>
           </button>
-          <p>
-            <small>#</small>
-            {waypointId}
-          </p>
+          <p>{waypointId}</p>
           <button
             className={styles.rightIncrement}
             ref={rightIncrement}

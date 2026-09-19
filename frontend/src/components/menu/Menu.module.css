@@ -92,6 +92,11 @@
 }
 
 @media (max-width: 720px) {
+  .menuContainer {
+    border-style: dashed;
+    border-width: 0 0 3px 0;
+    border-color: var(--medium_yellow);
+  }
   .leftSide {
     width: 15%;
     padding-left: 5px;

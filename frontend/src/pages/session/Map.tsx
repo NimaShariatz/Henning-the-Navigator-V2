@@ -141,7 +141,7 @@ function Map({
 
       <spotLight
         intensity={mapLightObjectValues.Spotlight}
-        color={'#f0ead8'}
+        color={'#f1efe8'}
         position={[0, 8, 0.3]}
         penumbra={1}
         angle={0.9}
@@ -150,7 +150,7 @@ function Map({
       <pointLight
         intensity={mapLightObjectValues.Pointlight}
         decay={0.3}
-        color={'#faeaca'}
+        color={'#f0ebe1'}
         position={[0, 7.9, 1.3]}
       />
 
@@ -171,7 +171,7 @@ function Map({
               MapImagesSizes[sessionMap].yHeight,
             ]}
           />
-          <meshStandardMaterial map={mapTexture} toneMapped={false} />
+          <meshBasicMaterial map={mapTexture} toneMapped={false} />
         </mesh>
         <Instances limit={50} frustumCulled={false}>
           {' '}
@@ -183,9 +183,14 @@ function Map({
           {waypoints.map((point) => (
             <Instance
               key={point.id}
-              position={[point.x, 0.06, point.y]}
+              position={[
+                point.x,
+                0.06 + mapLightObjectValues.scaleFactor * 0.005,
+                point.y,
+              ]}
               rotation={[THREE.MathUtils.degToRad(180), 0, 0]}
               color={WAYPOINT_COLORS[point.type] ?? '#ffc90e'}
+              scale={mapLightObjectValues.scaleFactor}
             >
               <Html
                 center
