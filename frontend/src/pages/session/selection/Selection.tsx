@@ -2,6 +2,9 @@ import styles from './Selection.module.css';
 import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import type { OptionKey, OptionSelected } from '../../../constants';
+import { useRef } from 'react';
+import { useEffect } from 'react';
+import type { Waypoint } from '../../../constants';
 
 interface selectionProps {
   optionSelected: OptionSelected;
@@ -9,6 +12,9 @@ interface selectionProps {
   clearWaypoints: () => void;
   clearTargets: () => void;
   clearComments: () => void;
+  waypoints: Waypoint[];
+  waypointId: number;
+  setWaypointId: (newId: number) => void;
 }
 
 function Selection({
@@ -17,7 +23,12 @@ function Selection({
   clearWaypoints,
   clearTargets,
   clearComments,
+  waypoints,
+  waypointId,
+  setWaypointId,
 }: selectionProps) {
+  const leftIncrement = useRef<HTMLButtonElement>(null);
+  const rightIncrement = useRef<HTMLButtonElement>(null);
   const [revealColorPicker, setColorPicker] = useState(false);
   const [color, setColor] = useState('#f62a2a');
   const [changeOptions, setChangeOptions] = useState(1);
@@ -32,8 +43,67 @@ function Selection({
     setChangeOptions(changeOptions + 1);
   };
 
+  useEffect(() => {
+    if (leftIncrement.current) {
+      const disableLeft = waypoints.length === 0 || waypointId === 1;
+      leftIncrement.current.disabled = disableLeft;
+      leftIncrement.current.style.cursor = disableLeft
+        ? 'not-allowed'
+        : 'pointer';
+    }
+    if (rightIncrement.current) {
+      const disableRight = waypointId > waypoints.length;
+      rightIncrement.current.disabled = disableRight;
+      rightIncrement.current.style.cursor = disableRight
+        ? 'not-allowed'
+        : 'pointer';
+    }
+  }, [waypointId, waypoints, changeOptions]);
+
   return (
     <div className={styles.overallContainer}>
+      {changeOptions === 2 && (
+        <div className={styles.waypoinIdContainer}>
+          <button
+            className={styles.leftIncrement}
+            ref={leftIncrement}
+            onClick={() => setWaypointId(waypointId - 1)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100%"
+              height="100%"
+              viewBox="0 0 20 20"
+            >
+              <g fillRule="evenodd" clipRule="evenodd">
+                <path d="M15.499 9.134a1 1 0 0 1 0 1.732l-10 5.769A1 1 0 0 1 4 15.769V4.23a1 1 0 0 1 1.5-.866z" />
+                <path d="M5.5 16.635a1 1 0 0 1-1.5-.866V4.23a1 1 0 0 1 1.5-.866l9.999 5.769a1 1 0 0 1 0 1.732zM10.997 10L7 7.694v4.612z" />
+              </g>
+            </svg>
+          </button>
+          <p>
+            <small>#</small>
+            {waypointId}
+          </p>
+          <button
+            className={styles.rightIncrement}
+            ref={rightIncrement}
+            onClick={() => setWaypointId(waypointId + 1)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100%"
+              height="100%"
+              viewBox="0 0 20 20"
+            >
+              <g fillRule="evenodd" clipRule="evenodd">
+                <path d="M15.499 9.134a1 1 0 0 1 0 1.732l-10 5.769A1 1 0 0 1 4 15.769V4.23a1 1 0 0 1 1.5-.866z" />
+                <path d="M5.5 16.635a1 1 0 0 1-1.5-.866V4.23a1 1 0 0 1 1.5-.866l9.999 5.769a1 1 0 0 1 0 1.732zM10.997 10L7 7.694v4.612z" />
+              </g>
+            </svg>
+          </button>
+        </div>
+      )}
       {!revealColorPicker &&
         (changeOptions === 1 || changeOptions === 4) && ( // if targets or frontline and colorreveal not clicked...
           <div
@@ -427,8 +497,8 @@ function Selection({
                 <svg
                   fill={color}
                   xmlns="http://www.w3.org/2000/svg"
-                  width="90%"
-                  height="90%"
+                  width="80%"
+                  height="80%"
                   viewBox="0 0 32 32"
                 >
                   <path d="M29.391 14.527L17.473 2.609C17.067 2.203 16.533 2 16 2s-1.067.203-1.473.609L2.609 14.527C2.203 14.933 2 15.466 2 16s.203 1.067.609 1.473L14.526 29.39c.407.407.941.61 1.474.61s1.067-.203 1.473-.609L29.39 17.474c.407-.407.61-.94.61-1.474s-.203-1.067-.609-1.473M16 24a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3m1.125-6.752v1.877h-2.25V15H17c1.034 0 1.875-.841 1.875-1.875S18.034 11.25 17 11.25h-2a1.877 1.877 0 0 0-1.875 1.875v.5h-2.25v-.5A4.13 4.13 0 0 1 15 9h2a4.13 4.13 0 0 1 4.125 4.125a4.13 4.13 0 0 1-4 4.123" />

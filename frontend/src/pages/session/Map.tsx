@@ -173,9 +173,9 @@ function Map({
           />
           <meshStandardMaterial map={mapTexture} toneMapped={false} />
         </mesh>
-        <Instances limit={100} frustumCulled={false}>
+        <Instances limit={50} frustumCulled={false}>
           {' '}
-          {/* max 100. frustumCalled turned off so it still renders on orbit zoom */}
+          {/* max 50. frustumCalled turned off so it still renders on orbit zoom */}
           {/* Since all waypoints share the same geometry and only differ by position/color, you can render them all in a single draw call using instancing.
           So this avoides a ridicoulus amount of draw calls which would tank FPS*/}
           <octahedronGeometry args={[0.06, 0]} />

@@ -91,18 +91,34 @@ function Session() {
     comment: false,
     frontline: false,
   });
+  const [waypointId, setWaypointId] = useState(1);
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]); // see constants .tsx for its structure
   const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
   const [comments, setComments] = useState<Commentpoint[]>([]); // see constants .tsx for its structure
+
+  const waypointIdSetter = (newId: number) => {
+    setWaypointId(newId);
+  };
+
   const addWaypoint = (x: number, y: number, type: string) => {
+    const existingIndex = waypoints.findIndex((w) => w.id === waypointId);
+
+    if (existingIndex !== -1) {
+      // id already in use -> reposition instead of duplicating
+      const updated = [...waypoints];
+      updated[existingIndex] = { ...updated[existingIndex], x, y };
+      setWaypoints(updated);
+      return;
+    }
+
     const newWaypoint = {
-      id:
-        waypoints.length > 0 ? Math.max(...waypoints.map((w) => w.id)) + 1 : 1,
+      id: waypointId,
       x: x,
       y: y,
       type: type,
     };
     setWaypoints([...waypoints, newWaypoint]);
+    setWaypointId(waypointId + 1);
   };
 
   const addTarget = (
@@ -137,6 +153,7 @@ function Session() {
 
   const clearWaypoints = () => {
     setWaypoints([]);
+    setWaypointId(1);
   };
   const clearTargets = () => {
     setTargets([]);
@@ -155,6 +172,7 @@ function Session() {
         return point;
       });
     setWaypoints(updatedPoints);
+    setWaypointId(waypointId - 1);
   };
 
   const selectOption = (option: OptionKey) => {
@@ -207,7 +225,7 @@ function Session() {
             ref={controlsRef}
             rotateSpeed={0.4}
             makeDefault
-            maxDistance={12}
+            maxDistance={14}
             panSpeed={1.35}
             target={DEFAULT_TARGET.toArray()}
             maxPolarAngle={1.5}
@@ -243,6 +261,9 @@ function Session() {
           clearWaypoints={clearWaypoints}
           clearTargets={clearTargets}
           clearComments={clearComments}
+          waypoints={waypoints}
+          waypointId={waypointId}
+          setWaypointId={waypointIdSetter}
         />
         <KeySelect resetCamera={resetCamera} />
 
