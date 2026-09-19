@@ -12,22 +12,46 @@
   background-color: black;
   position: relative;
 }
+.waypointTextHTML {
+  /* placing it in .tableObjectHTML > div p wont really prevent the html popup from interacting with the cursor...(getting in the way) */
+  pointer-events: all;
+  user-select: none;
+}
 
-.waypointTextHTML > div p {
+.waypointIdContainer {
   background-color: var(--darkBG_1);
   outline-width: 2px;
   outline-style: solid;
-  font-weight: 600;
-  font-size: 10px;
-  color: var(--text_color_white);
-  padding-block: 0.1rem;
-  padding-inline: 0.3rem;
   border-radius: 3px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding-inline: 0.35rem;
+  padding-block: 0.1rem;
+}
+.waypointIdContainer:hover {
+  background-color: var(--active_color);
+}
+
+.waypointIdContainer .waypointId {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text_color_white);
   white-space: nowrap; /* no new lines*/
   display: inline-block; /* no new lines*/
 }
-.waypointTextHTML {
-  /* placing it in .tableObjectHTML > div p wont really prevent the html popup from interacting with the cursor...(getting in the way) */
-  pointer-events: none;
-  user-select: none;
+.waypointIdContainer:hover .waypointId {
+  display: none;
+}
+
+.removeWaypoint {
+  display: none;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text_color);
+  white-space: nowrap; /* no new lines*/
+  cursor: pointer;
+}
+.waypointIdContainer:hover .removeWaypoint {
+  display: block;
 }

@@ -145,6 +145,18 @@ function Session() {
     setComments([]);
   };
 
+  const RemoveNavPoint = (id: number) => {
+    const updatedPoints = waypoints
+      .filter((point) => point.id !== id)
+      .map((point) => {
+        if (point.id > id) {
+          return { ...point, id: point.id - 1 };
+        }
+        return point;
+      });
+    setWaypoints(updatedPoints);
+  };
+
   const selectOption = (option: OptionKey) => {
     setOptionSelected((prev: OptionSelected) => {
       const next = { ...prev };
@@ -220,6 +232,7 @@ function Session() {
             comments={comments}
             addComment={addComment}
             //setComments={setComments}
+            RemoveNavPoint={RemoveNavPoint}
           />
           {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
         </Canvas>

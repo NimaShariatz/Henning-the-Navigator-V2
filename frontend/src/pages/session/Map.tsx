@@ -55,6 +55,7 @@ interface MapProps {
   comments: Commentpoint[];
   addComment: (x: number, y: number, text: string) => void;
   //setComments: React.Dispatch<React.SetStateAction<Commentpoint[]>>;
+  RemoveNavPoint: (id: number) => void;
 }
 
 function Map({
@@ -73,6 +74,7 @@ function Map({
   //comments, --- UNCOMMENT WHEN READY
   addComment,
   //setComments,
+  RemoveNavPoint,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -191,14 +193,21 @@ function Map({
                 position={[0, -0.1, 0]}
                 zIndexRange={[1, 0]} // default is [16777271, 0]
               >
-                <p
+                <div
+                  className={styles.waypointIdContainer}
                   style={{
                     outlineColor:
                       WAYPOINT_COLORS[point.type] ?? 'var(--logo_yellow)',
                   }}
                 >
-                  {point.id}
-                </p>
+                  <p className={styles.waypointId}>{point.id}</p>
+                  <p
+                    className={styles.removeWaypoint}
+                    onClick={() => RemoveNavPoint(point.id)}
+                  >
+                    Remove waypoint
+                  </p>
+                </div>
               </Html>
             </Instance>
           ))}
