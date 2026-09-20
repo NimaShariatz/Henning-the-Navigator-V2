@@ -5,6 +5,8 @@ import {
   Html,
   Instances,
   Instance,
+  Segment,
+  Segments,
 } from '@react-three/drei';
 import * as THREE from 'three';
 //import { useRef } from 'react';
@@ -32,6 +34,8 @@ import {
   WAYPOINT_COLORS,
 } from '../../constants';
 import styles from './Session.module.css';
+
+const MAX_SEGMENTS = 49; // one less than the 50 waypoint cap
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -175,7 +179,7 @@ function Map({
         </mesh>
         <Instances limit={50} frustumCulled={false}>
           {' '}
-          {/* max 50. frustumCalled turned off so it still renders on orbit zoom */}
+          {/* max 50. and frustumCalled turned off so it still renders on orbit zoom */}
           {/* Since all waypoints share the same geometry and only differ by position/color, you can render them all in a single draw call using instancing.
           So this avoides a ridicoulus amount of draw calls which would tank FPS*/}
           <octahedronGeometry args={[0.06, 0]} />
@@ -217,6 +221,36 @@ function Map({
             </Instance>
           ))}
         </Instances>
+
+        <Segments limit={MAX_SEGMENTS} lineWidth={5}>
+          {' '}
+          {/* not using drei line with waypoints.map because of draw calls */}
+          {Array.from({ length: MAX_SEGMENTS }, (_, i) => {
+            const point = waypoints[i];
+            const nextPoint = waypoints[i + 1];
+            const y = 0.06 + mapLightObjectValues.scaleFactor * 0.005;
+
+            if (!point || !nextPoint) {
+              return (
+                <Segment
+                  key={`segment-slot-${i}`}
+                  start={[0, -5, 0]}
+                  end={[0, -5, 0]}
+                  color="#000000"
+                />
+              );
+            }
+
+            return (
+              <Segment
+                key={`segment-slot-${i}`}
+                start={[point.x, y, point.y]}
+                end={[nextPoint.x, y, nextPoint.y]}
+                color={WAYPOINT_COLORS[nextPoint.type] ?? '#ffc90e'}
+              />
+            );
+          })}
+        </Segments>
       </group>
 
       <Gear revealSettingsSetter={revealSettingsSetter} />

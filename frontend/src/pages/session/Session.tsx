@@ -111,6 +111,8 @@ function Session() {
       return;
     }
 
+    if (waypoints.length >= 50) return; // stop once the render limit is reached
+
     const newWaypoint = {
       id: waypointId,
       x: x,
