@@ -35,10 +35,6 @@ function Settings({
     //const updatedLight: Record<string, number> = {"Spotlight": (mapLightObjectValues.Spotlight + (input * 2)), "Pointlight": (mapLightObjectValues.Pointlight + (input/4))}
     //setMapLightObjectValues(updatedLight)
     //setBrightnessValue(brightnessValue + input)
-    console.log(
-      mapLightObjectValues.Spotlight,
-      mapLightObjectValues.Pointlight,
-    );
   };
 
   const adjustScale = (input: number) => {
