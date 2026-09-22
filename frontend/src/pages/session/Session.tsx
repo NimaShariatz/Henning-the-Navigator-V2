@@ -66,6 +66,7 @@ function Session() {
     Pointlight: 8,
     scaleFactor: 1,
   });
+  const [isKilometers, setIsKilometers] = useState(true);
 
   const [optionSelected, setOptionSelected] = useState<OptionSelected>({
     startPoint: false,
@@ -106,7 +107,7 @@ function Session() {
     if (existingIndex !== -1) {
       // id already in use -> reposition instead of duplicating
       const updated = [...waypoints];
-      updated[existingIndex] = { ...updated[existingIndex], x, y };
+      updated[existingIndex] = { ...updated[existingIndex], x, y, type };
       setWaypoints(updated);
       return;
     }
@@ -253,6 +254,7 @@ function Session() {
             addComment={addComment}
             //setComments={setComments}
             RemoveNavPoint={RemoveNavPoint}
+            isKilometers={isKilometers}
           />
           {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
         </Canvas>
@@ -274,6 +276,8 @@ function Session() {
           revealSettingsSetter={revealSettingsSetter}
           mapLightObjectValues={mapLightObjectValues}
           setMapLightObjectValues={setMapLightObjectValues}
+          isKilometers={isKilometers}
+          setIsKilometers={setIsKilometers}
         />
         <FlightInfo
           revealFlightInfo={popupRevealer.flightInfo}

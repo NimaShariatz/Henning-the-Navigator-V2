@@ -35,7 +35,7 @@ import {
 } from '../../constants';
 import styles from './Session.module.css';
 
-const MAX_SEGMENTS = 49; // one less than the 50 waypoint cap
+const MAX_WAYPOINTS = 50; // one less than the 50 waypoint cap
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -60,6 +60,7 @@ interface MapProps {
   addComment: (x: number, y: number, text: string) => void;
   //setComments: React.Dispatch<React.SetStateAction<Commentpoint[]>>;
   RemoveNavPoint: (id: number) => void;
+  isKilometers: boolean;
 }
 
 function Map({
@@ -79,6 +80,7 @@ function Map({
   addComment,
   //setComments,
   RemoveNavPoint,
+  isKilometers,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -118,6 +120,42 @@ function Map({
       addComment(x, y, 'some kewl new text');
       return;
     }
+  };
+
+  const distanceHeadingCalculations = (
+    pointX: number,
+    pointY: number,
+    nextPointX: number,
+    nextPointY: number,
+  ) => {
+    const midX = (pointX + nextPointX) / 2;
+    const midY = (pointY + nextPointY) / 2;
+
+    const distanceX = nextPointX - pointX;
+    const distanceY = nextPointY - pointY;
+
+    const length = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+    const pixelLength = length;
+
+    let distance = (pixelLength / 0.36178803335554477) * 10;
+
+    if (!isKilometers) {
+      distance = distance * 0.621371;
+    }
+
+    distance = Math.round(distance);
+
+    //console.log(pointX - nextPointX)
+    //console.log(distance)
+
+    let angle = Math.atan2(distanceY, distanceX) * (180 / Math.PI);
+
+    angle = angle + 90; // to make 0 north instead ofeast
+    angle = (angle + 360) % 360; //within 360 range
+    const heading = Math.round(angle);
+
+    return { midX, midY, distance, heading };
   };
 
   return (
@@ -177,7 +215,7 @@ function Map({
           />
           <meshBasicMaterial map={mapTexture} toneMapped={false} />
         </mesh>
-        <Instances limit={50} frustumCulled={false}>
+        <Instances limit={MAX_WAYPOINTS} frustumCulled={false}>
           {' '}
           {/* max 50. and frustumCalled turned off so it still renders on orbit zoom */}
           {/* Since all waypoints share the same geometry and only differ by position/color, you can render them all in a single draw call using instancing.
@@ -222,10 +260,10 @@ function Map({
           ))}
         </Instances>
 
-        <Segments limit={MAX_SEGMENTS} lineWidth={5}>
+        <Segments limit={MAX_WAYPOINTS - 1} lineWidth={4}>
           {' '}
           {/* not using drei line with waypoints.map because of draw calls */}
-          {Array.from({ length: MAX_SEGMENTS }, (_, i) => {
+          {Array.from({ length: MAX_WAYPOINTS - 1 }, (_, i) => {
             const point = waypoints[i];
             const nextPoint = waypoints[i + 1];
             const y = 0.06 + mapLightObjectValues.scaleFactor * 0.005;
@@ -241,13 +279,36 @@ function Map({
               );
             }
 
+            const { midX, midY, distance, heading } =
+              distanceHeadingCalculations(
+                point.x,
+                point.y,
+                nextPoint.x,
+                nextPoint.y,
+              );
+
             return (
-              <Segment
-                key={`segment-slot-${i}`}
-                start={[point.x, y, point.y]}
-                end={[nextPoint.x, y, nextPoint.y]}
-                color={WAYPOINT_COLORS[nextPoint.type] ?? '#ffc90e'}
-              />
+              <>
+                <Segment
+                  key={`segment-slot-${i}`}
+                  start={[point.x, y, point.y]}
+                  end={[nextPoint.x, y, nextPoint.y]}
+                  color={WAYPOINT_COLORS[nextPoint.type] ?? '#ffc90e'}
+                />
+
+                <Html
+                  center
+                  wrapperClass={styles.waypointTravelInfoHTML}
+                  position={[midX, 0.2, midY]}
+                  zIndexRange={[1, 0]} // default is [16777271, 0]
+                >
+                  <div className={styles.waypointInfoContainer}>
+                    <p>
+                      {distance}&nbsp;{isKilometers ? 'km' : 'mi'} at {heading}°
+                    </p>
+                  </div>
+                </Html>
+              </>
             );
           })}
         </Segments>

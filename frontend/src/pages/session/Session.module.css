@@ -12,7 +12,8 @@
   background-color: black;
   position: relative;
 }
-.waypointTextHTML {
+.waypointTextHTML,
+.waypointTravelInfoHTML {
   /* placing it in .tableObjectHTML > div p wont really prevent the html popup from interacting with the cursor...(getting in the way) */
   pointer-events: all;
   user-select: none;
@@ -54,4 +55,14 @@
 }
 .waypointIdContainer:hover .removeWaypoint {
   display: block;
+}
+
+.waypointInfoContainer {
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.waypointInfoContainer p {
+  color: var(--text_color_white);
+  white-space: nowrap; /* no new lines*/
 }

@@ -8,6 +8,8 @@ interface SettingsProps {
   setMapLightObjectValues: React.Dispatch<
     React.SetStateAction<Record<string, number>>
   >;
+  isKilometers: boolean;
+  setIsKilometers: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // per-brightness-level step for each light, chosen so level * step = default intensity at level 3
@@ -17,6 +19,8 @@ function Settings({
   revealSettingsSetter,
   mapLightObjectValues,
   setMapLightObjectValues,
+  isKilometers,
+  setIsKilometers,
 }: SettingsProps) {
   const [brightnessValue, setBrightnessValue] = useState(5);
   const [scaleValue, setScaleValue] = useState(3);
@@ -162,9 +166,21 @@ function Settings({
                 </svg>
               </button>
             </div>
+
+            <div className={styles.settingsOption}>
+              <h5>Unit of Length:</h5>
+
+              <button
+                className={styles.unitChange}
+                onClick={() => setIsKilometers(!isKilometers)}
+              >
+                {isKilometers ? 'km' : 'mi'}
+              </button>
+            </div>
+
             <div className={styles.settingsOption}>
               <button className={styles.download}>
-                <h5>Download Map Data</h5>
+                Download Map Data
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.5rem"
@@ -180,7 +196,7 @@ function Settings({
             </div>
             <div className={styles.settingsOption}>
               <button className={styles.download}>
-                <h5>Upload Map Data</h5>
+                Upload Map Data
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.5rem"

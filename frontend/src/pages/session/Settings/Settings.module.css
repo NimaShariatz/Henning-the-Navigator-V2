@@ -68,17 +68,27 @@
   fill: var(--unavailable_gray);
 }
 
-.download {
+.download,
+.unitChange {
   background-color: var(--logo_yellow);
-  border-radius: 7px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   cursor: pointer;
   padding-inline: 0.7rem;
+  font-weight: 700;
+  outline: 4px solid transparent;
+}
+.unitChange {
+  margin-left: 0.75rem;
 }
 .download svg {
   fill: var(--text_color);
   margin-left: 0.4rem;
+}
+.download:hover,
+.unitChange:hover {
+  outline-color: var(--text_color_white);
 }
 .close {
   display: flex;
