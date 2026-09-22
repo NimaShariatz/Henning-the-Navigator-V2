@@ -35,6 +35,7 @@ import {
   WAYPOINT_COLORS,
 } from '../../constants';
 import styles from './Session.module.css';
+import * as React from 'react';
 
 const MAX_WAYPOINTS = 50; // one less than the 50 waypoint cap
 
@@ -287,19 +288,19 @@ function Map({
               );
 
             return (
-              <>
+              <React.Fragment key={`segment-slot-${i}`}>
+                {' '}
+                {/*a fix for 'Each child in a list should have a unique "key" prop' */}
                 <Segment
-                  key={`segment-slot-${i}`}
                   start={[point.x, y, point.y]}
                   end={[nextPoint.x, y, nextPoint.y]}
                   color={WAYPOINT_COLORS[nextPoint.type] ?? '#ffc90e'}
                 />
-
                 <Html
                   center
                   wrapperClass={styles.waypointTravelInfoHTML}
                   position={[midX, 0.2, midY]}
-                  zIndexRange={[1, 0]} // default is [16777271, 0]
+                  zIndexRange={[1, 0]}
                 >
                   <div className={styles.waypointInfoContainer}>
                     <p>
@@ -307,7 +308,7 @@ function Map({
                     </p>
                   </div>
                 </Html>
-              </>
+              </React.Fragment>
             );
           })}
         </Segments>
