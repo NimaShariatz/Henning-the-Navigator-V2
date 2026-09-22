@@ -118,7 +118,7 @@ export type OptionKey =
   | 'antiair'
   | 'parachute'
   | 'unknown'
-  | 'comment'
+  | 'text'
   | 'frontline';
 
 export type OptionSelected = Record<OptionKey, boolean>;
@@ -156,11 +156,17 @@ export interface Targetpoint {
   rotation: number;
   type: string;
 }
-export interface Commentpoint {
+export interface Textpoint {
   id: number;
   x: number;
   y: number;
   text: string;
+}
+export interface Frontline {
+  id: number;
+  start: { x: number; y: number }[];
+  end: { x: number; y: number }[];
+  color: string;
 }
 
 export const WAYPOINT_OPTION_KEYS: OptionKey[] = [

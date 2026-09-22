@@ -11,7 +11,8 @@ interface selectionProps {
   selectOption: (option: OptionKey) => void;
   clearWaypoints: () => void;
   clearTargets: () => void;
-  clearComments: () => void;
+  clearTexts: () => void;
+  clearFrontlines: () => void;
   waypoints: Waypoint[];
   waypointId: number;
   setWaypointId: (newId: number) => void;
@@ -22,7 +23,8 @@ function Selection({
   selectOption,
   clearWaypoints,
   clearTargets,
-  clearComments,
+  clearTexts,
+  clearFrontlines,
   waypoints,
   waypointId,
   setWaypointId,
@@ -731,9 +733,9 @@ function Selection({
             <>
               <button
                 className={styles.miscButton}
-                onClick={() => selectOption('comment')}
+                onClick={() => selectOption('text')}
                 style={{
-                  outlineColor: optionSelected.comment
+                  outlineColor: optionSelected.text
                     ? 'var(--active_color)'
                     : 'transparent',
                 }}
@@ -763,7 +765,7 @@ function Selection({
               </button>
               <button
                 className={styles.miscButton}
-                onClick={() => clearComments()}
+                onClick={() => clearTexts()}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -802,7 +804,10 @@ function Selection({
                   ></path>
                 </svg>
               </button>
-              <button className={styles.miscButton}>
+              <button
+                className={styles.miscButton}
+                onClick={() => clearFrontlines()}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="65%"

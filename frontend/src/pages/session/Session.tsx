@@ -15,11 +15,12 @@ import Settings from './settings/Settings';
 import FlightInfo from './flightInfo/FlightInfo';
 import Selection from './selection/Selection';
 import type {
-  Commentpoint,
+  Textpoint,
   OptionKey,
   OptionSelected,
   Targetpoint,
   Waypoint,
+  Frontline,
 } from '../../constants';
 import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 
@@ -89,19 +90,22 @@ function Session() {
     antiair: false,
     parachute: false,
     unknown: false,
-    comment: false,
+    text: false,
     frontline: false,
   });
   const [waypointId, setWaypointId] = useState(1);
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]); // see constants .tsx for its structure
   const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
-  const [comments, setComments] = useState<Commentpoint[]>([]); // see constants .tsx for its structure
+  const [texts, setTexts] = useState<Textpoint[]>([]); // see constants .tsx for its structure
+  const [frontlines, setFrontlines] = useState<Frontline[]>([]); // see constants .tsx for its structure
 
   const waypointIdSetter = (newId: number) => {
     setWaypointId(newId);
   };
 
   const addWaypoint = (x: number, y: number, type: string) => {
+    if (waypoints.length >= 50) return; // stop once the render limit is reached
+
     const existingIndex = waypoints.findIndex((w) => w.id === waypointId);
 
     if (existingIndex !== -1) {
@@ -111,8 +115,6 @@ function Session() {
       setWaypoints(updated);
       return;
     }
-
-    if (waypoints.length >= 50) return; // stop once the render limit is reached
 
     const newWaypoint = {
       id: waypointId,
@@ -143,15 +145,24 @@ function Session() {
     setTargets([...targets, newTarget]);
   };
 
-  const addComment = (x: number, y: number, text: string) => {
-    const newComment = {
+  const addText = (x: number, y: number, text: string) => {
+    const newText = {
       id:
         waypoints.length > 0 ? Math.max(...waypoints.map((w) => w.id)) + 1 : 1,
       x: x,
       y: y,
       text: text,
     };
-    setComments([...comments, newComment]);
+    setTexts([...texts, newText]);
+  };
+
+  const addFrontline = (
+    xStart: number,
+    yStart: number,
+    xEnd: number,
+    yEnd: number,
+  ) => {
+    console.log(xStart, yStart, xEnd, yEnd);
   };
 
   const clearWaypoints = () => {
@@ -161,8 +172,11 @@ function Session() {
   const clearTargets = () => {
     setTargets([]);
   };
-  const clearComments = () => {
-    setComments([]);
+  const clearTexts = () => {
+    setTexts([]);
+  };
+  const clearFrontlines = () => {
+    setFrontlines([]);
   };
 
   const RemoveNavPoint = (id: number) => {
@@ -250,9 +264,11 @@ function Session() {
             targets={targets}
             addTarget={addTarget}
             //setTargets={setTargets}
-            comments={comments}
-            addComment={addComment}
-            //setComments={setComments}
+            texts={texts}
+            addText={addText}
+            //setTexts={setTexts}
+            frontlines={frontlines}
+            addFrontline={addFrontline}
             RemoveNavPoint={RemoveNavPoint}
             isKilometers={isKilometers}
           />
@@ -264,7 +280,8 @@ function Session() {
           selectOption={selectOption}
           clearWaypoints={clearWaypoints}
           clearTargets={clearTargets}
-          clearComments={clearComments}
+          clearTexts={clearTexts}
+          clearFrontlines={clearFrontlines}
           waypoints={waypoints}
           waypointId={waypointId}
           setWaypointId={waypointIdSetter}

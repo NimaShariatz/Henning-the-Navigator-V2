@@ -24,10 +24,11 @@ import fontPath900 from '../../fonts/saira/saira-v21-latin-900.ttf';
 import fontPath600 from '../../fonts/saira/saira-v21-latin-600.ttf';
 import { useThree } from '@react-three/fiber';
 import type {
-  Commentpoint,
+  Textpoint,
   OptionSelected,
   Targetpoint,
   Waypoint,
+  Frontline,
 } from '../../constants';
 import {
   TARGET_OPTION_KEYS,
@@ -36,6 +37,7 @@ import {
 } from '../../constants';
 import styles from './Session.module.css';
 import * as React from 'react';
+import { useState } from 'react';
 
 const MAX_WAYPOINTS = 50; // one less than the 50 waypoint cap
 
@@ -58,9 +60,16 @@ interface MapProps {
     type: string,
   ) => void;
   //setTargets: React.Dispatch<React.SetStateAction<Targetpoint[]>>;
-  comments: Commentpoint[];
-  addComment: (x: number, y: number, text: string) => void;
-  //setComments: React.Dispatch<React.SetStateAction<Commentpoint[]>>;
+  texts: Textpoint[];
+  addText: (x: number, y: number, text: string) => void;
+  //setTexts: React.Dispatch<React.SetStateAction<Textpoint[]>>;
+  frontlines: Frontline[];
+  addFrontline: (
+    xStart: number,
+    yStart: number,
+    xEnd: number,
+    yEnd: number,
+  ) => void;
   RemoveNavPoint: (id: number) => void;
   isKilometers: boolean;
 }
@@ -78,15 +87,22 @@ function Map({
   //targets, --- UNCOMMENT WHEN READY
   addTarget,
   //setTargets,
-  //comments, --- UNCOMMENT WHEN READY
-  addComment,
-  //setComments,
+  //texts, --- UNCOMMENT WHEN READY
+  addText,
+  //setTexts,
+  frontlines,
+  addFrontline,
   RemoveNavPoint,
   isKilometers,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
   const { gl } = useThree();
+
+  const [firstFrontlineClickData, setFirstFrontlineClickData] = useState<{
+    xStart: number | null;
+    yStart: number | null;
+  }>({ xStart: null, yStart: null });
 
   const mapTexture = useTexture(MapImages[sessionMap], (texture) => {
     (texture as THREE.Texture).anisotropy = gl.capabilities.getMaxAnisotropy();
@@ -117,9 +133,29 @@ function Map({
       //console.log(targetpoints)
       return;
     }
-    // the thing true is comment
-    if (optionSelected.comment) {
-      addComment(x, y, 'some kewl new text');
+    // the thing true is text
+    if (optionSelected.text) {
+      addText(x, y, 'some kewl new text');
+      return;
+    }
+    if (optionSelected.frontline) {
+      if (
+        firstFrontlineClickData.xStart === null ||
+        firstFrontlineClickData.yStart === null
+      ) {
+        // first click: remember the start point
+        setFirstFrontlineClickData({ xStart: x, yStart: y });
+      } else {
+        // second click: we now have both ends, so create the frontline and reset
+        addFrontline(
+          firstFrontlineClickData.xStart,
+          firstFrontlineClickData.yStart,
+          x,
+          y,
+        );
+        setFirstFrontlineClickData({ xStart: null, yStart: null });
+        console.log(frontlines);
+      }
       return;
     }
   };
