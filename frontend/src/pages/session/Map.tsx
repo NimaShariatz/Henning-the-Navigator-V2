@@ -16,6 +16,7 @@ import {
   blenderLamp,
   MapImages,
   MapImagesSizes,
+  Map10Kilometer,
 } from '../../constants';
 import Gear from './tableObjects/Gear';
 import Clipboard from './tableObjects/Clipboard';
@@ -138,16 +139,14 @@ function Map({
 
     const pixelLength = length;
 
-    let distance = (pixelLength / 0.36178803335554477) * 10;
-
+    let distance = (pixelLength / Map10Kilometer[sessionMap]) * 10;
     if (!isKilometers) {
       distance = distance * 0.621371;
     }
 
     distance = Math.round(distance);
 
-    //console.log(pointX - nextPointX)
-    //console.log(distance)
+    //console.log(Math.abs(pointX - nextPointX))
 
     let angle = Math.atan2(distanceY, distanceX) * (180 / Math.PI);
 

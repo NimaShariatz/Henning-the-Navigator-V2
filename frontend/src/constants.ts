@@ -81,6 +81,22 @@ const MapImagesSizes: Record<string, { xLenght: number; yHeight: number }> = {
   'Western Front': { xLenght: 14.2, yHeight: 11.15126 },
 };
 
+const Map10Kilometer: Record<string, number> = {
+  //do console.log(Math.abs(pointX - nextPointX)) in Map.tsx/distanceHeadingCalculations()
+  Arras: 1.065788195925882,
+  Kuban: 0.34102682297936565,
+  Lapino: 2.446202734225547,
+  Moscow: 0.4361552731303727,
+  Normandy: 0.36178803335554477,
+  Novosokolniki: 2.4438576142465136,
+  Odessa: 0.4024866607360202,
+  Prokhorovka: 1.183398381910097,
+  Rheinland: 0.35571897198819297,
+  Stalingrad: 0.39801162698715575,
+  Vluki: 0.8532383106774625,
+  'Western Front': 0.39778910293291386,
+};
+
 export type OptionKey =
   | 'startPoint'
   | 'ingressPoint'
@@ -205,6 +221,7 @@ export {
   lowResMapImages,
   MapImages,
   MapImagesSizes,
+  Map10Kilometer,
   blenderTable,
   blenderLamp,
   blenderGear,

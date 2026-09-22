@@ -175,7 +175,7 @@ function Session() {
         return point;
       });
     setWaypoints(updatedPoints);
-    setWaypointId(waypointId - 1);
+    setWaypointId(waypoints.length);
   };
 
   const selectOption = (option: OptionKey) => {
