@@ -34,12 +34,12 @@ import {
   TARGET_OPTION_KEYS,
   WAYPOINT_OPTION_KEYS,
   WAYPOINT_COLORS,
+  MAX_WAYPOINTS,
+  MAX_FRONTLINES,
 } from '../../constants';
 import styles from './Session.module.css';
 import * as React from 'react';
 import { useState } from 'react';
-
-const MAX_WAYPOINTS = 50; // one less than the 50 waypoint cap
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -120,8 +120,8 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeWaypointType) {
+      setFirstFrontlineClickData({ xStart: null, yStart: null });
       addWaypoint(x, y, activeWaypointType);
-      //console.log(waypoints)
       return;
     }
     //if the thing true is a target
@@ -129,12 +129,13 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeTargetType) {
+      setFirstFrontlineClickData({ xStart: null, yStart: null });
       addTarget(x, y, 0, 0, activeTargetType);
-      //console.log(targetpoints)
       return;
     }
     // the thing true is text
     if (optionSelected.text) {
+      setFirstFrontlineClickData({ xStart: null, yStart: null });
       addText(x, y, 'some kewl new text');
       return;
     }
@@ -154,7 +155,6 @@ function Map({
           y,
         );
         setFirstFrontlineClickData({ xStart: null, yStart: null });
-        console.log(frontlines);
       }
       return;
     }
@@ -296,9 +296,12 @@ function Map({
           ))}
         </Instances>
 
-        <Segments limit={MAX_WAYPOINTS - 1} lineWidth={4}>
+        <Segments limit={MAX_WAYPOINTS - 1} lineWidth={1.5}>
           {' '}
-          {/* not using drei line with waypoints.map because of draw calls */}
+          {/* 
+            not using drei line with waypoints.map because of draw calls. 
+            50 segments are created. They take triangles. if point exists, move and re-color it to x and y. else, render it far far away.
+          */}
           {Array.from({ length: MAX_WAYPOINTS - 1 }, (_, i) => {
             const point = waypoints[i];
             const nextPoint = waypoints[i + 1];
@@ -308,8 +311,8 @@ function Map({
               return (
                 <Segment
                   key={`segment-slot-${i}`}
-                  start={[0, -5, 0]}
-                  end={[0, -5, 0]}
+                  start={[0, -500, 0]}
+                  end={[0, -500, 0]}
                   color="#000000"
                 />
               );
@@ -345,6 +348,31 @@ function Map({
                   </div>
                 </Html>
               </React.Fragment>
+            );
+          })}
+        </Segments>
+
+        <Segments limit={MAX_FRONTLINES} lineWidth={5}>
+          {Array.from({ length: MAX_FRONTLINES }, (_, i) => {
+            const line = frontlines[i];
+
+            if (!line) {
+              return (
+                <Segment
+                  key={`frontline-${i}`}
+                  start={[0, -501, 0]}
+                  end={[0, -501, 0]}
+                  color="#000000"
+                />
+              );
+            }
+            return (
+              <Segment
+                key={`frontline-${i}`}
+                start={[line.start[0].x, 0.01, line.start[0].y]}
+                end={[line.end[0].x, 0.01, line.end[0].y]}
+                color={line.color}
+              />
             );
           })}
         </Segments>

@@ -2,6 +2,7 @@ import styles from './Selection.module.css';
 import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import type { OptionKey, OptionSelected } from '../../../constants';
+import { DEFAULT_COLORSELECT_OPTIONS } from '../../../constants';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import type { Waypoint } from '../../../constants';
@@ -16,6 +17,8 @@ interface selectionProps {
   waypoints: Waypoint[];
   waypointId: number;
   setWaypointId: (newId: number) => void;
+  color: string;
+  setColor: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function Selection({
@@ -28,11 +31,12 @@ function Selection({
   waypoints,
   waypointId,
   setWaypointId,
+  color,
+  setColor,
 }: selectionProps) {
   const leftIncrement = useRef<HTMLButtonElement>(null);
   const rightIncrement = useRef<HTMLButtonElement>(null);
   const [revealColorPicker, setColorPicker] = useState(false);
-  const [color, setColor] = useState('#f62a2a');
   const [changeOptions, setChangeOptions] = useState(1);
   const ChangeOptionsHandler = () => {
     // 1 = targets
@@ -115,9 +119,30 @@ function Selection({
         (changeOptions === 1 || changeOptions === 4) && ( // if targets or frontline and colorreveal clicked...
           <div className={styles.rgbaContainer}>
             <div className={styles.colorDefaultRow}>
-              <button onClick={() => setColor('#f62a2a')}>Red</button>
-              <button onClick={() => setColor('#1f7ce0')}>Blue</button>
-              <button onClick={() => setColor('#dcdcdc')}>Grey</button>
+              <button
+                style={{
+                  backgroundColor: DEFAULT_COLORSELECT_OPTIONS.redTarget,
+                }}
+                onClick={() => setColor(DEFAULT_COLORSELECT_OPTIONS.redTarget)}
+              >
+                Red
+              </button>
+              <button
+                style={{
+                  backgroundColor: DEFAULT_COLORSELECT_OPTIONS.blueTarget,
+                }}
+                onClick={() => setColor(DEFAULT_COLORSELECT_OPTIONS.blueTarget)}
+              >
+                Blue
+              </button>
+              <button
+                style={{
+                  backgroundColor: DEFAULT_COLORSELECT_OPTIONS.greyTarget,
+                }}
+                onClick={() => setColor(DEFAULT_COLORSELECT_OPTIONS.greyTarget)}
+              >
+                Grey
+              </button>
             </div>
             <HexColorPicker color={color} onChange={setColor} />
             <button

@@ -183,6 +183,15 @@ export const WAYPOINT_COLORS: Record<string, string> = {
   egressPoint: '#2ee31e',
 };
 
+export const DEFAULT_COLORSELECT_OPTIONS: Record<string, string> = {
+  redTarget: '#b91515',
+  blueTarget: '#1058a4',
+  greyTarget: '#a7a7a7',
+};
+
+export const MAX_WAYPOINTS = 50; // max waypoints
+export const MAX_FRONTLINES = 200; // max frontlines
+
 import blenderTable from './assets/blender/threejsTable.glb';
 import blenderLamp from './assets/blender/threejsLampBasic.glb';
 import blenderGear from './assets/blender/threejsSettings2.glb';

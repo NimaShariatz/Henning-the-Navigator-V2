@@ -34,10 +34,6 @@
   --waypoint_ingress: #ffc90e;
   --waypoint_ingress_id_color: #ebc84cd0;
 
-  --red_target: #f62a2a;
-  --blue_target: #1f7ce0;
-  --grey_target: #dcdcdc;
-
   /* z-index and units */
   --menu_height: 60px;
   --sessionHeader_index: 1;

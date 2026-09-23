@@ -14,13 +14,14 @@ import * as THREE from 'three';
 import Settings from './settings/Settings';
 import FlightInfo from './flightInfo/FlightInfo';
 import Selection from './selection/Selection';
-import type {
-  Textpoint,
-  OptionKey,
-  OptionSelected,
-  Targetpoint,
-  Waypoint,
-  Frontline,
+import {
+  type Textpoint,
+  type OptionKey,
+  type OptionSelected,
+  type Targetpoint,
+  type Waypoint,
+  type Frontline,
+  MAX_WAYPOINTS,
 } from '../../constants';
 import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 
@@ -98,13 +99,14 @@ function Session() {
   const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
   const [texts, setTexts] = useState<Textpoint[]>([]); // see constants .tsx for its structure
   const [frontlines, setFrontlines] = useState<Frontline[]>([]); // see constants .tsx for its structure
+  const [color, setColor] = useState('#b91515');
 
   const waypointIdSetter = (newId: number) => {
     setWaypointId(newId);
   };
 
   const addWaypoint = (x: number, y: number, type: string) => {
-    if (waypoints.length >= 50) return; // stop once the render limit is reached
+    if (waypoints.length >= MAX_WAYPOINTS) return; // stop once the render limit is reached
 
     const existingIndex = waypoints.findIndex((w) => w.id === waypointId);
 
@@ -162,7 +164,16 @@ function Session() {
     xEnd: number,
     yEnd: number,
   ) => {
-    console.log(xStart, yStart, xEnd, yEnd);
+    const newFrontline = {
+      id:
+        frontlines.length > 0
+          ? Math.max(...frontlines.map((w) => w.id)) + 1
+          : 1,
+      start: [{ x: xStart, y: yStart }],
+      end: [{ x: xEnd, y: yEnd }],
+      color: color,
+    };
+    setFrontlines([...frontlines, newFrontline]);
   };
 
   const clearWaypoints = () => {
@@ -285,6 +296,8 @@ function Session() {
           waypoints={waypoints}
           waypointId={waypointId}
           setWaypointId={waypointIdSetter}
+          color={color}
+          setColor={setColor}
         />
         <KeySelect resetCamera={resetCamera} />
 
