@@ -50,7 +50,6 @@ interface MapProps {
   optionSelected: OptionSelected;
   waypoints: Waypoint[];
   addWaypoint: (x: number, y: number, type: string) => void;
-  //setWaypoints: React.Dispatch<React.SetStateAction<Waypoint[]>>;
   targets: Targetpoint[];
   addTarget: (
     x: number,
@@ -59,10 +58,14 @@ interface MapProps {
     rotation: number,
     type: string,
   ) => void;
-  //setTargets: React.Dispatch<React.SetStateAction<Targetpoint[]>>;
   texts: Textpoint[];
-  addText: (x: number, y: number, text: string) => void;
-  //setTexts: React.Dispatch<React.SetStateAction<Textpoint[]>>;
+  addText: (
+    x: number,
+    y: number,
+    text: string,
+    color: string,
+    rotation: number,
+  ) => void;
   frontlines: Frontline[];
   addFrontline: (
     xStart: number,
@@ -136,7 +139,7 @@ function Map({
     // the thing true is text
     if (optionSelected.text) {
       setFirstFrontlineClickData({ xStart: null, yStart: null });
-      addText(x, y, 'some kewl new text');
+      addText(x, y, 'some kewl new text', '#0a0909', 0);
       return;
     }
     if (optionSelected.frontline) {

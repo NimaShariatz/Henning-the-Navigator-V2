@@ -147,13 +147,21 @@ function Session() {
     setTargets([...targets, newTarget]);
   };
 
-  const addText = (x: number, y: number, text: string) => {
+  const addText = (
+    x: number,
+    y: number,
+    text: string,
+    color: string,
+    rotation: number,
+  ) => {
     const newText = {
       id:
         waypoints.length > 0 ? Math.max(...waypoints.map((w) => w.id)) + 1 : 1,
       x: x,
       y: y,
       text: text,
+      color: color,
+      rotation: rotation,
     };
     setTexts([...texts, newText]);
   };
@@ -271,13 +279,10 @@ function Session() {
             optionSelected={optionSelected}
             waypoints={waypoints}
             addWaypoint={addWaypoint}
-            //setWaypoints={setWaypoints}
             targets={targets}
             addTarget={addTarget}
-            //setTargets={setTargets}
             texts={texts}
             addText={addText}
-            //setTexts={setTexts}
             frontlines={frontlines}
             addFrontline={addFrontline}
             RemoveNavPoint={RemoveNavPoint}

@@ -161,6 +161,8 @@ export interface Textpoint {
   x: number;
   y: number;
   text: string;
+  color: string;
+  rotation: number;
 }
 export interface Frontline {
   id: number;
