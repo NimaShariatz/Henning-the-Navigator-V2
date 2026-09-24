@@ -58,7 +58,15 @@ interface MapProps {
     type: string,
   ) => void;
   texts: Textpoint[];
-  addText: (x: number, y: number, text: string, rotation: number) => void;
+  addText: (
+    x: number,
+    y: number,
+    text: string,
+    rotation: number,
+    size: number,
+    maxWidth: number,
+  ) => void;
+  revealEditTextSetter: () => void;
   frontlines: Frontline[];
   addFrontline: (
     xStart: number,
@@ -87,6 +95,7 @@ function Map({
   addTarget,
   texts,
   addText,
+  revealEditTextSetter,
   frontlines,
   addFrontline,
   firstFrontlineClickData,
@@ -127,7 +136,7 @@ function Map({
     }
     // the thing true is text
     if (optionSelected.text) {
-      addText(x, y, 'Text', 0);
+      addText(x, y, 'Text', 0, 0.05, 1);
       return;
     }
 
@@ -381,10 +390,21 @@ function Map({
           position={[text.x, 0.64, text.y + 1]}
           font={fontPath900}
           color={text.color}
-          fontSize={0.05}
+          fontSize={text.size}
+          textAlign="center"
+          anchorX="center"
+          anchorY="middle"
+          maxWidth={text.maxWidth}
           onClick={(e) => {
             e.stopPropagation();
+            revealEditTextSetter();
             //popup trigger here!
+          }}
+          onPointerEnter={() => {
+            document.body.style.cursor = 'pointer';
+          }}
+          onPointerLeave={() => {
+            document.body.style.cursor = 'default';
           }}
         >
           {text.text}

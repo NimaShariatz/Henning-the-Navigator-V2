@@ -163,6 +163,8 @@ export interface Textpoint {
   text: string;
   color: string;
   rotation: number;
+  size: number;
+  maxWidth: number;
 }
 export interface Frontline {
   id: number;
@@ -193,6 +195,7 @@ export const DEFAULT_COLORSELECT_OPTIONS: Record<string, string> = {
 
 export const MAX_WAYPOINTS = 50; // max waypoints
 export const MAX_FRONTLINES = 250; // max frontlines
+export const MAX_TEXTS = 15; // max texts
 
 import blenderTable from './assets/blender/threejsTable.glb';
 import blenderLamp from './assets/blender/threejsLampBasic.glb';

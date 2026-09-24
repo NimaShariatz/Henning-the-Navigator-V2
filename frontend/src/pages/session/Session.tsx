@@ -23,9 +23,11 @@ import {
   type Frontline,
   MAX_WAYPOINTS,
   MAX_FRONTLINES,
+  MAX_TEXTS,
 } from '../../constants';
 import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 import Toast from '../../components/toast/Toast';
+import EditText from './text/EditText';
 
 export interface PerfStats {
   fps: number;
@@ -67,6 +69,7 @@ function Session() {
   const [popupRevealer, setPopupRevealer] = useState({
     settings: false,
     flightInfo: false,
+    editText: false,
   });
 
   const [mapLightObjectValues, setMapLightObjectValues] = useState<
@@ -161,7 +164,18 @@ function Session() {
     setTargets([...targets, newTarget]);
   };
 
-  const addText = (x: number, y: number, text: string, rotation: number) => {
+  const addText = (
+    x: number,
+    y: number,
+    text: string,
+    rotation: number,
+    size: number,
+    maxWidth: number,
+  ) => {
+    if (texts.length >= MAX_TEXTS) {
+      showToast(`Max texts of ${MAX_TEXTS} reached`);
+      return;
+    } // stop once the render limit is reached
     const newText = {
       id: texts.length > 0 ? Math.max(...texts.map((w) => w.id)) + 1 : 1,
       x: x,
@@ -169,6 +183,8 @@ function Session() {
       text: text,
       color: color,
       rotation: rotation,
+      size: size,
+      maxWidth: maxWidth,
     };
     setTexts([...texts, newText]);
   };
@@ -264,6 +280,9 @@ function Session() {
   const revealFlightInfoSetter = () => {
     setPopupRevealer((prev) => ({ ...prev, flightInfo: !prev.flightInfo }));
   };
+  const revealEditTextSetter = () => {
+    setPopupRevealer((prev) => ({ ...prev, editText: !prev.editText }));
+  };
 
   return (
     <>
@@ -304,6 +323,7 @@ function Session() {
             addTarget={addTarget}
             texts={texts}
             addText={addText}
+            revealEditTextSetter={revealEditTextSetter}
             frontlines={frontlines}
             addFrontline={addFrontline}
             firstFrontlineClickData={firstFrontlineClickData}
@@ -341,6 +361,10 @@ function Session() {
           revealFlightInfo={popupRevealer.flightInfo}
           revealFlightInfoSetter={revealFlightInfoSetter}
           sessionData={sessionData.sessionInfo}
+        />
+        <EditText
+          revealEditText={popupRevealer.editText}
+          revealEditTextSetter={revealEditTextSetter}
         />
 
         {import.meta.env.DEV && perf && (
