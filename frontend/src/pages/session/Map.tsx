@@ -39,7 +39,6 @@ import {
 } from '../../constants';
 import styles from './Session.module.css';
 import * as React from 'react';
-import { useState } from 'react';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -73,6 +72,11 @@ interface MapProps {
     xEnd: number,
     yEnd: number,
   ) => void;
+  firstFrontlineClickData: { xStart: number | null; yStart: number | null };
+  setFirstFrontlineClickData: (data: {
+    xStart: number | null;
+    yStart: number | null;
+  }) => void;
   RemoveNavPoint: (id: number) => void;
   isKilometers: boolean;
 }
@@ -86,26 +90,18 @@ function Map({
   optionSelected,
   waypoints,
   addWaypoint,
-  //setWaypoints,
-  //targets, --- UNCOMMENT WHEN READY
   addTarget,
-  //setTargets,
-  //texts, --- UNCOMMENT WHEN READY
   addText,
-  //setTexts,
   frontlines,
   addFrontline,
+  firstFrontlineClickData,
+  setFirstFrontlineClickData,
   RemoveNavPoint,
   isKilometers,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
   const { gl } = useThree();
-
-  const [firstFrontlineClickData, setFirstFrontlineClickData] = useState<{
-    xStart: number | null;
-    yStart: number | null;
-  }>({ xStart: null, yStart: null });
 
   const mapTexture = useTexture(MapImages[sessionMap], (texture) => {
     (texture as THREE.Texture).anisotropy = gl.capabilities.getMaxAnisotropy();
@@ -123,7 +119,6 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeWaypointType) {
-      setFirstFrontlineClickData({ xStart: null, yStart: null });
       addWaypoint(x, y, activeWaypointType);
       return;
     }
@@ -132,16 +127,15 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeTargetType) {
-      setFirstFrontlineClickData({ xStart: null, yStart: null });
       addTarget(x, y, 0, 0, activeTargetType);
       return;
     }
     // the thing true is text
     if (optionSelected.text) {
-      setFirstFrontlineClickData({ xStart: null, yStart: null });
       addText(x, y, 'some kewl new text', '#0a0909', 0);
       return;
     }
+
     if (optionSelected.frontline) {
       if (
         firstFrontlineClickData.xStart === null ||
@@ -341,8 +335,8 @@ function Map({
                 <Html
                   center
                   wrapperClass={styles.waypointTravelInfoHTML}
-                  position={[midX, 0.2, midY]}
-                  zIndexRange={[1, 0]}
+                  position={[midX, 0.1, midY]}
+                  zIndexRange={[0.5, 0]}
                 >
                   <div className={styles.waypointInfoContainer}>
                     <p>

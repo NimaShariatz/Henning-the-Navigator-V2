@@ -99,6 +99,10 @@ function Session() {
   const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
   const [texts, setTexts] = useState<Textpoint[]>([]); // see constants .tsx for its structure
   const [frontlines, setFrontlines] = useState<Frontline[]>([]); // see constants .tsx for its structure
+  const [firstFrontlineClickData, setFirstFrontlineClickData] = useState<{
+    xStart: number | null;
+    yStart: number | null;
+  }>({ xStart: null, yStart: null });
   const [color, setColor] = useState('#b91515');
 
   const waypointIdSetter = (newId: number) => {
@@ -196,6 +200,7 @@ function Session() {
   };
   const clearFrontlines = () => {
     setFrontlines([]);
+    setFirstFrontlineClickData({ xStart: null, yStart: null });
   };
 
   const RemoveNavPoint = (id: number) => {
@@ -212,6 +217,14 @@ function Session() {
   };
 
   const selectOption = (option: OptionKey) => {
+    if (
+      !optionSelected.frontline &&
+      firstFrontlineClickData.xStart != null &&
+      firstFrontlineClickData.yStart != null
+    ) {
+      setFirstFrontlineClickData({ xStart: null, yStart: null });
+    }
+
     setOptionSelected((prev: OptionSelected) => {
       const next = { ...prev };
       const isCurrentlyTrue = prev[option];
@@ -285,6 +298,8 @@ function Session() {
             addText={addText}
             frontlines={frontlines}
             addFrontline={addFrontline}
+            firstFrontlineClickData={firstFrontlineClickData}
+            setFirstFrontlineClickData={setFirstFrontlineClickData}
             RemoveNavPoint={RemoveNavPoint}
             isKilometers={isKilometers}
           />
