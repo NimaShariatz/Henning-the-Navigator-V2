@@ -22,8 +22,10 @@ import {
   type Waypoint,
   type Frontline,
   MAX_WAYPOINTS,
+  MAX_FRONTLINES,
 } from '../../constants';
 import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
+import Toast from '../../components/toast/Toast';
 
 export interface PerfStats {
   fps: number;
@@ -51,6 +53,12 @@ const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 
 function Session() {
   const [perf, setPerf] = useState<PerfStats | null>(null);
+  const [toastMessage, setToastMessage] = useState('');
+  const showToast = (msg: string) => {
+    setToastMessage(msg); //reveal
+    setTimeout(() => setToastMessage(''), 4000); // toast is removed when message is empty due to conditional render
+  };
+
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
   const [sessionData, setSessionData] =
@@ -110,7 +118,10 @@ function Session() {
   };
 
   const addWaypoint = (x: number, y: number, type: string) => {
-    if (waypoints.length >= MAX_WAYPOINTS) return; // stop once the render limit is reached
+    if (waypoints.length >= MAX_WAYPOINTS) {
+      showToast(`Max waypoints of ${MAX_WAYPOINTS} reached`);
+      return;
+    } // stop once the render limit is reached
 
     const existingIndex = waypoints.findIndex((w) => w.id === waypointId);
 
@@ -140,8 +151,7 @@ function Session() {
     type: string,
   ) => {
     const newTarget = {
-      id:
-        waypoints.length > 0 ? Math.max(...waypoints.map((w) => w.id)) + 1 : 1,
+      id: targets.length > 0 ? Math.max(...targets.map((w) => w.id)) + 1 : 1,
       x: x,
       y: y,
       z: z,
@@ -151,16 +161,9 @@ function Session() {
     setTargets([...targets, newTarget]);
   };
 
-  const addText = (
-    x: number,
-    y: number,
-    text: string,
-    color: string,
-    rotation: number,
-  ) => {
+  const addText = (x: number, y: number, text: string, rotation: number) => {
     const newText = {
-      id:
-        waypoints.length > 0 ? Math.max(...waypoints.map((w) => w.id)) + 1 : 1,
+      id: texts.length > 0 ? Math.max(...texts.map((w) => w.id)) + 1 : 1,
       x: x,
       y: y,
       text: text,
@@ -176,6 +179,10 @@ function Session() {
     xEnd: number,
     yEnd: number,
   ) => {
+    if (frontlines.length >= MAX_FRONTLINES) {
+      showToast(`Max lines of ${MAX_FRONTLINES} reached`);
+      return;
+    } // stop once the render limit is reached
     const newFrontline = {
       id:
         frontlines.length > 0
@@ -261,6 +268,7 @@ function Session() {
   return (
     <>
       <Menu />
+      {toastMessage && <Toast ToastMessage={toastMessage} />}
       <div className={styles.canvasContainer}>
         <Canvas
           camera={{

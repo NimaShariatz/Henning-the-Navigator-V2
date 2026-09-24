@@ -192,7 +192,7 @@ export const DEFAULT_COLORSELECT_OPTIONS: Record<string, string> = {
 };
 
 export const MAX_WAYPOINTS = 50; // max waypoints
-export const MAX_FRONTLINES = 200; // max frontlines
+export const MAX_FRONTLINES = 250; // max frontlines
 
 import blenderTable from './assets/blender/threejsTable.glb';
 import blenderLamp from './assets/blender/threejsLampBasic.glb';

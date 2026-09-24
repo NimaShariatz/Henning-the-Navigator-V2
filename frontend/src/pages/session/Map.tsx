@@ -58,13 +58,7 @@ interface MapProps {
     type: string,
   ) => void;
   texts: Textpoint[];
-  addText: (
-    x: number,
-    y: number,
-    text: string,
-    color: string,
-    rotation: number,
-  ) => void;
+  addText: (x: number, y: number, text: string, rotation: number) => void;
   frontlines: Frontline[];
   addFrontline: (
     xStart: number,
@@ -91,6 +85,7 @@ function Map({
   waypoints,
   addWaypoint,
   addTarget,
+  texts,
   addText,
   frontlines,
   addFrontline,
@@ -132,7 +127,7 @@ function Map({
     }
     // the thing true is text
     if (optionSelected.text) {
-      addText(x, y, 'some kewl new text', '#0a0909', 0);
+      addText(x, y, 'Text', 0);
       return;
     }
 
@@ -374,6 +369,27 @@ function Map({
           })}
         </Segments>
       </group>
+
+      {texts.map((text) => (
+        <Text
+          key={text.id}
+          rotation={[
+            THREE.MathUtils.degToRad(-90),
+            0,
+            THREE.MathUtils.degToRad(text.rotation),
+          ]}
+          position={[text.x, 0.64, text.y + 1]}
+          font={fontPath900}
+          color={text.color}
+          fontSize={0.05}
+          onClick={(e) => {
+            e.stopPropagation();
+            //popup trigger here!
+          }}
+        >
+          {text.text}
+        </Text>
+      ))}
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
       <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />

@@ -108,7 +108,7 @@ function Selection({
         </div>
       )}
       {!revealColorPicker &&
-        (changeOptions === 1 || changeOptions === 4) && ( // if targets or frontline and colorreveal not clicked...
+        (changeOptions === 1 || changeOptions === 3 || changeOptions === 4) && ( // if targets or text or frontline and colorreveal not clicked...
           <div
             className={styles.rgba}
             onClick={() => setColorPicker(true)}
@@ -116,7 +116,7 @@ function Selection({
           ></div>
         )}
       {revealColorPicker &&
-        (changeOptions === 1 || changeOptions === 4) && ( // if targets or frontline and colorreveal clicked...
+        (changeOptions === 1 || changeOptions === 3 || changeOptions === 4) && ( // if targets or text or frontline and colorreveal clicked...
           <div className={styles.rgbaContainer}>
             <div className={styles.colorDefaultRow}>
               <button
