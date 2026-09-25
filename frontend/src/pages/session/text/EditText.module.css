@@ -49,6 +49,17 @@
   pointer-events: none;
 }
 
+.rotationInput {
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: none;
+  width: 55px;
+  margin-inline: 0.75rem 0.25rem;
+  text-align: center;
+  border: none;
+  outline: none;
+}
+
 .leftIncrement,
 .rightIncrement {
   width: 2rem;
@@ -100,6 +111,19 @@
 }
 .close button:hover svg path {
   fill: var(--text_color_white);
+}
+
+.updateTextButton {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--logo_yellow);
+  outline: 3px solid transparent;
+  cursor: pointer;
+  font-size: 20px;
+}
+.updateTextButton:hover {
+  outline-color: var(--text_color_white);
 }
 
 @media (max-width: 720px) {

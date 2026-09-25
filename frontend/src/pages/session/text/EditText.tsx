@@ -1,5 +1,7 @@
 import styles from './EditText.module.css';
 import { HexColorPicker } from 'react-colorful';
+import { useState } from 'react';
+import { useRef } from 'react';
 
 interface EditTextProps {
   revealEditText: boolean;
@@ -8,6 +10,45 @@ interface EditTextProps {
 
 function EditText({ revealEditText, revealEditTextSetter }: EditTextProps) {
   //text input with max length. max width. font size. rotation. color.
+
+  const [rotation, setRotation] = useState('');
+  const [text, setText] = useState('');
+  const [size, setSize] = useState(3);
+  const [maxWidth, setMaxWidth] = useState(3);
+  const [color, setColor] = useState('');
+  const maxTextLength = useRef<HTMLElement>(null);
+
+  const handleTextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+
+    const overLimit = 50 - newValue.length < 0;
+    if (maxTextLength.current) {
+      maxTextLength.current.textContent = String(50 - newValue.length);
+      maxTextLength.current.style.color = overLimit
+        ? 'var(--delete_red)'
+        : 'var(--text_color_white)';
+    }
+    if (!overLimit) {
+      setText(newValue);
+    }
+  };
+
+  const adjustSize = (input: number) => {
+    setSize(size + input);
+  };
+
+  const adjustMaxWidth = (input: number) => {
+    setMaxWidth(maxWidth + input);
+  };
+
+  const changeRotation = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = e.target.value;
+    if (Number(newValue) < 0 || Number(newValue) > 360) {
+      newValue = '0';
+    }
+    setRotation(newValue);
+  };
+
   return (
     <>
       {revealEditText && (
@@ -39,14 +80,26 @@ function EditText({ revealEditText, revealEditTextSetter }: EditTextProps) {
             <div className={styles.editTextOption}>
               <div className={styles.textInputContainer}>
                 <p>Text</p>
-                <input />
-                <small>50</small>
+                <input
+                  onChange={(e) => {
+                    handleTextInput(e);
+                  }}
+                  value={text}
+                />
+                <small ref={maxTextLength}>50</small>
               </div>
             </div>
 
             <div className={styles.editTextOption}>
               <h5>Size:</h5>
-              <button className={styles.leftIncrement}>
+              <button
+                className={styles.leftIncrement}
+                onClick={() => adjustSize(-1)}
+                disabled={size === 0}
+                style={{
+                  cursor: size === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"
@@ -60,9 +113,16 @@ function EditText({ revealEditText, revealEditTextSetter }: EditTextProps) {
                 </svg>
               </button>
 
-              <h6>5</h6>
+              <h6>{size}</h6>
 
-              <button className={styles.rightIncrement}>
+              <button
+                className={styles.rightIncrement}
+                onClick={() => adjustSize(1)}
+                disabled={size === 5}
+                style={{
+                  cursor: size === 5 ? 'not-allowed' : 'pointer',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"
@@ -79,7 +139,14 @@ function EditText({ revealEditText, revealEditTextSetter }: EditTextProps) {
 
             <div className={styles.editTextOption}>
               <h5>Max Width:</h5>
-              <button className={styles.leftIncrement}>
+              <button
+                className={styles.leftIncrement}
+                onClick={() => adjustMaxWidth(-1)}
+                disabled={maxWidth === 0}
+                style={{
+                  cursor: maxWidth === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"
@@ -93,9 +160,16 @@ function EditText({ revealEditText, revealEditTextSetter }: EditTextProps) {
                 </svg>
               </button>
 
-              <h6>5</h6>
+              <h6>{maxWidth}</h6>
 
-              <button className={styles.rightIncrement}>
+              <button
+                className={styles.rightIncrement}
+                onClick={() => adjustMaxWidth(1)}
+                disabled={maxWidth === 5}
+                style={{
+                  cursor: maxWidth === 5 ? 'not-allowed' : 'pointer',
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"
@@ -111,15 +185,22 @@ function EditText({ revealEditText, revealEditTextSetter }: EditTextProps) {
             </div>
 
             <div className={styles.editTextOption}>
-              <div className={styles.textInputContainer}>
-                <p>Rotation</p>
-                <input />
-                <small>50</small>
-              </div>
+              <h5>Rotation:</h5>
+              <input
+                className={styles.rotationInput}
+                type="number"
+                onChange={changeRotation}
+                value={rotation}
+              ></input>
+              °
             </div>
 
             <div className={styles.editTextOption}>
-              <HexColorPicker />
+              <HexColorPicker color={color} onChange={setColor} />
+            </div>
+
+            <div className={styles.editTextOption}>
+              <button className={styles.updateTextButton}>Update</button>
             </div>
           </div>
         </div>
