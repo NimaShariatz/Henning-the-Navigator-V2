@@ -28,6 +28,61 @@
   justify-content: center;
 }
 
+.editTextOption {
+  margin-block: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.textInputContainer input {
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: none;
+  width: 350px;
+}
+.textInputContainer small {
+  padding-left: 0.7rem;
+  opacity: 0.7;
+  user-select: none;
+  pointer-events: none;
+}
+
+.leftIncrement,
+.rightIncrement {
+  width: 2rem;
+  height: 2rem;
+  margin-inline: 0.4rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transform: rotate(180deg);
+  padding: 0.15rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: transparent;
+}
+.rightIncrement {
+  transform: rotate(0);
+}
+.leftIncrement:hover,
+.rightIncrement:hover {
+  background-color: var(--darkBG_1);
+}
+.leftIncrement svg,
+.rightIncrement svg {
+  fill: var(--logo_yellow);
+}
+.leftIncrement:active svg,
+.rightIncrement:active svg {
+  fill: var(--active_color);
+}
+.leftIncrement:disabled svg,
+.rightIncrement:disabled svg {
+  fill: var(--unavailable_gray);
+}
+
 .close {
   display: flex;
   justify-content: end;
@@ -52,5 +107,8 @@
     width: 90%;
     padding-inline: 1rem;
     padding-block: 2rem;
+  }
+  .textInputContainer input {
+    width: 70%;
   }
 }

@@ -353,7 +353,10 @@ function Map({
           })}
         </Segments>
 
-        <Segments limit={MAX_FRONTLINES} lineWidth={5}>
+        <Segments
+          limit={MAX_FRONTLINES}
+          lineWidth={5 + mapLightObjectValues.scaleFactor}
+        >
           {Array.from({ length: MAX_FRONTLINES }, (_, i) => {
             const line = frontlines[i];
 
