@@ -135,7 +135,7 @@ function Map({
     }
     // the thing true is text
     if (optionSelected.text) {
-      addText(x, y, 'Text asf awfasawfasf as s asf was w s asf awf asff', 0, 1);
+      addText(x, y, 'Click to Edit', 0, 2);
       return;
     }
 
@@ -393,10 +393,10 @@ function Map({
           font={fontPath900}
           color={text.color}
           fontSize={text.size * 0.03}
-          textAlign="center"
+          textAlign="left"
           anchorX="center"
           anchorY="middle"
-          maxWidth={1}
+          maxWidth={3}
           onClick={(e) => {
             e.stopPropagation();
             revealEditTextSetter(text.id);

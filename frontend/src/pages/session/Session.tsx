@@ -188,6 +188,20 @@ function Session() {
     setTexts([...texts, newText]);
   };
 
+  const updateText = (
+    id: number,
+    text: string,
+    color: string,
+    rotation: number,
+    size: number,
+  ) => {
+    setTexts((prev) =>
+      prev.map((t) =>
+        t.id === id ? { ...t, text, color, rotation, size } : t,
+      ),
+    );
+  };
+
   const addFrontline = (
     xStart: number,
     yStart: number,
@@ -367,6 +381,7 @@ function Session() {
           revealEditTextSetter={revealEditTextSetter}
           textClicked={textClicked}
           texts={texts}
+          updateText={updateText}
         />
 
         {import.meta.env.DEV && perf && (

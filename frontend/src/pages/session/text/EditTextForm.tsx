@@ -5,9 +5,16 @@ import type { Textpoint } from '../../../constants';
 
 interface EditTextFormProps {
   selectedText: Textpoint;
+  updateText: (
+    id: number,
+    text: string,
+    color: string,
+    rotation: number,
+    size: number,
+  ) => void;
 }
 
-function EditTextForm({ selectedText }: EditTextFormProps) {
+function EditTextForm({ selectedText, updateText }: EditTextFormProps) {
   const [rotation, setRotation] = useState(selectedText.rotation);
   const [text, setText] = useState(selectedText.text);
   const [size, setSize] = useState(selectedText.size);
@@ -119,7 +126,10 @@ function EditTextForm({ selectedText }: EditTextFormProps) {
         <HexColorPicker color={color} onChange={setColor} />
       </div>
 
-      <div className={styles.editTextOption}>
+      <div
+        className={styles.editTextOption}
+        onClick={() => updateText(selectedText.id, text, color, rotation, size)}
+      >
         <button className={styles.updateTextButton}>Update</button>
       </div>
     </>

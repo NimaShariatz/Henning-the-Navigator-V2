@@ -7,6 +7,13 @@ interface EditTextProps {
   revealEditTextSetter: (idClicked: number) => void;
   textClicked: number;
   texts: Textpoint[];
+  updateText: (
+    id: number,
+    text: string,
+    color: string,
+    rotation: number,
+    size: number,
+  ) => void;
 }
 
 function EditText({
@@ -14,6 +21,7 @@ function EditText({
   revealEditTextSetter,
   textClicked,
   texts,
+  updateText,
 }: EditTextProps) {
   const selectedText = texts.find((t) => t.id === textClicked);
 
@@ -45,7 +53,11 @@ function EditText({
             </div>
 
             {/* key forces a fresh mount per selected text, resetting local draft state */}
-            <EditTextForm key={textClicked} selectedText={selectedText} />
+            <EditTextForm
+              key={textClicked}
+              selectedText={selectedText}
+              updateText={updateText}
+            />
           </div>
         </div>
       )}
