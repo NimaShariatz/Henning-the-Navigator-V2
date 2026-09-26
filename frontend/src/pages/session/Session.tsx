@@ -109,6 +109,7 @@ function Session() {
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]); // see constants .tsx for its structure
   const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
   const [texts, setTexts] = useState<Textpoint[]>([]); // see constants .tsx for its structure
+  const [textClicked, setTextClicked] = useState(-1);
   const [frontlines, setFrontlines] = useState<Frontline[]>([]); // see constants .tsx for its structure
   const [firstFrontlineClickData, setFirstFrontlineClickData] = useState<{
     xStart: number | null;
@@ -280,8 +281,9 @@ function Session() {
   const revealFlightInfoSetter = () => {
     setPopupRevealer((prev) => ({ ...prev, flightInfo: !prev.flightInfo }));
   };
-  const revealEditTextSetter = () => {
+  const revealEditTextSetter = (idClicked: number) => {
     setPopupRevealer((prev) => ({ ...prev, editText: !prev.editText }));
+    setTextClicked(idClicked);
   };
 
   return (
@@ -365,6 +367,8 @@ function Session() {
         <EditText
           revealEditText={popupRevealer.editText}
           revealEditTextSetter={revealEditTextSetter}
+          textClicked={textClicked}
+          texts={texts}
         />
 
         {import.meta.env.DEV && perf && (

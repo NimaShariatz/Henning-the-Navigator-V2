@@ -66,7 +66,7 @@ interface MapProps {
     size: number,
     maxWidth: number,
   ) => void;
-  revealEditTextSetter: () => void;
+  revealEditTextSetter: (idClicked: number) => void;
   frontlines: Frontline[];
   addFrontline: (
     xStart: number,
@@ -400,8 +400,7 @@ function Map({
           maxWidth={text.maxWidth}
           onClick={(e) => {
             e.stopPropagation();
-            revealEditTextSetter();
-            //popup trigger here!
+            revealEditTextSetter(text.id);
           }}
           onPointerEnter={() => {
             document.body.style.cursor = 'pointer';
