@@ -101,6 +101,8 @@ function Session() {
     airfield: false,
     antiair: false,
     parachute: false,
+    circle: false,
+    square: false,
     unknown: false,
     text: false,
     frontline: false,

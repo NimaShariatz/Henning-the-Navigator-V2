@@ -511,6 +511,58 @@ function Selection({
               </button>
               <button
                 className={styles.targetButton}
+                onClick={() => selectOption('circle')}
+                style={{
+                  outlineColor: optionSelected.circle
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="80%"
+                  height="80%"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    cx={12}
+                    cy={12}
+                    r={10}
+                    fill="none"
+                    stroke={color}
+                    strokeWidth={2}
+                  ></circle>
+                </svg>
+              </button>
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('square')}
+                style={{
+                  outlineColor: optionSelected.square
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="80%"
+                  height="80%"
+                  viewBox="0 0 24 24"
+                >
+                  <rect
+                    width={18}
+                    height={18}
+                    x={3}
+                    y={3}
+                    fill="none"
+                    stroke={color}
+                    strokeWidth={2}
+                    rx={2}
+                  ></rect>
+                </svg>
+              </button>
+              <button
+                className={styles.targetButton}
                 onClick={() => selectOption('unknown')}
                 style={{
                   outlineColor: optionSelected.unknown
