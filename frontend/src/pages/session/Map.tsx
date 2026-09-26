@@ -64,7 +64,6 @@ interface MapProps {
     text: string,
     rotation: number,
     size: number,
-    maxWidth: number,
   ) => void;
   revealEditTextSetter: (idClicked: number) => void;
   frontlines: Frontline[];
@@ -136,7 +135,7 @@ function Map({
     }
     // the thing true is text
     if (optionSelected.text) {
-      addText(x, y, 'Text', 0, 0.05, 1);
+      addText(x, y, 'Text asf awfasawfasf as s asf was w s asf awf asff', 0, 1);
       return;
     }
 
@@ -393,11 +392,11 @@ function Map({
           position={[text.x, 0.64, text.y + 1]}
           font={fontPath900}
           color={text.color}
-          fontSize={text.size}
+          fontSize={text.size * 0.03}
           textAlign="center"
           anchorX="center"
           anchorY="middle"
-          maxWidth={text.maxWidth}
+          maxWidth={1}
           onClick={(e) => {
             e.stopPropagation();
             revealEditTextSetter(text.id);

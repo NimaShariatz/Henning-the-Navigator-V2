@@ -171,7 +171,6 @@ function Session() {
     text: string,
     rotation: number,
     size: number,
-    maxWidth: number,
   ) => {
     if (texts.length >= MAX_TEXTS) {
       showToast(`Max texts of ${MAX_TEXTS} reached`);
@@ -185,7 +184,6 @@ function Session() {
       color: color,
       rotation: rotation,
       size: size,
-      maxWidth: maxWidth,
     };
     setTexts([...texts, newText]);
   };

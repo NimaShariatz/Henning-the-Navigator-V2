@@ -15,7 +15,7 @@ function EditText({
   textClicked,
   texts,
 }: EditTextProps) {
-  const selectedText = texts[textClicked];
+  const selectedText = texts.find((t) => t.id === textClicked);
 
   return (
     <>
