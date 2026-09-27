@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import type { OptionKey, OptionSelected } from '../../../constants';
 import { DEFAULT_COLORSELECT_OPTIONS } from '../../../constants';
-import { useRef } from 'react';
-import { useEffect } from 'react';
 import type { Waypoint } from '../../../constants';
 
 interface selectionProps {
@@ -34,8 +32,6 @@ function Selection({
   color,
   setColor,
 }: selectionProps) {
-  const leftIncrement = useRef<HTMLButtonElement>(null);
-  const rightIncrement = useRef<HTMLButtonElement>(null);
   const [revealColorPicker, setColorPicker] = useState(false);
   const [changeOptions, setChangeOptions] = useState(1);
   const ChangeOptionsHandler = () => {
@@ -49,30 +45,19 @@ function Selection({
     setChangeOptions(changeOptions + 1);
   };
 
-  useEffect(() => {
-    if (leftIncrement.current) {
-      const disableLeft = waypoints.length === 0 || waypointId === 1;
-      leftIncrement.current.disabled = disableLeft;
-      leftIncrement.current.style.cursor = disableLeft
-        ? 'not-allowed'
-        : 'pointer';
-    }
-    if (rightIncrement.current) {
-      const disableRight = waypointId > waypoints.length;
-      rightIncrement.current.disabled = disableRight;
-      rightIncrement.current.style.cursor = disableRight
-        ? 'not-allowed'
-        : 'pointer';
-    }
-  }, [waypointId, waypoints, changeOptions]);
-
   return (
     <div className={styles.overallContainer}>
       {changeOptions === 2 && (
         <div className={styles.waypoinIdContainer}>
           <button
             className={styles.leftIncrement}
-            ref={leftIncrement}
+            disabled={waypoints.length === 0 || waypointId === 1}
+            style={{
+              cursor:
+                waypoints.length === 0 || waypointId === 1
+                  ? 'not-allowed'
+                  : 'pointer',
+            }}
             onClick={() => setWaypointId(waypointId - 1)}
           >
             <svg
@@ -90,7 +75,10 @@ function Selection({
           <p>{waypointId}</p>
           <button
             className={styles.rightIncrement}
-            ref={rightIncrement}
+            disabled={waypointId > waypoints.length}
+            style={{
+              cursor: waypointId > waypoints.length ? 'not-allowed' : 'pointer',
+            }}
             onClick={() => setWaypointId(waypointId + 1)}
           >
             <svg
