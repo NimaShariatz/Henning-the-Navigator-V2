@@ -39,6 +39,12 @@ function FlightInfo({
             </div>
             <h1>Flight Info</h1>
             <p className={styles.flightInfo}>{sessionData}</p>
+
+            <div className={styles.calculatedDistance}>
+              <p>Ingress Distance: </p>
+              <p>Egress Distance: </p>
+              <p>Total Distance: </p>
+            </div>
           </div>
         </div>
       )}
