@@ -377,6 +377,9 @@ function Session() {
           revealFlightInfo={popupRevealer.flightInfo}
           revealFlightInfoSetter={revealFlightInfoSetter}
           sessionData={sessionData.sessionInfo}
+          isKilometers={isKilometers}
+          waypoints={waypoints}
+          sessionMap={sessionData.map_selected}
         />
         <EditText
           revealEditText={popupRevealer.editText}

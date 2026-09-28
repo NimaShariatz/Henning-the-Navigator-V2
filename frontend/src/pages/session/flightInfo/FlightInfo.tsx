@@ -1,16 +1,54 @@
+import { distanceCalc } from '../../../helpers/distance';
+import type { Waypoint } from '../../../constants';
 import styles from './FlightInfo.module.css';
 
 interface FlightInfoProps {
   revealFlightInfo: boolean;
   revealFlightInfoSetter: () => void;
   sessionData: string;
+  isKilometers: boolean;
+  waypoints: Waypoint[];
+  sessionMap: string;
 }
 
 function FlightInfo({
   revealFlightInfo,
   revealFlightInfoSetter,
   sessionData,
+  isKilometers,
+  waypoints,
+  sessionMap,
 }: FlightInfoProps) {
+  let ingressDistance = 0;
+  let egressDistance = 0;
+  let totalDistance = 0;
+
+  waypoints.forEach((point, index) => {
+    const nextPoint = waypoints[index + 1];
+    if (!nextPoint) return; // last point has no outgoing segment
+
+    const segmentDistance = distanceCalc(
+      point.x,
+      point.y,
+      nextPoint.x,
+      nextPoint.y,
+      sessionMap,
+      isKilometers,
+    );
+
+    totalDistance += segmentDistance;
+
+    if (
+      nextPoint.type === 'startPoint' ||
+      nextPoint.type === 'ingressPoint' ||
+      nextPoint.type === 'targetPoint'
+    ) {
+      ingressDistance += segmentDistance;
+    } else if (nextPoint.type === 'egressPoint') {
+      egressDistance += segmentDistance;
+    }
+  });
+
   return (
     <>
       {revealFlightInfo && (
@@ -79,7 +117,7 @@ function FlightInfo({
                     mask="url(#point-start)"
                   />
                 </svg>
-                ) Start & (
+                ) Start, (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1rem"
@@ -116,10 +154,7 @@ function FlightInfo({
                     mask="url(#point-ingress)"
                   />
                 </svg>
-                ) Ingress Distance: 12Km
-              </p>
-              <p>
-                (
+                ) Ingress, & (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1rem"
@@ -156,7 +191,11 @@ function FlightInfo({
                     mask="url(#point-target)"
                   />
                 </svg>
-                ) Target & (
+                ) Target Distance: {ingressDistance}
+                {isKilometers ? 'km' : 'mi'}
+              </p>
+              <p>
+                (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1rem"
@@ -193,9 +232,13 @@ function FlightInfo({
                     mask="url(#point-extraction)"
                   />
                 </svg>
-                ) Egress Distance: 100Km
+                ) Egress Distance: {egressDistance}
+                {isKilometers ? 'km' : 'mi'}
               </p>
-              <p>Total Distance: </p>
+              <p>
+                Total Distance: {totalDistance}
+                {isKilometers ? 'km' : 'mi'}
+              </p>
             </div>
           </div>
         </div>
