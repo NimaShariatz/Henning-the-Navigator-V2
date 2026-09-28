@@ -16,7 +16,6 @@ import {
   blenderLamp,
   MapImages,
   MapImagesSizes,
-  Map10Kilometer,
 } from '../../constants';
 import Gear from './tableObjects/Gear';
 import Clipboard from './tableObjects/Clipboard';
@@ -39,6 +38,7 @@ import {
 } from '../../constants';
 import styles from './Session.module.css';
 import * as React from 'react';
+import { midXmidY, distanceCalc, headingCalc } from '../../helpers/distance';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -158,40 +158,6 @@ function Map({
       }
       return;
     }
-  };
-
-  const distanceHeadingCalculations = (
-    pointX: number,
-    pointY: number,
-    nextPointX: number,
-    nextPointY: number,
-  ) => {
-    const midX = (pointX + nextPointX) / 2;
-    const midY = (pointY + nextPointY) / 2;
-
-    const distanceX = nextPointX - pointX;
-    const distanceY = nextPointY - pointY;
-
-    const length = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-    const pixelLength = length;
-
-    let distance = (pixelLength / Map10Kilometer[sessionMap]) * 10;
-    if (!isKilometers) {
-      distance = distance * 0.621371;
-    }
-
-    distance = Math.round(distance);
-
-    //console.log(Math.abs(pointX - nextPointX))
-
-    let angle = Math.atan2(distanceY, distanceX) * (180 / Math.PI);
-
-    angle = angle + 90; // to make 0 north instead ofeast
-    angle = (angle + 360) % 360; //within 360 range
-    const heading = Math.round(angle);
-
-    return { midX, midY, distance, heading };
   };
 
   return (
@@ -318,13 +284,26 @@ function Map({
               );
             }
 
-            const { midX, midY, distance, heading } =
-              distanceHeadingCalculations(
-                point.x,
-                point.y,
-                nextPoint.x,
-                nextPoint.y,
-              );
+            const { midX, midY } = midXmidY(
+              point.x,
+              point.y,
+              nextPoint.x,
+              nextPoint.y,
+            );
+            const distance = distanceCalc(
+              point.x,
+              point.y,
+              nextPoint.x,
+              nextPoint.y,
+              sessionMap,
+              isKilometers,
+            );
+            const heading = headingCalc(
+              point.x,
+              point.y,
+              nextPoint.x,
+              nextPoint.y,
+            );
 
             return (
               <React.Fragment key={`segment-slot-${i}`}>
