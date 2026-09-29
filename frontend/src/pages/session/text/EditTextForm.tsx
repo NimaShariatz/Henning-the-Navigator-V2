@@ -119,7 +119,7 @@ function EditTextForm({ selectedText, updateText }: EditTextFormProps) {
           onChange={changeRotation}
           value={rotation}
         ></input>
-        °
+        <span>°</span>
       </div>
 
       <div className={styles.editTextOption}>

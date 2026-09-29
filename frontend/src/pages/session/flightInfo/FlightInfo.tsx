@@ -1,6 +1,7 @@
 import { distanceCalc } from '../../../helpers/distance';
 import type { Waypoint } from '../../../constants';
 import styles from './FlightInfo.module.css';
+import Calculator from './Calculator';
 
 interface FlightInfoProps {
   revealFlightInfo: boolean;
@@ -78,7 +79,7 @@ function FlightInfo({
             <h1>Flight Info</h1>
             <p className={styles.flightInfo}>{sessionData}</p>
 
-            <div className={styles.calculatedDistance}>
+            <div className={styles.calculatedDistanceContainer}>
               <p>
                 (
                 <svg
@@ -239,6 +240,10 @@ function FlightInfo({
                 Total Distance: {totalDistance}
                 {isKilometers ? 'km' : 'mi'}
               </p>
+            </div>
+
+            <div className={styles.calculatorContainer}>
+              <Calculator />
             </div>
           </div>
         </div>

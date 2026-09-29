@@ -138,7 +138,7 @@ textarea:focus {
   background-color: var(--logo_yellow);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--logo_black);
+  background-color: var(--logo_white);
   cursor: pointer;
 }
 

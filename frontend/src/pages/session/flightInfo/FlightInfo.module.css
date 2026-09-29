@@ -25,7 +25,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  max-height: 75%;
+  overflow-y: auto;
 }
 
 .close {
@@ -56,7 +58,8 @@
   border-radius: 5px;
 }
 
-.calculatedDistance {
+.calculatedDistanceContainer,
+.calculatorContainer {
   padding-block: 1rem;
   width: 100%;
   display: flex;
@@ -64,10 +67,64 @@
   gap: 0.25rem;
 }
 
+.sectionTitle {
+  border-style: solid;
+  border-width: 0 0 3px 0;
+  border-color: var(--text_color_white);
+  width: fit-content;
+}
+
+.distanceCalcRow,
+.bombingCalcRow {
+  display: flex;
+  align-items: center;
+  margin-block: 0.5rem;
+  gap: 0.3rem;
+}
+
+.leftIncrement,
+.rightIncrement {
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transform: rotate(180deg);
+  padding: 0.15rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: transparent;
+}
+.rightIncrement {
+  transform: rotate(0);
+}
+.leftIncrement:hover,
+.rightIncrement:hover {
+  background-color: var(--darkBG_1);
+}
+.leftIncrement svg,
+.rightIncrement svg {
+  fill: var(--logo_yellow);
+}
+.leftIncrement:active svg,
+.rightIncrement:active svg {
+  fill: var(--active_color);
+}
+.calcInput {
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: none;
+  width: 44px;
+  text-align: center;
+  border: none;
+  outline: none;
+}
+
 @media (max-width: 720px) {
   .innerContainer {
     width: 90%;
     padding-inline: 1rem;
     padding-block: 2rem;
+    max-height: 95%;
   }
 }
