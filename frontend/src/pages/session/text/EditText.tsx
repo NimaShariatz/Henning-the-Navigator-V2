@@ -14,6 +14,7 @@ interface EditTextProps {
     rotation: number,
     size: number,
   ) => void;
+  deleteText: (id: number) => void;
 }
 
 function EditText({
@@ -22,6 +23,7 @@ function EditText({
   textClicked,
   texts,
   updateText,
+  deleteText,
 }: EditTextProps) {
   const selectedText = texts.find((t) => t.id === textClicked);
 
@@ -57,6 +59,7 @@ function EditText({
               key={textClicked}
               selectedText={selectedText}
               updateText={updateText}
+              deleteText={deleteText}
             />
           </div>
         </div>

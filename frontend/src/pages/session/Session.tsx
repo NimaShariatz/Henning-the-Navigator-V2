@@ -254,6 +254,11 @@ function Session() {
     setWaypointId(waypoints.length);
   };
 
+  const deleteText = (id: number) => {
+    setTexts((prev) => prev.filter((t) => t.id !== id));
+    revealEditTextSetter(-1);
+  };
+
   const selectOption = (option: OptionKey) => {
     if (
       !optionSelected.frontline &&
@@ -387,6 +392,7 @@ function Session() {
           textClicked={textClicked}
           texts={texts}
           updateText={updateText}
+          deleteText={deleteText}
         />
 
         {import.meta.env.DEV && perf && (

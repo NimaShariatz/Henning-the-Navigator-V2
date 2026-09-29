@@ -12,9 +12,14 @@ interface EditTextFormProps {
     rotation: number,
     size: number,
   ) => void;
+  deleteText: (id: number) => void;
 }
 
-function EditTextForm({ selectedText, updateText }: EditTextFormProps) {
+function EditTextForm({
+  selectedText,
+  updateText,
+  deleteText,
+}: EditTextFormProps) {
   const [rotation, setRotation] = useState(selectedText.rotation);
   const [text, setText] = useState(selectedText.text);
   const [size, setSize] = useState(selectedText.size);
@@ -126,11 +131,21 @@ function EditTextForm({ selectedText, updateText }: EditTextFormProps) {
         <HexColorPicker color={color} onChange={setColor} />
       </div>
 
-      <div
-        className={styles.editTextOption}
-        onClick={() => updateText(selectedText.id, text, color, rotation, size)}
-      >
-        <button className={styles.updateTextButton}>Update</button>
+      <div className={styles.UpdateDeleteOptions}>
+        <button
+          className={styles.updateTextButton}
+          onClick={() =>
+            updateText(selectedText.id, text, color, rotation, size)
+          }
+        >
+          Update
+        </button>
+        <button
+          className={styles.deleteTextButton}
+          onClick={() => deleteText(selectedText.id)}
+        >
+          Delete
+        </button>
       </div>
     </>
   );
