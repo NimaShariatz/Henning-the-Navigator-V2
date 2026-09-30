@@ -200,10 +200,28 @@ export const MAX_WAYPOINTS = 50; // max waypoints
 export const MAX_FRONTLINES = 250; // max frontlines
 export const MAX_TEXTS = 15; // max texts
 
-import blenderTable from './assets/blender/threejsTable.glb';
-import blenderLamp from './assets/blender/threejsLampBasic.glb';
-import blenderGear from './assets/blender/threejsSettings2.glb';
-import blenderClipboard from './assets/blender/threejsClipboard.glb';
+const MapScaleAdjustment: Record<string, number> = {
+  //do console.log(Math.abs(pointX - nextPointX)) in Map.tsx/distanceHeadingCalculations()
+  Arras: 0.06,
+  Kuban: 0.06,
+  Lapino: 0.06,
+  Moscow: 0.06,
+  Normandy: 0.05,
+  Novosokolniki: 0.2,
+  Odessa: 0.06,
+  Prokhorovka: 0.06,
+  Rheinland: 0.06,
+  Stalingrad: 0.06,
+  Vluki: 0.06,
+  'Western Front': 0.06,
+};
+
+import blenderTable from './assets/blenderTable/threejsTable.glb';
+import blenderLamp from './assets/blenderTable/threejsLampBasic.glb';
+import blenderGear from './assets/blenderTable/threejsSettings2.glb';
+import blenderClipboard from './assets/blenderTable/threejsClipboard.glb';
+
+import blenderRadar from './assets/blenderTargets/radar.glb';
 
 export {
   HennLogo1,
@@ -245,8 +263,10 @@ export {
   MapImages,
   MapImagesSizes,
   Map10Kilometer,
+  MapScaleAdjustment,
   blenderTable,
   blenderLamp,
   blenderGear,
   blenderClipboard,
+  blenderRadar,
 };

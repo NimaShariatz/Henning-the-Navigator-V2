@@ -75,7 +75,7 @@ function Settings({
 
             <h1>Settings</h1>
             <div className={styles.settingsOption}>
-              <h5>Brightness:</h5>
+              <h5>Personal Brightness:</h5>
               <button
                 className={styles.leftIncrement}
                 onClick={() => adjustBrightness(-1)}
@@ -121,7 +121,7 @@ function Settings({
               </button>
             </div>
             <div className={styles.settingsOption}>
-              <h5>Scale:</h5>
+              <h5>Personal Scale:</h5>
               <button
                 className={styles.leftIncrement}
                 onClick={() => adjustScale(-1)}

@@ -14,8 +14,10 @@ import * as THREE from 'three';
 import {
   blenderTable,
   blenderLamp,
+  blenderRadar,
   MapImages,
   MapImagesSizes,
+  MapScaleAdjustment,
 } from '../../constants';
 import Gear from './tableObjects/Gear';
 import Clipboard from './tableObjects/Clipboard';
@@ -104,6 +106,7 @@ function Map({
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
+  const radar = useGLTF(blenderRadar);
   const { gl } = useThree();
 
   const mapTexture = useTexture(MapImages[sessionMap], (texture) => {
@@ -163,6 +166,7 @@ function Map({
   return (
     <group position={[0, -1, -1.5]}>
       <primitive object={table.scene} position={[0, 0, 0]} scale={0.92} />
+      <primitive object={radar.scene} position={[0, 1, 0]} scale={0.2} />
       <primitive object={lamp.scene} position={[0, 6.2, -0.4]} scale={0.45} />
       <Text
         position={[-0, 0.63, -7]}
@@ -222,14 +226,15 @@ function Map({
           {/* max 50. and frustumCalled turned off so it still renders on orbit zoom */}
           {/* Since all waypoints share the same geometry and only differ by position/color, you can render them all in a single draw call using instancing.
           So this avoides a ridicoulus amount of draw calls which would tank FPS*/}
-          <octahedronGeometry args={[0.06, 0]} />
+          <octahedronGeometry args={[MapScaleAdjustment[sessionMap], 0]} />
           <meshLambertMaterial transparent opacity={0.725} />
           {waypoints.map((point) => (
             <Instance
               key={point.id}
               position={[
                 point.x,
-                0.06 + mapLightObjectValues.scaleFactor * 0.005,
+                MapScaleAdjustment[sessionMap] +
+                  mapLightObjectValues.scaleFactor * 0.005,
                 point.y,
               ]}
               rotation={[THREE.MathUtils.degToRad(180), 0, 0]}
@@ -239,7 +244,7 @@ function Map({
               <Html
                 center
                 wrapperClass={styles.waypointTextHTML}
-                position={[0, -0.1, 0]}
+                position={[0, -MapScaleAdjustment[sessionMap] * 1.25, 0]}
                 zIndexRange={[1, 0]} // default is [16777271, 0]
               >
                 <div
@@ -271,7 +276,9 @@ function Map({
           {Array.from({ length: MAX_WAYPOINTS - 1 }, (_, i) => {
             const point = waypoints[i];
             const nextPoint = waypoints[i + 1];
-            const y = 0.06 + mapLightObjectValues.scaleFactor * 0.005;
+            const y =
+              MapScaleAdjustment[sessionMap] +
+              mapLightObjectValues.scaleFactor * 0.005;
 
             if (!point || !nextPoint) {
               return (
@@ -317,7 +324,7 @@ function Map({
                 <Html
                   center
                   wrapperClass={styles.waypointTravelInfoHTML}
-                  position={[midX, 0.1, midY]}
+                  position={[midX, 1.25 * MapScaleAdjustment[sessionMap], midY]}
                   zIndexRange={[0.5, 0]}
                 >
                   <div className={styles.waypointInfoContainer}>
@@ -333,7 +340,10 @@ function Map({
 
         <Segments
           limit={MAX_FRONTLINES}
-          lineWidth={5 + mapLightObjectValues.scaleFactor}
+          lineWidth={
+            60 * MapScaleAdjustment[sessionMap] +
+            mapLightObjectValues.scaleFactor
+          }
         >
           {Array.from({ length: MAX_FRONTLINES }, (_, i) => {
             const line = frontlines[i];
@@ -371,11 +381,12 @@ function Map({
           position={[text.x, 0.64, text.y + 1]}
           font={fontPath900}
           color={text.color}
-          fontSize={text.size * 0.03}
+          fontSize={text.size * 0.02}
           textAlign="left"
           anchorX="center"
           anchorY="middle"
           maxWidth={3}
+          scale={30 * MapScaleAdjustment[sessionMap]}
           onClick={(e) => {
             e.stopPropagation();
             revealEditTextSetter(text.id);

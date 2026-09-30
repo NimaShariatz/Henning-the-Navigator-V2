@@ -74,9 +74,9 @@ function EditTextForm({
         <button
           className={styles.leftIncrement}
           onClick={() => adjustSize(-1)}
-          disabled={size === 0}
+          disabled={size === 1}
           style={{
-            cursor: size === 0 ? 'not-allowed' : 'pointer',
+            cursor: size === 1 ? 'not-allowed' : 'pointer',
           }}
         >
           <svg
