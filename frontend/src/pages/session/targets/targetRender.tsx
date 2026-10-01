@@ -3,12 +3,15 @@ import { blenderRadar, type Targetpoint } from '../../../constants';
 import { useGLTF } from '@react-three/drei';
 import { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
+import { MapScaleAdjustment } from '../../../constants';
 
 interface TargetRenderProps {
   targets: Targetpoint[];
+  scaleFactor: number;
+  sessionMap: string;
 }
 
-function TargetRender({ targets }: TargetRenderProps) {
+function TargetRender({ targets, scaleFactor, sessionMap }: TargetRenderProps) {
   const radar = useGLTF(blenderRadar);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ function TargetRender({ targets }: TargetRenderProps) {
         (child as THREE.Mesh).material = new THREE.MeshLambertMaterial({
           color: 'red',
           transparent: true,
-          opacity: 0.4,
+          opacity: 0.5,
         });
       }
     });
@@ -26,7 +29,13 @@ function TargetRender({ targets }: TargetRenderProps) {
   return (
     <>
       {targets.map((target) => (
-        <RadarInstance key={target.id} scene={radar.scene} target={target} />
+        <RadarInstance
+          key={target.id}
+          scene={radar.scene}
+          target={target}
+          scaleFactor={scaleFactor}
+          sessionMap={sessionMap}
+        />
       ))}
     </>
   );
@@ -35,9 +44,13 @@ function TargetRender({ targets }: TargetRenderProps) {
 function RadarInstance({
   scene,
   target,
+  scaleFactor,
+  sessionMap,
 }: {
   scene: THREE.Group;
   target: Targetpoint;
+  scaleFactor: number;
+  sessionMap: string;
 }) {
   // clone so each target gets its own Object3D instance in the scene graph
   const clonedScene = useMemo(() => scene.clone(), [scene]);
@@ -47,7 +60,7 @@ function RadarInstance({
       object={clonedScene}
       position={[target.x, 0.635, target.y + 1]}
       rotation={[0, THREE.MathUtils.degToRad(target.rotation), 0]}
-      scale={0.025}
+      scale={0.25 * scaleFactor * MapScaleAdjustment[sessionMap]}
     />
   );
 }

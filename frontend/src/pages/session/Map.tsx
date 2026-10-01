@@ -401,7 +401,11 @@ function Map({
         </Text>
       ))}
 
-      <TargetRender targets={targets} />
+      <TargetRender
+        targets={targets}
+        scaleFactor={mapLightObjectValues.scaleFactor}
+        sessionMap={sessionMap}
+      />
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
       <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />
