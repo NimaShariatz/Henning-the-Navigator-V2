@@ -17,33 +17,22 @@ interface SettingsProps {
 function Settings({
   revealSettings,
   revealSettingsSetter,
-  mapLightObjectValues,
   setMapLightObjectValues,
   isKilometers,
   setIsKilometers,
 }: SettingsProps) {
   const [brightnessValue, setBrightnessValue] = useState(5);
-  const [scaleValue, setScaleValue] = useState(3);
 
   const adjustBrightness = (input: number) => {
     setBrightnessValue(brightnessValue + input);
     setMapLightObjectValues((prev) => ({
       ...prev,
-      Spotlight: prev.Spotlight + input * 0.75,
-      Pointlight: prev.Pointlight + input * 1.4,
+      Spotlight: prev.Spotlight + input * 0.8,
+      Pointlight: prev.Pointlight + input * 0.8,
     }));
     //const updatedLight: Record<string, number> = {"Spotlight": (mapLightObjectValues.Spotlight + (input * 2)), "Pointlight": (mapLightObjectValues.Pointlight + (input/4))}
     //setMapLightObjectValues(updatedLight)
     //setBrightnessValue(brightnessValue + input)
-  };
-
-  const adjustScale = (input: number) => {
-    setScaleValue(scaleValue + input);
-    setMapLightObjectValues((prev) => ({
-      ...prev,
-      scaleFactor: prev.scaleFactor + input * 0.25,
-    }));
-    console.log(mapLightObjectValues.scaleFactor);
   };
 
   return (
@@ -79,9 +68,9 @@ function Settings({
               <button
                 className={styles.leftIncrement}
                 onClick={() => adjustBrightness(-1)}
-                disabled={brightnessValue === 0}
+                disabled={brightnessValue === 1}
                 style={{
-                  cursor: brightnessValue === 0 ? 'not-allowed' : 'pointer',
+                  cursor: brightnessValue === 1 ? 'not-allowed' : 'pointer',
                 }}
               >
                 <svg
@@ -106,48 +95,6 @@ function Settings({
                 style={{
                   cursor: brightnessValue === 10 ? 'not-allowed' : 'pointer',
                 }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 20 20"
-                >
-                  <g fillRule="evenodd" clipRule="evenodd">
-                    <path d="M15.499 9.134a1 1 0 0 1 0 1.732l-10 5.769A1 1 0 0 1 4 15.769V4.23a1 1 0 0 1 1.5-.866z" />
-                    <path d="M5.5 16.635a1 1 0 0 1-1.5-.866V4.23a1 1 0 0 1 1.5-.866l9.999 5.769a1 1 0 0 1 0 1.732zM10.997 10L7 7.694v4.612z" />
-                  </g>
-                </svg>
-              </button>
-            </div>
-            <div className={styles.settingsOption}>
-              <h5>Personal Scale:</h5>
-              <button
-                className={styles.leftIncrement}
-                onClick={() => adjustScale(-1)}
-                disabled={scaleValue === 0}
-                style={{ cursor: scaleValue === 0 ? 'not-allowed' : 'pointer' }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 20 20"
-                >
-                  <g fillRule="evenodd" clipRule="evenodd">
-                    <path d="M15.499 9.134a1 1 0 0 1 0 1.732l-10 5.769A1 1 0 0 1 4 15.769V4.23a1 1 0 0 1 1.5-.866z" />
-                    <path d="M5.5 16.635a1 1 0 0 1-1.5-.866V4.23a1 1 0 0 1 1.5-.866l9.999 5.769a1 1 0 0 1 0 1.732zM10.997 10L7 7.694v4.612z" />
-                  </g>
-                </svg>
-              </button>
-
-              <h6>{scaleValue}</h6>
-
-              <button
-                className={styles.rightIncrement}
-                onClick={() => adjustScale(1)}
-                disabled={scaleValue === 5}
-                style={{ cursor: scaleValue === 5 ? 'not-allowed' : 'pointer' }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

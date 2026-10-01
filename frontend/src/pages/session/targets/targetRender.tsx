@@ -7,11 +7,10 @@ import { MapScaleAdjustment } from '../../../constants';
 
 interface TargetRenderProps {
   targets: Targetpoint[];
-  scaleFactor: number;
   sessionMap: string;
 }
 
-function TargetRender({ targets, scaleFactor, sessionMap }: TargetRenderProps) {
+function TargetRender({ targets, sessionMap }: TargetRenderProps) {
   const radar = useGLTF(blenderRadar);
 
   useEffect(() => {
@@ -33,7 +32,6 @@ function TargetRender({ targets, scaleFactor, sessionMap }: TargetRenderProps) {
           key={target.id}
           scene={radar.scene}
           target={target}
-          scaleFactor={scaleFactor}
           sessionMap={sessionMap}
         />
       ))}
@@ -44,12 +42,10 @@ function TargetRender({ targets, scaleFactor, sessionMap }: TargetRenderProps) {
 function RadarInstance({
   scene,
   target,
-  scaleFactor,
   sessionMap,
 }: {
   scene: THREE.Group;
   target: Targetpoint;
-  scaleFactor: number;
   sessionMap: string;
 }) {
   // clone so each target gets its own Object3D instance in the scene graph
@@ -60,7 +56,7 @@ function RadarInstance({
       object={clonedScene}
       position={[target.x, 0.635, target.y + 1]}
       rotation={[0, THREE.MathUtils.degToRad(target.rotation), 0]}
-      scale={0.25 * scaleFactor * MapScaleAdjustment[sessionMap]}
+      scale={0.25 * MapScaleAdjustment[sessionMap]}
     />
   );
 }

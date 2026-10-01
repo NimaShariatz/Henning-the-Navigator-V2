@@ -230,15 +230,9 @@ function Map({
           {waypoints.map((point) => (
             <Instance
               key={point.id}
-              position={[
-                point.x,
-                MapScaleAdjustment[sessionMap] +
-                  mapLightObjectValues.scaleFactor * 0.005,
-                point.y,
-              ]}
+              position={[point.x, MapScaleAdjustment[sessionMap], point.y]}
               rotation={[THREE.MathUtils.degToRad(180), 0, 0]}
               color={WAYPOINT_COLORS[point.type] ?? '#ffc90e'}
-              scale={mapLightObjectValues.scaleFactor}
             >
               <Html
                 center
@@ -266,7 +260,7 @@ function Map({
           ))}
         </Instances>
 
-        <Segments limit={MAX_WAYPOINTS - 1} lineWidth={1.5}>
+        <Segments limit={MAX_WAYPOINTS - 1} lineWidth={2}>
           {' '}
           {/* 
             not using drei line with waypoints.map because of draw calls. 
@@ -275,9 +269,7 @@ function Map({
           {Array.from({ length: MAX_WAYPOINTS - 1 }, (_, i) => {
             const point = waypoints[i];
             const nextPoint = waypoints[i + 1];
-            const y =
-              MapScaleAdjustment[sessionMap] +
-              mapLightObjectValues.scaleFactor * 0.005;
+            const y = MapScaleAdjustment[sessionMap];
 
             if (!point || !nextPoint) {
               return (
@@ -339,10 +331,7 @@ function Map({
 
         <Segments
           limit={MAX_FRONTLINES}
-          lineWidth={
-            60 * MapScaleAdjustment[sessionMap] +
-            mapLightObjectValues.scaleFactor
-          }
+          lineWidth={60 * MapScaleAdjustment[sessionMap]}
         >
           {Array.from({ length: MAX_FRONTLINES }, (_, i) => {
             const line = frontlines[i];
@@ -401,11 +390,7 @@ function Map({
         </Text>
       ))}
 
-      <TargetRender
-        targets={targets}
-        scaleFactor={mapLightObjectValues.scaleFactor}
-        sessionMap={sessionMap}
-      />
+      <TargetRender targets={targets} sessionMap={sessionMap} />
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
       <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />

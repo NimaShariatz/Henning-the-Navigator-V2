@@ -77,7 +77,6 @@ function Session() {
   >({
     Spotlight: 4,
     Pointlight: 8,
-    scaleFactor: 1,
   });
   const [isKilometers, setIsKilometers] = useState(true);
 
