@@ -198,7 +198,7 @@ export const DEFAULT_COLORSELECT_OPTIONS: Record<string, string> = {
 
 export const MAX_WAYPOINTS = 50; // max waypoints
 export const MAX_FRONTLINES = 250; // max frontlines
-export const MAX_TEXTS = 15; // max texts
+export const MAX_TEXTS = 20; // max texts
 
 const MapScaleAdjustment: Record<string, number> = {
   //do console.log(Math.abs(pointX - nextPointX)) in Map.tsx/distanceHeadingCalculations()
@@ -216,12 +216,34 @@ const MapScaleAdjustment: Record<string, number> = {
   'Western Front': 0.06,
 };
 
+const TargetModels: Record<string, string> = {
+  radar: blenderRadar,
+  factory: blenderFactory,
+  city: blenderRadar,
+  railyard: blenderRadar,
+  train: blenderRadar,
+  oildepot: blenderRadar,
+  tank: blenderRadar,
+  ship: blenderRadar,
+  bridge: blenderRadar,
+  truck: blenderRadar,
+  defence: blenderRadar,
+  artillary: blenderRadar,
+  airfield: blenderRadar,
+  antiair: blenderRadar,
+  parachute: blenderRadar,
+  circle: blenderRadar,
+  square: blenderRadar,
+  unknown: blenderRadar,
+};
+
 import blenderTable from './assets/blenderTable/threejsTable.glb';
 import blenderLamp from './assets/blenderTable/threejsLampBasic.glb';
 import blenderGear from './assets/blenderTable/threejsSettings2.glb';
 import blenderClipboard from './assets/blenderTable/threejsClipboard.glb';
 
 import blenderRadar from './assets/blenderTargets/radar.glb';
+import blenderFactory from './assets/blenderTargets/factory.glb';
 
 export {
   HennLogo1,
@@ -264,6 +286,7 @@ export {
   MapImagesSizes,
   Map10Kilometer,
   MapScaleAdjustment,
+  TargetModels,
   blenderTable,
   blenderLamp,
   blenderGear,

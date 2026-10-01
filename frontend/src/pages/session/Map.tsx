@@ -14,7 +14,6 @@ import * as THREE from 'three';
 import {
   blenderTable,
   blenderLamp,
-  blenderRadar,
   MapImages,
   MapImagesSizes,
   MapScaleAdjustment,
@@ -41,6 +40,7 @@ import {
 import styles from './Session.module.css';
 import * as React from 'react';
 import { midXmidY, distanceCalc, headingCalc } from '../../helpers/distance';
+import TargetRender from './targets/targetRender';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -93,6 +93,7 @@ function Map({
   optionSelected,
   waypoints,
   addWaypoint,
+  targets,
   addTarget,
   texts,
   addText,
@@ -106,7 +107,6 @@ function Map({
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
-  const radar = useGLTF(blenderRadar);
   const { gl } = useThree();
 
   const mapTexture = useTexture(MapImages[sessionMap], (texture) => {
@@ -166,7 +166,6 @@ function Map({
   return (
     <group position={[0, -1, -1.5]}>
       <primitive object={table.scene} position={[0, 0, 0]} scale={0.92} />
-      <primitive object={radar.scene} position={[0, 1, 0]} scale={0.2} />
       <primitive object={lamp.scene} position={[0, 6.2, -0.4]} scale={0.45} />
       <Text
         position={[-0, 0.63, -7]}
@@ -401,6 +400,8 @@ function Map({
           {text.text}
         </Text>
       ))}
+
+      <TargetRender targets={targets} />
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
       <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />
