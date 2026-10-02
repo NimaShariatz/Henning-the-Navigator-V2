@@ -159,6 +159,7 @@ export interface Targetpoint {
   z: number;
   rotation: number;
   type: string;
+  color: string;
 }
 export interface Textpoint {
   id: number;
@@ -219,8 +220,8 @@ const MapScaleAdjustment: Record<string, number> = {
 const TargetModels: Record<string, string> = {
   radar: blenderRadar,
   factory: blenderFactory,
-  city: blenderRadar,
-  railyard: blenderRadar,
+  city: blenderCity,
+  railyard: blenderRailyard,
   train: blenderRadar,
   oildepot: blenderRadar,
   tank: blenderRadar,
@@ -244,6 +245,8 @@ import blenderClipboard from './assets/blenderTable/threejsClipboard.glb';
 
 import blenderRadar from './assets/blenderTargets/radar.glb';
 import blenderFactory from './assets/blenderTargets/factory.glb';
+import blenderCity from './assets/blenderTargets/city.glb';
+import blenderRailyard from './assets/blenderTargets/railyard.glb';
 
 export {
   HennLogo1,
@@ -292,4 +295,7 @@ export {
   blenderGear,
   blenderClipboard,
   blenderRadar,
+  blenderFactory,
+  blenderCity,
+  blenderRailyard,
 };

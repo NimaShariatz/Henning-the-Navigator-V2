@@ -9,6 +9,7 @@ export interface PerfStats {
   triangles: number;
   geometries: number;
   textures: number;
+  programs: number;
 }
 
 function PerfMonitor({ onUpdate }: { onUpdate: (s: PerfStats) => void }) {
@@ -33,6 +34,7 @@ function PerfMonitor({ onUpdate }: { onUpdate: (s: PerfStats) => void }) {
         triangles: gl.info.render.triangles,
         geometries: gl.info.memory.geometries,
         textures: gl.info.memory.textures,
+        programs: gl.info.programs?.length ?? 0, // new
       });
       frames.current = 0;
       lastTime.current = now;

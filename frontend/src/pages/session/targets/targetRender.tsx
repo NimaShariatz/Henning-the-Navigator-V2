@@ -1,7 +1,14 @@
 import './targets.module.css';
-import { blenderRadar, type Targetpoint } from '../../../constants';
+import {
+  blenderRadar,
+  blenderFactory,
+  blenderCity,
+  blenderRailyard,
+  TargetModels,
+  type Targetpoint,
+} from '../../../constants';
 import { useGLTF } from '@react-three/drei';
-import { useEffect, useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import * as THREE from 'three';
 import { MapScaleAdjustment } from '../../../constants';
 
@@ -12,25 +19,24 @@ interface TargetRenderProps {
 
 function TargetRender({ targets, sessionMap }: TargetRenderProps) {
   const radar = useGLTF(blenderRadar);
+  const factory = useGLTF(blenderFactory);
+  const city = useGLTF(blenderCity);
+  const railyard = useGLTF(blenderRailyard);
 
-  useEffect(() => {
-    radar.scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        (child as THREE.Mesh).material = new THREE.MeshLambertMaterial({
-          color: 'red',
-          transparent: true,
-          opacity: 0.5,
-        });
-      }
-    });
-  }, [radar.scene]);
+  // maps each unique model url to its loaded scene
+  const sceneByUrl: Record<string, THREE.Group> = {
+    [blenderRadar]: radar.scene,
+    [blenderFactory]: factory.scene,
+    [blenderCity]: city.scene,
+    [blenderRailyard]: railyard.scene,
+  };
 
   return (
     <>
       {targets.map((target) => (
-        <RadarInstance
+        <TargetInstance
           key={target.id}
-          scene={radar.scene}
+          scene={sceneByUrl[TargetModels[target.type]] ?? radar.scene}
           target={target}
           sessionMap={sessionMap}
         />
@@ -39,7 +45,7 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
   );
 }
 
-function RadarInstance({
+function TargetInstance({
   scene,
   target,
   sessionMap,
@@ -48,8 +54,32 @@ function RadarInstance({
   target: Targetpoint;
   sessionMap: string;
 }) {
-  // clone so each target gets its own Object3D instance in the scene graph
-  const clonedScene = useMemo(() => scene.clone(), [scene]);
+  const clonedScene = useMemo(() => {
+    const clone = scene.clone();
+    clone.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        (child as THREE.Mesh).material = new THREE.MeshLambertMaterial({
+          color: target.color,
+          transparent: true,
+          opacity: 0.5,
+        });
+      }
+    });
+    return clone;
+  }, [scene, target.color]);
+
+  //supposedly good practice for if I ever add texture maps to the targets,, or per-instance shader
+  //variations, this would be necassary. at the moment, it doesn't seem to have much real effect as
+  //meshLambert materials are properly disposed of by the Garbage Collector anyhow...
+  useEffect(() => {
+    return () => {
+      clonedScene.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+          ((child as THREE.Mesh).material as THREE.Material).dispose();
+        }
+      });
+    };
+  }, [clonedScene]);
 
   return (
     <primitive

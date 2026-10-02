@@ -36,6 +36,7 @@ export interface PerfStats {
   triangles: number;
   geometries: number;
   textures: number;
+  programs: number;
 }
 
 const emptySessionData: SessionDetailedItem = {
@@ -162,6 +163,7 @@ function Session() {
       z: z,
       rotation: rotation,
       type: type,
+      color: color,
     };
     setTargets([...targets, newTarget]);
   };
@@ -397,7 +399,8 @@ function Session() {
         {import.meta.env.DEV && perf && (
           <div className={styles.perfOverlay}>
             {perf.fps} fps · {perf.frameMs.toFixed(2)} ms · calls {perf.calls} ·
-            tris {perf.triangles} · geo {perf.geometries} · tex {perf.textures}
+            tris {perf.triangles} · geo {perf.geometries} · tex {perf.textures}{' '}
+            programs {perf.programs}
           </div>
         )}
       </div>
