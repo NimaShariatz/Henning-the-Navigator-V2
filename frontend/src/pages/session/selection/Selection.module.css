@@ -96,18 +96,7 @@
   pointer-events: all;
   font-weight: 600;
 }
-.colorDefaultRow button:nth-child(1) {
-  background-color: var(--red_target);
-}
-.colorDefaultRow button:nth-child(2) {
-  background-color: var(--blue_target);
-}
-.colorDefaultRow button:nth-child(3) {
-  background-color: var(--grey_target);
-}
-.colorDefaultRow button:active {
-  background-color: var(--active_color);
-}
+
 :global(.react-colorful) {
   /* the CSS Module interferes with the classnames for <RgbaColorPicker/>. so we add :global() to opt those selectors out of local scoping*/
   gap: 5px;

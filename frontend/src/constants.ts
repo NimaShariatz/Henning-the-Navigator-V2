@@ -222,7 +222,7 @@ const TargetModels: Record<string, string> = {
   factory: blenderFactory,
   city: blenderCity,
   railyard: blenderRailyard,
-  train: blenderRadar,
+  train: blenderTrain,
   oildepot: blenderRadar,
   tank: blenderRadar,
   ship: blenderRadar,
@@ -247,6 +247,7 @@ import blenderRadar from './assets/blenderTargets/radar.glb';
 import blenderFactory from './assets/blenderTargets/factory.glb';
 import blenderCity from './assets/blenderTargets/city.glb';
 import blenderRailyard from './assets/blenderTargets/railyard.glb';
+import blenderTrain from './assets/blenderTargets/train.glb';
 
 export {
   HennLogo1,
@@ -298,4 +299,5 @@ export {
   blenderFactory,
   blenderCity,
   blenderRailyard,
+  blenderTrain,
 };

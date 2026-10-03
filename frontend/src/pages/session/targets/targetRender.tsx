@@ -6,6 +6,7 @@ import {
   blenderRailyard,
   TargetModels,
   type Targetpoint,
+  blenderTrain,
 } from '../../../constants';
 import { useGLTF } from '@react-three/drei';
 import { useMemo, useEffect } from 'react';
@@ -21,6 +22,7 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
   const radar = useGLTF(blenderRadar);
   const factory = useGLTF(blenderFactory);
   const city = useGLTF(blenderCity);
+  const train = useGLTF(blenderTrain);
   const railyard = useGLTF(blenderRailyard);
 
   // maps each unique model url to its loaded scene
@@ -28,6 +30,7 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
     [blenderRadar]: radar.scene,
     [blenderFactory]: factory.scene,
     [blenderCity]: city.scene,
+    [blenderTrain]: train.scene,
     [blenderRailyard]: railyard.scene,
   };
 
