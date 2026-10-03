@@ -7,6 +7,11 @@ import {
   TargetModels,
   type Targetpoint,
   blenderTrain,
+  blenderOildepot,
+  blenderTank,
+  blenderShip,
+  blenderBridge,
+  blenderTruck,
 } from '../../../constants';
 import { useGLTF } from '@react-three/drei';
 import { useMemo, useEffect } from 'react';
@@ -24,6 +29,11 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
   const city = useGLTF(blenderCity);
   const train = useGLTF(blenderTrain);
   const railyard = useGLTF(blenderRailyard);
+  const oildepot = useGLTF(blenderOildepot);
+  const tank = useGLTF(blenderTank);
+  const ship = useGLTF(blenderShip);
+  const bridge = useGLTF(blenderBridge);
+  const truck = useGLTF(blenderTruck);
 
   // maps each unique model url to its loaded scene
   const sceneByUrl: Record<string, THREE.Group> = {
@@ -32,6 +42,11 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
     [blenderCity]: city.scene,
     [blenderTrain]: train.scene,
     [blenderRailyard]: railyard.scene,
+    [blenderOildepot]: oildepot.scene,
+    [blenderTank]: tank.scene,
+    [blenderShip]: ship.scene,
+    [blenderBridge]: bridge.scene,
+    [blenderTruck]: truck.scene,
   };
 
   return (

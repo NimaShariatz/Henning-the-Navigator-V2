@@ -223,11 +223,11 @@ const TargetModels: Record<string, string> = {
   city: blenderCity,
   railyard: blenderRailyard,
   train: blenderTrain,
-  oildepot: blenderRadar,
-  tank: blenderRadar,
-  ship: blenderRadar,
-  bridge: blenderRadar,
-  truck: blenderRadar,
+  oildepot: blenderOildepot,
+  tank: blenderTank,
+  ship: blenderShip,
+  bridge: blenderBridge,
+  truck: blenderTruck,
   defence: blenderRadar,
   artillary: blenderRadar,
   airfield: blenderRadar,
@@ -248,6 +248,11 @@ import blenderFactory from './assets/blenderTargets/factory.glb';
 import blenderCity from './assets/blenderTargets/city.glb';
 import blenderRailyard from './assets/blenderTargets/railyard.glb';
 import blenderTrain from './assets/blenderTargets/train.glb';
+import blenderOildepot from './assets/blenderTargets/oildepot.glb';
+import blenderTank from './assets/blenderTargets/tank.glb';
+import blenderShip from './assets/blenderTargets/ship.glb';
+import blenderBridge from './assets/blenderTargets/bridge.glb';
+import blenderTruck from './assets/blenderTargets/truck.glb';
 
 export {
   HennLogo1,
@@ -300,4 +305,9 @@ export {
   blenderCity,
   blenderRailyard,
   blenderTrain,
+  blenderOildepot,
+  blenderTank,
+  blenderShip,
+  blenderBridge,
+  blenderTruck,
 };
