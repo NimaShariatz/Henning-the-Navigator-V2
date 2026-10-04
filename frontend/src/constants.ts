@@ -201,18 +201,18 @@ export const MAX_TEXTS = 20; // max texts
 
 const MapScaleAdjustment: Record<string, number> = {
   //do console.log(Math.abs(pointX - nextPointX)) in Map.tsx/distanceHeadingCalculations()
-  Arras: 0.06,
+  Arras: 0.11,
   Kuban: 0.06,
-  Lapino: 0.06,
+  Lapino: 0.12,
   Moscow: 0.06,
-  Normandy: 0.05,
-  Novosokolniki: 0.2,
+  Normandy: 0.06,
+  Novosokolniki: 0.15,
   Odessa: 0.06,
   Prokhorovka: 0.06,
   Rheinland: 0.06,
   Stalingrad: 0.06,
-  Vluki: 0.06,
-  'Western Front': 0.06,
+  Vluki: 0.05,
+  'Western Front': 0.04,
 };
 
 const TargetModels: Record<string, string> = {
