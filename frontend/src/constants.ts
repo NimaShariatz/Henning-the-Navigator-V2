@@ -115,7 +115,6 @@ export type OptionKey =
   | 'defence'
   | 'artillary'
   | 'airfield'
-  | 'antiair'
   | 'parachute'
   | 'circle'
   | 'square'
@@ -139,7 +138,6 @@ export const TARGET_OPTION_KEYS: OptionKey[] = [
   'defence',
   'artillary',
   'airfield',
-  'antiair',
   'parachute',
   'circle',
   'square',
@@ -228,10 +226,9 @@ const TargetModels: Record<string, string> = {
   ship: blenderShip,
   bridge: blenderBridge,
   truck: blenderTruck,
-  defence: blenderRadar,
-  artillary: blenderRadar,
-  airfield: blenderRadar,
-  antiair: blenderRadar,
+  defence: blenderDefence,
+  artillary: blenderArtillary,
+  airfield: blenderAirfield,
   parachute: blenderRadar,
   circle: blenderRadar,
   square: blenderRadar,
@@ -253,6 +250,9 @@ import blenderTank from './assets/blenderTargets/tank.glb';
 import blenderShip from './assets/blenderTargets/ship.glb';
 import blenderBridge from './assets/blenderTargets/bridge.glb';
 import blenderTruck from './assets/blenderTargets/truck.glb';
+import blenderDefence from './assets/blenderTargets/defence.glb';
+import blenderArtillary from './assets/blenderTargets/artillary.glb';
+import blenderAirfield from './assets/blenderTargets/airfield.glb';
 
 export {
   HennLogo1,
@@ -310,4 +310,7 @@ export {
   blenderShip,
   blenderBridge,
   blenderTruck,
+  blenderDefence,
+  blenderArtillary,
+  blenderAirfield,
 };

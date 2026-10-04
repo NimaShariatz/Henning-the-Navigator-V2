@@ -99,7 +99,6 @@ function Session() {
     defence: false,
     artillary: false,
     airfield: false,
-    antiair: false,
     parachute: false,
     circle: false,
     square: false,
