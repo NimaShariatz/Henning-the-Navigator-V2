@@ -439,9 +439,9 @@ function Selection({
               </button>
               <button
                 className={styles.targetButton}
-                onClick={() => selectOption('parachute')}
+                onClick={() => selectOption('paradrop')}
                 style={{
-                  outlineColor: optionSelected.parachute
+                  outlineColor: optionSelected.paradrop
                     ? 'var(--active_color)'
                     : 'transparent',
                 }}

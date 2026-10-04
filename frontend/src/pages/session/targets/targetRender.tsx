@@ -15,6 +15,10 @@ import {
   blenderDefence,
   blenderArtillary,
   blenderAirfield,
+  blenderParadrop,
+  blenderCircle,
+  blenderSquare,
+  blenderUnknown,
 } from '../../../constants';
 import { useGLTF } from '@react-three/drei';
 import { useMemo, useEffect } from 'react';
@@ -40,6 +44,10 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
   const defence = useGLTF(blenderDefence);
   const artillary = useGLTF(blenderArtillary);
   const airfield = useGLTF(blenderAirfield);
+  const paradrop = useGLTF(blenderParadrop);
+  const circle = useGLTF(blenderCircle);
+  const square = useGLTF(blenderSquare);
+  const uknown = useGLTF(blenderUnknown);
 
   // maps each unique model url to its loaded scene
   const sceneByUrl: Record<string, THREE.Group> = {
@@ -56,6 +64,10 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
     [blenderDefence]: defence.scene,
     [blenderArtillary]: artillary.scene,
     [blenderAirfield]: airfield.scene,
+    [blenderParadrop]: paradrop.scene,
+    [blenderCircle]: circle.scene,
+    [blenderSquare]: square.scene,
+    [blenderUnknown]: uknown.scene,
   };
 
   return (
