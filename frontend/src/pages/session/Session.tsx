@@ -28,6 +28,7 @@ import {
 import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 import Toast from '../../components/toast/Toast';
 import EditText from './text/EditText';
+import EditTarget from './target/EditTarget';
 
 export interface PerfStats {
   fps: number;
@@ -71,6 +72,7 @@ function Session() {
     settings: false,
     flightInfo: false,
     editText: false,
+    editTarget: false,
   });
 
   const [mapLightObjectValues, setMapLightObjectValues] = useState<
@@ -109,6 +111,7 @@ function Session() {
   const [waypointId, setWaypointId] = useState(1);
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]); // see constants .tsx for its structure
   const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
+  const [targetClicked, setTargetClicked] = useState(-1);
   const [texts, setTexts] = useState<Textpoint[]>([]); // see constants .tsx for its structure
   const [textClicked, setTextClicked] = useState(-1);
   const [frontlines, setFrontlines] = useState<Frontline[]>([]); // see constants .tsx for its structure
@@ -306,6 +309,10 @@ function Session() {
     setPopupRevealer((prev) => ({ ...prev, editText: !prev.editText }));
     setTextClicked(idClicked);
   };
+  const revealEditTargetSetter = (idClicked: number) => {
+    setPopupRevealer((prev) => ({ ...prev, editTarget: !prev.editTarget }));
+    setTargetClicked(idClicked);
+  };
 
   return (
     <>
@@ -395,6 +402,12 @@ function Session() {
           texts={texts}
           updateText={updateText}
           deleteText={deleteText}
+        />
+        <EditTarget
+          revealEditTarget={popupRevealer.editTarget}
+          revealEditTargetSetter={revealEditTargetSetter}
+          targetClicked={targetClicked}
+          targets={targets}
         />
 
         {import.meta.env.DEV && perf && (
