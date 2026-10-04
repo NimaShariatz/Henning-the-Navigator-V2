@@ -158,6 +158,7 @@ export interface Targetpoint {
   rotation: number;
   type: string;
   color: string;
+  scale: number;
 }
 export interface Textpoint {
   id: number;

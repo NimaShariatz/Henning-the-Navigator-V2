@@ -154,6 +154,7 @@ function Session() {
     z: number,
     rotation: number,
     type: string,
+    scale: number,
   ) => {
     const newTarget = {
       id: targets.length > 0 ? Math.max(...targets.map((w) => w.id)) + 1 : 1,
@@ -163,6 +164,7 @@ function Session() {
       rotation: rotation,
       type: type,
       color: color,
+      scale: scale,
     };
     setTargets([...targets, newTarget]);
   };

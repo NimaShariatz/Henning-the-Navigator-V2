@@ -47,7 +47,7 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
   const paradrop = useGLTF(blenderParadrop);
   const circle = useGLTF(blenderCircle);
   const square = useGLTF(blenderSquare);
-  const uknown = useGLTF(blenderUnknown);
+  const unknown = useGLTF(blenderUnknown);
 
   // maps each unique model url to its loaded scene
   const sceneByUrl: Record<string, THREE.Group> = {
@@ -67,7 +67,7 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
     [blenderParadrop]: paradrop.scene,
     [blenderCircle]: circle.scene,
     [blenderSquare]: square.scene,
-    [blenderUnknown]: uknown.scene,
+    [blenderUnknown]: unknown.scene,
   };
 
   return (
@@ -125,7 +125,7 @@ function TargetInstance({
       object={clonedScene}
       position={[target.x, 0.635, target.y + 1]}
       rotation={[0, THREE.MathUtils.degToRad(target.rotation), 0]}
-      scale={0.25 * MapScaleAdjustment[sessionMap]}
+      scale={0.25 * MapScaleAdjustment[sessionMap] * target.scale}
     />
   );
 }
