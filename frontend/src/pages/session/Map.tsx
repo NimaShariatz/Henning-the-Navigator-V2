@@ -56,6 +56,7 @@ interface MapProps {
     x: number,
     y: number,
     z: number,
+    name: string,
     rotation: number,
     type: string,
     scale: number,
@@ -136,7 +137,7 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeTargetType) {
-      addTarget(x, y, 0, 0, activeTargetType, 1);
+      addTarget(x, y, 0, 'asd', 0, activeTargetType, 1);
       return;
     }
     // the thing true is text

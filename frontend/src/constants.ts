@@ -155,6 +155,7 @@ export interface Targetpoint {
   x: number;
   y: number;
   z: number;
+  name: string;
   rotation: number;
   type: string;
   color: string;

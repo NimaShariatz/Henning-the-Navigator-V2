@@ -11,7 +11,7 @@ interface EditTargetFormProps {
   ) => void;
   deleteTarget: (id: number) => void;
 }
-
+//name, scale, color, rotation
 function EditTargetForm({
   selectedText,
   updateTarget,
