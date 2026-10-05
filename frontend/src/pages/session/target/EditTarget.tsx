@@ -9,6 +9,7 @@ interface EditTargetProps {
   targets: Targetpoint[];
   updateTarget: (
     id: number,
+    name: string,
     rotation: number,
     color: string,
     scale: number,

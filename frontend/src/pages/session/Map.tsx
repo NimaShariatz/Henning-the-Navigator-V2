@@ -138,7 +138,6 @@ function Map({
     );
     if (activeTargetType) {
       addTarget(x, y, 0, activeTargetType, 0, activeTargetType, 1);
-      console.log(targets);
       return;
     }
     // the thing true is text

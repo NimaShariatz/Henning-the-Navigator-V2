@@ -213,12 +213,15 @@ function Session() {
 
   const updateTarget = (
     id: number,
+    name: string,
     rotation: number,
     color: string,
     scale: number,
   ) => {
     setTargets((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, rotation, color, scale } : t)),
+      prev.map((t) =>
+        t.id === id ? { ...t, name, rotation, color, scale } : t,
+      ),
     );
   };
 

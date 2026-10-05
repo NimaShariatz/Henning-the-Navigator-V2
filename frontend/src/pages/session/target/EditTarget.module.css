@@ -57,17 +57,92 @@
   justify-content: left;
 }
 
-.textInputContainer input {
+.nameInputContainer input {
   padding: 6px 10px;
   border-radius: 3px;
   border: none;
   width: 350px;
 }
-.textInputContainer small {
+.nameInputContainer small {
   padding-left: 0.7rem;
   opacity: 0.7;
   user-select: none;
   pointer-events: none;
+}
+
+.leftIncrement,
+.rightIncrement {
+  width: 2rem;
+  height: 2rem;
+  margin-inline: 0.4rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transform: rotate(180deg);
+  padding: 0.15rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: transparent;
+}
+.rightIncrement {
+  transform: rotate(0);
+}
+.leftIncrement:hover,
+.rightIncrement:hover {
+  background-color: var(--darkBG_1);
+}
+.leftIncrement svg,
+.rightIncrement svg {
+  fill: var(--logo_yellow);
+}
+.leftIncrement:active svg,
+.rightIncrement:active svg {
+  fill: var(--active_color);
+}
+.leftIncrement:disabled svg,
+.rightIncrement:disabled svg {
+  fill: var(--unavailable_gray);
+}
+
+.rotationInput {
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: none;
+  width: 44px;
+  margin-inline: 0.75rem 0.25rem;
+  text-align: center;
+  border: none;
+}
+
+.UpdateDeleteOptions {
+  margin-block: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.updateTextButton {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--logo_yellow);
+  outline: 3px solid transparent;
+  cursor: pointer;
+  font-size: 20px;
+}
+.updateTextButton:hover,
+.deleteTextButton:hover {
+  outline-color: var(--text_color_white);
+}
+.deleteTextButton {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--delete_red);
+  outline: 3px solid transparent;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 @media (max-width: 720px) {
@@ -77,7 +152,7 @@
     padding-block: 2rem;
     max-height: 95%;
   }
-  .textInputContainer input {
+  .nameInputContainer input {
     width: 70%;
   }
 }
