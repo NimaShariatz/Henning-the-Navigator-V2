@@ -31,7 +31,7 @@ function EditTextForm({
 
     const overLimit = 50 - newValue.length < 0;
     if (maxTextLength.current) {
-      maxTextLength.current.textContent = String(50 - newValue.length);
+      maxTextLength.current.textContent = String(51 - newValue.length);
       maxTextLength.current.style.color = overLimit
         ? 'var(--delete_red)'
         : 'var(--text_color_white)';

@@ -137,7 +137,8 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeTargetType) {
-      addTarget(x, y, 0, 'asd', 0, activeTargetType, 1);
+      addTarget(x, y, 0, activeTargetType, 0, activeTargetType, 1);
+      console.log(targets);
       return;
     }
     // the thing true is text

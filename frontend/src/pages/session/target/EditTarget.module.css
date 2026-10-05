@@ -49,6 +49,27 @@
   fill: var(--text_color_white);
 }
 
+.editTargetOption {
+  margin-block: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.textInputContainer input {
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: none;
+  width: 350px;
+}
+.textInputContainer small {
+  padding-left: 0.7rem;
+  opacity: 0.7;
+  user-select: none;
+  pointer-events: none;
+}
+
 @media (max-width: 720px) {
   .innerContainer {
     width: 90%;
