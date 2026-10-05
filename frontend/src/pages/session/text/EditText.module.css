@@ -30,6 +30,25 @@
   overflow-y: auto;
 }
 
+.close {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+}
+.close button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  cursor: pointer;
+}
+.close button svg path {
+  fill: var(--logo_yellow);
+}
+.close button:hover svg path {
+  fill: var(--text_color_white);
+}
+
 .editTextOption {
   margin-block: 1rem;
   width: 100%;
@@ -93,25 +112,6 @@
 .leftIncrement:disabled svg,
 .rightIncrement:disabled svg {
   fill: var(--unavailable_gray);
-}
-
-.close {
-  display: flex;
-  justify-content: end;
-  width: 100%;
-}
-.close button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
-  cursor: pointer;
-}
-.close button svg path {
-  fill: var(--logo_yellow);
-}
-.close button:hover svg path {
-  fill: var(--text_color_white);
 }
 
 .UpdateDeleteOptions {

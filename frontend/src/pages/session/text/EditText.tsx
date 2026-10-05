@@ -56,7 +56,6 @@ function EditText({
 
             {/* key forces a fresh mount per selected text, resetting local draft state */}
             <EditTextForm
-              key={textClicked}
               selectedText={selectedText}
               updateText={updateText}
               deleteText={deleteText}

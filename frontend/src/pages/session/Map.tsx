@@ -60,6 +60,7 @@ interface MapProps {
     type: string,
     scale: number,
   ) => void;
+  revealEditTargetSetter: (idClicked: number) => void;
   texts: Textpoint[];
   addText: (
     x: number,
@@ -96,6 +97,7 @@ function Map({
   addWaypoint,
   targets,
   addTarget,
+  revealEditTargetSetter,
   texts,
   addText,
   revealEditTextSetter,
@@ -391,7 +393,11 @@ function Map({
         </Text>
       ))}
 
-      <TargetRender targets={targets} sessionMap={sessionMap} />
+      <TargetRender
+        targets={targets}
+        sessionMap={sessionMap}
+        revealEditTargetSetter={revealEditTargetSetter}
+      />
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
       <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />

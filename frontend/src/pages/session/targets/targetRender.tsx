@@ -21,6 +21,7 @@ import {
   blenderUnknown,
 } from '../../../constants';
 import { useGLTF } from '@react-three/drei';
+import type { ThreeEvent } from '@react-three/fiber';
 import { useMemo, useEffect } from 'react';
 import * as THREE from 'three';
 import { MapScaleAdjustment } from '../../../constants';
@@ -28,9 +29,14 @@ import { MapScaleAdjustment } from '../../../constants';
 interface TargetRenderProps {
   targets: Targetpoint[];
   sessionMap: string;
+  revealEditTargetSetter: (idClicked: number) => void;
 }
 
-function TargetRender({ targets, sessionMap }: TargetRenderProps) {
+function TargetRender({
+  targets,
+  sessionMap,
+  revealEditTargetSetter,
+}: TargetRenderProps) {
   const radar = useGLTF(blenderRadar);
   const factory = useGLTF(blenderFactory);
   const city = useGLTF(blenderCity);
@@ -78,6 +84,7 @@ function TargetRender({ targets, sessionMap }: TargetRenderProps) {
           scene={sceneByUrl[TargetModels[target.type]] ?? radar.scene}
           target={target}
           sessionMap={sessionMap}
+          revealEditTargetSetter={revealEditTargetSetter}
         />
       ))}
     </>
@@ -88,10 +95,12 @@ function TargetInstance({
   scene,
   target,
   sessionMap,
+  revealEditTargetSetter,
 }: {
   scene: THREE.Group;
   target: Targetpoint;
   sessionMap: string;
+  revealEditTargetSetter: (idClicked: number) => void;
 }) {
   const clonedScene = useMemo(() => {
     const clone = scene.clone();
@@ -126,6 +135,16 @@ function TargetInstance({
       position={[target.x, 0.635, target.y + 1]}
       rotation={[0, THREE.MathUtils.degToRad(target.rotation), 0]}
       scale={0.25 * MapScaleAdjustment[sessionMap] * target.scale}
+      onClick={(e: ThreeEvent<MouseEvent>) => {
+        e.stopPropagation();
+        revealEditTargetSetter(target.id);
+      }}
+      onPointerEnter={() => {
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerLeave={() => {
+        document.body.style.cursor = 'default';
+      }}
     />
   );
 }

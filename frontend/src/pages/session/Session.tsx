@@ -209,6 +209,17 @@ function Session() {
     );
   };
 
+  const updateTarget = (
+    id: number,
+    rotation: number,
+    color: string,
+    scale: number,
+  ) => {
+    setTargets((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, rotation, color, scale } : t)),
+    );
+  };
+
   const addFrontline = (
     xStart: number,
     yStart: number,
@@ -262,6 +273,10 @@ function Session() {
   const deleteText = (id: number) => {
     setTexts((prev) => prev.filter((t) => t.id !== id));
     revealEditTextSetter(-1);
+  };
+  const deleteTarget = (id: number) => {
+    setTargets((prev) => prev.filter((t) => t.id !== id));
+    revealEditTargetSetter(-1);
   };
 
   const selectOption = (option: OptionKey) => {
@@ -351,6 +366,7 @@ function Session() {
             addWaypoint={addWaypoint}
             targets={targets}
             addTarget={addTarget}
+            revealEditTargetSetter={revealEditTargetSetter}
             texts={texts}
             addText={addText}
             revealEditTextSetter={revealEditTextSetter}
@@ -408,6 +424,8 @@ function Session() {
           revealEditTargetSetter={revealEditTargetSetter}
           targetClicked={targetClicked}
           targets={targets}
+          updateTarget={updateTarget}
+          deleteTarget={deleteTarget}
         />
 
         {import.meta.env.DEV && perf && (
