@@ -1,4 +1,4 @@
-import './targets.module.css';
+import styles from './targets.module.css';
 import {
   blenderRadar,
   blenderFactory,
@@ -20,7 +20,7 @@ import {
   blenderSquare,
   blenderUnknown,
 } from '../../../constants';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, Html } from '@react-three/drei';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useMemo, useEffect } from 'react';
 import * as THREE from 'three';
@@ -130,22 +130,35 @@ function TargetInstance({
   }, [clonedScene]);
 
   return (
-    <primitive
-      object={clonedScene}
-      position={[target.x, 0.635, target.y + 1]}
-      rotation={[0, THREE.MathUtils.degToRad(target.rotation), 0]}
-      scale={0.25 * MapScaleAdjustment[sessionMap] * target.scale}
-      onClick={(e: ThreeEvent<MouseEvent>) => {
-        e.stopPropagation();
-        revealEditTargetSetter(target.id);
-      }}
-      onPointerEnter={() => {
-        document.body.style.cursor = 'pointer';
-      }}
-      onPointerLeave={() => {
-        document.body.style.cursor = 'default';
-      }}
-    />
+    <group position={[target.x, 0.635, target.y + 1]}>
+      <Html
+        center
+        wrapperClass={styles.targetTextHTML}
+        position={[0, MapScaleAdjustment[sessionMap] * 1.5, 0]}
+        zIndexRange={[1, 0]} // default is [16777271, 0]
+      >
+        <p className={styles.targetName} style={{ outlineColor: target.color }}>
+          {target.name}
+        </p>
+      </Html>
+
+      <primitive
+        object={clonedScene}
+
+        rotation={[0, THREE.MathUtils.degToRad(target.rotation), 0]}
+        scale={0.25 * MapScaleAdjustment[sessionMap] * target.scale}
+        onClick={(e: ThreeEvent<MouseEvent>) => {
+          e.stopPropagation();
+          revealEditTargetSetter(target.id);
+        }}
+        onPointerEnter={() => {
+          document.body.style.cursor = 'pointer';
+        }}
+        onPointerLeave={() => {
+          document.body.style.cursor = 'default';
+        }}
+      />
+    </group>
   );
 }
 

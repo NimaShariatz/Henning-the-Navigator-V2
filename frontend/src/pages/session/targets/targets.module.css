@@ -1,0 +1,18 @@
+.targetTextHTML {
+  pointer-events: all;
+  user-select: none;
+}
+
+.targetName {
+  background-color: var(--darkBG_1);
+  color: var(--text_color_white);
+  font-size: 16px;
+  padding-inline: 0.4rem;
+  padding-block: 0.07rem;
+  outline-width: 4px;
+  outline-style: solid;
+  border-radius: 3px;
+  white-space: nowrap; /* no new lines*/
+  display: inline-block; /* no new lines*/
+  font-weight: 600;
+}
