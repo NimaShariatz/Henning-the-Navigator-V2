@@ -69,6 +69,16 @@
   user-select: none;
   pointer-events: none;
 }
+.nameInputContainer .nameInputDissappear {
+  opacity: 0.7;
+  font-size: 12px;
+  padding-block: 0.25rem;
+}
+
+.scaleFactor {
+  width: 2.8rem;
+  text-align: center;
+}
 
 .leftIncrement,
 .rightIncrement {

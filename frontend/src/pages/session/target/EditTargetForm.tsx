@@ -66,17 +66,20 @@ function EditTargetForm({
             value={name}
           />
           <small ref={maxNameLength}>{30 - name.length}</small>
+          <p className={styles.nameInputDissappear}>
+            Empty the field to make the target name popup dissappear
+          </p>
         </div>
       </div>
 
-      <div className={styles.editTargetOption}>
+      <div className={`${styles.editTargetOption} ${styles.row}`}>
         <h5>Scale:</h5>
         <button
           className={styles.leftIncrement}
           onClick={() => adjustScale(-0.25)}
-          disabled={scale === 0.5}
+          disabled={scale === 0.25}
           style={{
-            cursor: scale === 0.5 ? 'not-allowed' : 'pointer',
+            cursor: scale === 0.25 ? 'not-allowed' : 'pointer',
           }}
         >
           <svg
@@ -92,7 +95,7 @@ function EditTargetForm({
           </svg>
         </button>
 
-        <h6>{scale}</h6>
+        <h6 className={styles.scaleFactor}>{scale}</h6>
 
         <button
           className={styles.rightIncrement}

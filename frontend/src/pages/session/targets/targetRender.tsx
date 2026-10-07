@@ -131,16 +131,21 @@ function TargetInstance({
 
   return (
     <group position={[target.x, 0.635, target.y + 1]}>
-      <Html
-        center
-        wrapperClass={styles.targetTextHTML}
-        position={[0, MapScaleAdjustment[sessionMap] * 1.5, 0]}
-        zIndexRange={[1, 0]} // default is [16777271, 0]
-      >
-        <p className={styles.targetName} style={{ outlineColor: target.color }}>
-          {target.name}
-        </p>
-      </Html>
+      {target.name.length > 0 && (
+        <Html
+          center
+          wrapperClass={styles.targetTextHTML}
+          position={[0, target.scale * MapScaleAdjustment[sessionMap] * 1.4, 0]}
+          zIndexRange={[1, 0]} // default is [16777271, 0]
+        >
+          <p
+            className={styles.targetName}
+            style={{ outlineColor: target.color }}
+          >
+            {target.name}
+          </p>
+        </Html>
+      )}
 
       <primitive
         object={clonedScene}
