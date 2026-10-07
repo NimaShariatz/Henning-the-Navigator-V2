@@ -1,5 +1,11 @@
 import styles from './Settings.module.css';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import type {
+  Textpoint,
+  Waypoint,
+  Targetpoint,
+  Frontline,
+} from '../../../constants';
 
 interface SettingsProps {
   revealSettings: boolean;
@@ -10,9 +16,17 @@ interface SettingsProps {
   >;
   isKilometers: boolean;
   setIsKilometers: React.Dispatch<React.SetStateAction<boolean>>;
+  sessionTitle: string;
+  waypoints: Waypoint[];
+  targets: Targetpoint[];
+  texts: Textpoint[];
+  frontlines: Frontline[];
+  setWaypoints: React.Dispatch<React.SetStateAction<Waypoint[]>>;
+  setTargets: React.Dispatch<React.SetStateAction<Targetpoint[]>>;
+  setTexts: React.Dispatch<React.SetStateAction<Textpoint[]>>;
+  setFrontlines: React.Dispatch<React.SetStateAction<Frontline[]>>;
+  setWaypointId: (newId: number) => void;
 }
-
-// per-brightness-level step for each light, chosen so level * step = default intensity at level 3
 
 function Settings({
   revealSettings,
@@ -20,8 +34,19 @@ function Settings({
   setMapLightObjectValues,
   isKilometers,
   setIsKilometers,
+  sessionTitle,
+  waypoints,
+  targets,
+  texts,
+  frontlines,
+  setWaypoints,
+  setTargets,
+  setTexts,
+  setFrontlines,
+  setWaypointId,
 }: SettingsProps) {
   const [brightnessValue, setBrightnessValue] = useState(5);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const adjustBrightness = (input: number) => {
     setBrightnessValue(brightnessValue + input);
@@ -33,6 +58,56 @@ function Settings({
     //const updatedLight: Record<string, number> = {"Spotlight": (mapLightObjectValues.Spotlight + (input * 2)), "Pointlight": (mapLightObjectValues.Pointlight + (input/4))}
     //setMapLightObjectValues(updatedLight)
     //setBrightnessValue(brightnessValue + input)
+  };
+
+  const downloadMapData = () => {
+    const mapData = { waypoints, targets, texts, frontlines };
+    const blob = new Blob([JSON.stringify(mapData, null, 2)], {
+      type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${sessionTitle || 'map-data'}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const triggerUpload = () => fileInputRef.current?.click();
+
+  const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow re-selecting the same file later
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result as string);
+        // basic shape check so malformed/foreign JSON doesn't silently corrupt state
+        if (
+          !Array.isArray(data.waypoints) ||
+          !Array.isArray(data.targets) ||
+          !Array.isArray(data.texts) ||
+          !Array.isArray(data.frontlines)
+        ) {
+          throw new Error('Invalid map data file');
+        }
+        setWaypoints(data.waypoints);
+        setTargets(data.targets);
+        setTexts(data.texts);
+        setFrontlines(data.frontlines);
+        const maxWaypointId = data.waypoints.reduce(
+          (max: number, w: Waypoint) => Math.max(max, w.id),
+          0,
+        );
+        setWaypointId(maxWaypointId + 1); // keeps future waypoint ids from colliding with restored ones
+      } catch {
+        // surface via existing toast mechanism if desired
+        console.error('Failed to parse uploaded map data');
+      }
+    };
+    reader.readAsText(file);
   };
 
   return (
@@ -122,7 +197,7 @@ function Settings({
             </div>
 
             <div className={styles.settingsOption}>
-              <button className={styles.download}>
+              <button className={styles.download} onClick={downloadMapData}>
                 Download Map Data
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +213,7 @@ function Settings({
               </button>
             </div>
             <div className={styles.settingsOption}>
-              <button className={styles.download}>
+              <button className={styles.download} onClick={triggerUpload}>
                 Upload Map Data
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -152,6 +227,13 @@ function Settings({
                   />
                 </svg>
               </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="application/json"
+                style={{ display: 'none' }}
+                onChange={handleFileSelected}
+              />
             </div>
           </div>
         </div>

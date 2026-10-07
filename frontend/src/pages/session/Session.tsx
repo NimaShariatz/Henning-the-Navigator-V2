@@ -407,7 +407,18 @@ function Session() {
           setMapLightObjectValues={setMapLightObjectValues}
           isKilometers={isKilometers}
           setIsKilometers={setIsKilometers}
+          sessionTitle={sessionData.title}
+          waypoints={waypoints}
+          targets={targets}
+          texts={texts}
+          frontlines={frontlines}
+          setWaypoints={setWaypoints}
+          setTargets={setTargets}
+          setTexts={setTexts}
+          setFrontlines={setFrontlines}
+          setWaypointId={waypointIdSetter}
         />
+
         <FlightInfo
           revealFlightInfo={popupRevealer.flightInfo}
           revealFlightInfoSetter={revealFlightInfoSetter}
