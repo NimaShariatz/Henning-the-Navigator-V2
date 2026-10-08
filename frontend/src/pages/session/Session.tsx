@@ -408,6 +408,10 @@ function Session() {
           isKilometers={isKilometers}
           setIsKilometers={setIsKilometers}
           sessionTitle={sessionData.title}
+          mapSelected={sessionData.map_selected}
+          setSessionData={setSessionData}
+          username={username}
+          slug={slug}
           waypoints={waypoints}
           targets={targets}
           texts={texts}

@@ -4,7 +4,7 @@ import Home from './pages/home/Home';
 import Signup from './pages/signup/Signup';
 import Login from './pages/login/Login';
 import UserSessions from './pages/userSessions/UserSessions';
-import Session from './pages/session/session';
+import Session from './pages/session/Session';
 
 const pageTitles: Record<string, string> = {
   '/': 'Henning the Navigator',

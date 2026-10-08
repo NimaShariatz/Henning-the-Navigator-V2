@@ -1,5 +1,7 @@
 import styles from './Settings.module.css';
 import { useRef, useState } from 'react';
+import { UpdateSession } from '../../../api/Session';
+import type { SessionDetailedItem } from '../../../api/Session';
 import type {
   Textpoint,
   Waypoint,
@@ -17,6 +19,10 @@ interface SettingsProps {
   isKilometers: boolean;
   setIsKilometers: React.Dispatch<React.SetStateAction<boolean>>;
   sessionTitle: string;
+  mapSelected: string;
+  setSessionData: React.Dispatch<React.SetStateAction<SessionDetailedItem>>;
+  username?: string;
+  slug?: string;
   waypoints: Waypoint[];
   targets: Targetpoint[];
   texts: Textpoint[];
@@ -35,6 +41,10 @@ function Settings({
   isKilometers,
   setIsKilometers,
   sessionTitle,
+  mapSelected,
+  setSessionData,
+  username,
+  slug,
   waypoints,
   targets,
   texts,
@@ -61,7 +71,7 @@ function Settings({
   };
 
   const downloadMapData = () => {
-    const mapData = { waypoints, targets, texts, frontlines };
+    const mapData = { mapSelected, waypoints, targets, texts, frontlines };
     const blob = new Blob([JSON.stringify(mapData, null, 2)], {
       type: 'application/json',
     });
@@ -77,15 +87,16 @@ function Settings({
 
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    e.target.value = ''; // allow re-selecting the same file later
+    e.target.value = '';
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
         const data = JSON.parse(reader.result as string);
-        // basic shape check so malformed/foreign JSON doesn't silently corrupt state
+        //check that download is right...
         if (
+          typeof data.mapSelected !== 'string' ||
           !Array.isArray(data.waypoints) ||
           !Array.isArray(data.targets) ||
           !Array.isArray(data.texts) ||
@@ -93,18 +104,30 @@ function Settings({
         ) {
           throw new Error('Invalid map data file');
         }
+
         setWaypoints(data.waypoints);
         setTargets(data.targets);
         setTexts(data.texts);
         setFrontlines(data.frontlines);
+        setSessionData((prev) => ({
+          ...prev,
+          map_selected: data.mapSelected,
+        }));
+
         const maxWaypointId = data.waypoints.reduce(
           (max: number, w: Waypoint) => Math.max(max, w.id),
           0,
         );
-        setWaypointId(maxWaypointId + 1); // keeps future waypoint ids from colliding with restored ones
-      } catch {
-        // surface via existing toast mechanism if desired
-        console.error('Failed to parse uploaded map data');
+        setWaypointId(maxWaypointId + 1);
+
+        // persist the uploaded title/map to the backend so they survive a refresh
+        if (username && slug) {
+          await UpdateSession(username, slug, {
+            map_selected: data.mapSelected,
+          });
+        }
+      } catch (err) {
+        console.error('Failed to parse uploaded map data', err);
       }
     };
     reader.readAsText(file);
