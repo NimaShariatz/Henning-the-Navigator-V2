@@ -4,17 +4,17 @@ import EditTextForm from './EditTextForm';
 
 interface EditTextProps {
   revealEditText: boolean;
-  revealEditTextSetter: (idClicked: number) => void;
-  textClicked: number;
+  revealEditTextSetter: (idClicked: string | null) => void;
+  textClicked: string | null;
   texts: Textpoint[];
   updateText: (
-    id: number,
+    id: string,
     text: string,
     color: string,
     rotation: number,
     size: number,
   ) => void;
-  deleteText: (id: number) => void;
+  deleteText: (id: string) => void;
 }
 
 function EditText({
@@ -32,14 +32,14 @@ function EditText({
       {revealEditText && selectedText && (
         <div
           className={styles.editTextContainer}
-          onClick={() => revealEditTextSetter(-1)}
+          onClick={() => revealEditTextSetter(null)}
         >
           <div
             className={styles.innerContainer}
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.close}>
-              <button onClick={() => revealEditTextSetter(-1)}>
+              <button onClick={() => revealEditTextSetter(null)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.5rem"

@@ -9,8 +9,9 @@
 - <b>djangorestframework</b>: so we can use django rest framework for the views.py which simplifies syntax. so no need to have `@csrf_exempt`, or `json.loads(request.body)`. use `request.data` instead. has built in support for djangorestframework-simplejwt which we'll need for login
 - <b>djangorestframework-simplejwt</b>: for stateless session tracking and login shinanigans. can use rest_framework.authtoken if you want it to be stateful
 - <b>drf-spectacular</b>: creates api documentation. see http://localhost:8000/api/docs/
-
-
+- <b>channels</b>: core Django Channels framework — it gives you ASGI support, consumers, routing, and the "channel layer" abstraction (group_send, group_add, etc.). It ships with an InMemoryChannelLayer, which stores groups/messages in the memory of a single Python process.
+- <b>channels-redis</b>: just a channel layer backend — it implements that same abstraction using Redis pub-sub instead of in-process memory, so messages can be shared across multiple processes/machines.
+- <b>daphne</b>: 
 
 # Django Admin Accounts Created
 - Username: CoreAdmin Email: nimashariat77@gmail.com Password: Goofy6540

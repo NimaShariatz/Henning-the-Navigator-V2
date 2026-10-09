@@ -1,5 +1,6 @@
 import axios from 'axios';
 import api from './AxiosInstance';
+import type { Waypoint, Targetpoint, Textpoint, Frontline } from '../constants';
 
 export interface SessionListItem {
   slug: string;
@@ -17,6 +18,10 @@ export interface SessionDetailedItem {
   sessionInfo: string;
   created_at: string;
   last_updated: string;
+  waypoints: Waypoint[];
+  targets: Targetpoint[];
+  texts: Textpoint[];
+  frontlines: Frontline[];
 }
 
 /* get the list of sessions */

@@ -29,7 +29,7 @@ import { MapScaleAdjustment } from '../../../constants';
 interface TargetRenderProps {
   targets: Targetpoint[];
   sessionMap: string;
-  revealEditTargetSetter: (idClicked: number) => void;
+  revealEditTargetSetter: (idClicked: string | null) => void;
 }
 
 function TargetRender({
@@ -100,7 +100,7 @@ function TargetInstance({
   scene: THREE.Group;
   target: Targetpoint;
   sessionMap: string;
-  revealEditTargetSetter: (idClicked: number) => void;
+  revealEditTargetSetter: (idClicked: string | null) => void;
 }) {
   const clonedScene = useMemo(() => {
     const clone = scene.clone();

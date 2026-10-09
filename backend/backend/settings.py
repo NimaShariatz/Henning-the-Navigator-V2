@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-@^_5b)d-qb4+lhx6c$(zx)09zsp+gl9s1#(n&bkmlizd%d2wgf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] # add real domain before AWS deployment or websocket connection will be rejected
 CORS_ALLOWED_ORIGINS = [ # - so that api with ReactJS works
     "http://localhost:5173",
 ]
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne', # - for websockets. patches default WSGI 'runserver' to serve both normal REST and websocket stuff. 
     'django.contrib.staticfiles',
     'drf_spectacular', # - documentation
     'corsheaders', # - so that api with ReactJS works
@@ -52,6 +53,15 @@ INSTALLED_APPS = [
     'mapSessions'
 ]
 AUTH_USER_MODEL = "accounts.User" # to make django authentication for User work
+
+ASGI_APPLICATION = 'backend.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # swap for channels_redis in prod/multi-process
+    }
+}
+
 
 REST_FRAMEWORK = { # - for using Djangorestframework-simplejwt
     'DEFAULT_AUTHENTICATION_CLASSES': (

@@ -6,13 +6,13 @@ import type { Textpoint } from '../../../constants';
 interface EditTextFormProps {
   selectedText: Textpoint;
   updateText: (
-    id: number,
+    id: string,
     text: string,
     color: string,
     rotation: number,
     size: number,
   ) => void;
-  deleteText: (id: number) => void;
+  deleteText: (id: string) => void;
 }
 
 function EditTextForm({

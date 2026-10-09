@@ -48,3 +48,64 @@ class MapSession(models.Model):
   def save(self, *args, **kwargs): # override save so to auto-generate the slug 
     self.slug = slugify(self.title)  # auto-generate slug from title on save
     super().save(*args, **kwargs)
+    
+    
+    
+    
+    
+class SessionObjectBase(models.Model):
+  id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # a UUID primary key (same pattern as MapSession.id) so each object has a stable identity that websocket clients can reference directly, instead of relying on a renumbered integer.
+  created_at = models.DateTimeField(auto_now_add=True) # created_at / updated_at: auto-managed timestamps, useful for conflict resolution (e.g. last-write-wins) once multiple clients can edit the same session concurrently
+  updated_at = models.DateTimeField(auto_now=True)
+
+  class Meta:
+    abstract = True # to avoid repeating every id created_at updated_at on the stuff below
+
+
+class Waypoint(SessionObjectBase): # inherits from SessionObjectBase ()
+  WAYPOINT_TYPES = [
+    ('startPoint', 'Start Point'),
+    ('ingressPoint', 'Ingress Point'),
+    ('targetPoint', 'Target Point'),
+    ('egressPoint', 'Egress Point'),
+  ]
+  session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='waypoints')
+  order = models.PositiveIntegerField()  # display number, independent of pk, re-assignable without changing identity
+  x = models.FloatField()
+  y = models.FloatField()
+  type = models.CharField(max_length=20, choices=WAYPOINT_TYPES)
+
+  class Meta:
+    ordering = ['order']
+    unique_together = ['session', 'order']
+
+
+class Target(SessionObjectBase): # inherits from SessionObjectBase ()
+  session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='targets')
+  x = models.FloatField()
+  y = models.FloatField()
+  z = models.FloatField()
+  name = models.CharField(max_length=50)
+  rotation = models.FloatField()
+  type = models.CharField(max_length=20)  # one of TARGET_OPTION_KEYS
+  color = models.CharField(max_length=7)  # '#rrggbb'
+  scale = models.FloatField(default=1)
+
+
+class Text(SessionObjectBase): # inherits from SessionObjectBase ()
+  session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='texts')
+  x = models.FloatField()
+  y = models.FloatField()
+  text = models.CharField(max_length=300)
+  color = models.CharField(max_length=7)
+  rotation = models.FloatField()
+  size = models.FloatField()
+
+
+class Frontline(SessionObjectBase): # inherits from SessionObjectBase ()
+  session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='frontlines')
+  start_x = models.FloatField()
+  start_y = models.FloatField()
+  end_x = models.FloatField()
+  end_y = models.FloatField()
+  color = models.CharField(max_length=7)

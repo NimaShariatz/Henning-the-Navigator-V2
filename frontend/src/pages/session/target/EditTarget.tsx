@@ -4,17 +4,17 @@ import EditTargetForm from './EditTargetForm';
 
 interface EditTargetProps {
   revealEditTarget: boolean;
-  revealEditTargetSetter: (idClicked: number) => void;
-  targetClicked: number;
+  revealEditTargetSetter: (idClicked: string | null) => void;
+  targetClicked: string | null;
   targets: Targetpoint[];
   updateTarget: (
-    id: number,
+    id: string,
     name: string,
     rotation: number,
     color: string,
     scale: number,
   ) => void;
-  deleteTarget: (id: number) => void;
+  deleteTarget: (id: string) => void;
 }
 
 function EditTarget({
@@ -26,19 +26,20 @@ function EditTarget({
   deleteTarget,
 }: EditTargetProps) {
   const selectedTarget = targets.find((t) => t.id === targetClicked);
+
   return (
     <>
       {revealEditTarget && selectedTarget && (
         <div
           className={styles.editTargetContainer}
-          onClick={() => revealEditTargetSetter(-1)}
+          onClick={() => revealEditTargetSetter(null)}
         >
           <div
             className={styles.innerContainer}
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.close}>
-              <button onClick={() => revealEditTargetSetter(-1)}>
+              <button onClick={() => revealEditTargetSetter(null)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.5rem"

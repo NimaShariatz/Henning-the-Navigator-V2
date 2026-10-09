@@ -6,13 +6,13 @@ import { HexColorPicker } from 'react-colorful';
 interface EditTargetFormProps {
   selectedTarget: Targetpoint;
   updateTarget: (
-    id: number,
+    id: string,
     name: string,
     rotation: number,
     color: string,
     scale: number,
   ) => void;
-  deleteTarget: (id: number) => void;
+  deleteTarget: (id: string) => void;
 }
 //name, scale, color, rotation
 function EditTargetForm({

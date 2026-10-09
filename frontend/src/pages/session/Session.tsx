@@ -1,7 +1,11 @@
 import { useParams } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SpecificSessionData } from '../../api/Session';
 import type { SessionDetailedItem } from '../../api/Session';
+import {
+  connectSessionSocket,
+  sendSocketMessage,
+} from '../../api/SessionSocket';
 import styles from './Session.module.css';
 import { OrbitControls } from '@react-three/drei';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
@@ -9,7 +13,6 @@ import { Canvas } from '@react-three/fiber';
 import Map from './Map';
 import Menu from '../../components/menu/Menu';
 import KeySelect from './keySelect/KeySelect';
-import { useRef } from 'react';
 import * as THREE from 'three';
 import Settings from './settings/Settings';
 import FlightInfo from './flightInfo/FlightInfo';
@@ -49,6 +52,10 @@ const emptySessionData: SessionDetailedItem = {
   sessionInfo: '',
   created_at: '',
   last_updated: '',
+  waypoints: [],
+  targets: [],
+  texts: [],
+  frontlines: [],
 };
 
 // desired camera position & look-at target for the reset view
@@ -64,6 +71,7 @@ function Session() {
   };
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
+  const wsRef = useRef<WebSocket | null>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
   const [sessionData, setSessionData] =
     useState<SessionDetailedItem>(emptySessionData);
@@ -108,12 +116,12 @@ function Session() {
     text: false,
     frontline: false,
   });
-  const [waypointId, setWaypointId] = useState(1);
+  const [waypointId, setWaypointId] = useState(1); // local cursor: which `order` slot gets placed/overwritten next
   const [waypoints, setWaypoints] = useState<Waypoint[]>([]); // see constants .tsx for its structure
   const [targets, setTargets] = useState<Targetpoint[]>([]); // see constants .tsx for its structure
-  const [targetClicked, setTargetClicked] = useState(-1);
+  const [targetClicked, setTargetClicked] = useState<string | null>(null);
   const [texts, setTexts] = useState<Textpoint[]>([]); // see constants .tsx for its structure
-  const [textClicked, setTextClicked] = useState(-1);
+  const [textClicked, setTextClicked] = useState<string | null>(null);
   const [frontlines, setFrontlines] = useState<Frontline[]>([]); // see constants .tsx for its structure
   const [firstFrontlineClickData, setFirstFrontlineClickData] = useState<{
     xStart: number | null;
@@ -131,23 +139,23 @@ function Session() {
       return;
     } // stop once the render limit is reached
 
-    const existingIndex = waypoints.findIndex((w) => w.id === waypointId);
+    const existing = waypoints.find((w) => w.order === waypointId);
 
-    if (existingIndex !== -1) {
-      // id already in use -> reposition instead of duplicating
-      const updated = [...waypoints];
-      updated[existingIndex] = { ...updated[existingIndex], x, y, type };
-      setWaypoints(updated);
+    if (existing) {
+      // order already in use -> reposition instead of duplicating
+      sendSocketMessage(wsRef.current, {
+        kind: 'waypoint',
+        action: 'update',
+        data: { id: existing.id, x, y, type },
+      });
       return;
     }
 
-    const newWaypoint = {
-      id: waypointId,
-      x: x,
-      y: y,
-      type: type,
-    };
-    setWaypoints([...waypoints, newWaypoint]);
+    sendSocketMessage(wsRef.current, {
+      kind: 'waypoint',
+      action: 'create',
+      data: { order: waypointId, x, y, type },
+    });
     setWaypointId(waypointId + 1);
   };
 
@@ -160,18 +168,11 @@ function Session() {
     type: string,
     scale: number,
   ) => {
-    const newTarget = {
-      id: targets.length > 0 ? Math.max(...targets.map((w) => w.id)) + 1 : 1,
-      x: x,
-      y: y,
-      z: z,
-      name: name,
-      rotation: rotation,
-      type: type,
-      color: color,
-      scale: scale,
-    };
-    setTargets([...targets, newTarget]);
+    sendSocketMessage(wsRef.current, {
+      kind: 'target',
+      action: 'create',
+      data: { x, y, z, name, rotation, type, color, scale },
+    });
   };
 
   const addText = (
@@ -185,44 +186,39 @@ function Session() {
       showToast(`Max texts of ${MAX_TEXTS} reached`);
       return;
     } // stop once the render limit is reached
-    const newText = {
-      id: texts.length > 0 ? Math.max(...texts.map((w) => w.id)) + 1 : 1,
-      x: x,
-      y: y,
-      text: text,
-      color: color,
-      rotation: rotation,
-      size: size,
-    };
-    setTexts([...texts, newText]);
+    sendSocketMessage(wsRef.current, {
+      kind: 'text',
+      action: 'create',
+      data: { x, y, text, color, rotation, size },
+    });
   };
 
   const updateText = (
-    id: number,
+    id: string,
     text: string,
     color: string,
     rotation: number,
     size: number,
   ) => {
-    setTexts((prev) =>
-      prev.map((t) =>
-        t.id === id ? { ...t, text, color, rotation, size } : t,
-      ),
-    );
+    sendSocketMessage(wsRef.current, {
+      kind: 'text',
+      action: 'update',
+      data: { id, text, color, rotation, size },
+    });
   };
 
   const updateTarget = (
-    id: number,
+    id: string,
     name: string,
     rotation: number,
     color: string,
     scale: number,
   ) => {
-    setTargets((prev) =>
-      prev.map((t) =>
-        t.id === id ? { ...t, name, rotation, color, scale } : t,
-      ),
-    );
+    sendSocketMessage(wsRef.current, {
+      kind: 'target',
+      action: 'update',
+      data: { id, name, rotation, color, scale },
+    });
   };
 
   const addFrontline = (
@@ -235,53 +231,73 @@ function Session() {
       showToast(`Max lines of ${MAX_FRONTLINES} reached`);
       return;
     } // stop once the render limit is reached
-    const newFrontline = {
-      id:
-        frontlines.length > 0
-          ? Math.max(...frontlines.map((w) => w.id)) + 1
-          : 1,
-      start: [{ x: xStart, y: yStart }],
-      end: [{ x: xEnd, y: yEnd }],
-      color: color,
-    };
-    setFrontlines([...frontlines, newFrontline]);
+    sendSocketMessage(wsRef.current, {
+      kind: 'frontline',
+      action: 'create',
+      data: {
+        start_x: xStart,
+        start_y: yStart,
+        end_x: xEnd,
+        end_y: yEnd,
+        color,
+      },
+    });
   };
 
   const clearWaypoints = () => {
-    setWaypoints([]);
+    sendSocketMessage(wsRef.current, {
+      kind: 'waypoint',
+      action: 'clear',
+      data: {},
+    });
     setWaypointId(1);
   };
   const clearTargets = () => {
-    setTargets([]);
+    sendSocketMessage(wsRef.current, {
+      kind: 'target',
+      action: 'clear',
+      data: {},
+    });
   };
   const clearTexts = () => {
-    setTexts([]);
+    sendSocketMessage(wsRef.current, {
+      kind: 'text',
+      action: 'clear',
+      data: {},
+    });
   };
   const clearFrontlines = () => {
-    setFrontlines([]);
+    sendSocketMessage(wsRef.current, {
+      kind: 'frontline',
+      action: 'clear',
+      data: {},
+    });
     setFirstFrontlineClickData({ xStart: null, yStart: null });
   };
 
-  const RemoveNavPoint = (id: number) => {
-    const updatedPoints = waypoints
-      .filter((point) => point.id !== id)
-      .map((point) => {
-        if (point.id > id) {
-          return { ...point, id: point.id - 1 };
-        }
-        return point;
-      });
-    setWaypoints(updatedPoints);
-    setWaypointId(waypoints.length);
+  const RemoveNavPoint = (id: string) => {
+    sendSocketMessage(wsRef.current, {
+      kind: 'waypoint',
+      action: 'delete',
+      data: { id },
+    });
   };
 
-  const deleteText = (id: number) => {
-    setTexts((prev) => prev.filter((t) => t.id !== id));
-    revealEditTextSetter(-1);
+  const deleteText = (id: string) => {
+    sendSocketMessage(wsRef.current, {
+      kind: 'text',
+      action: 'delete',
+      data: { id },
+    });
+    revealEditTextSetter(null);
   };
-  const deleteTarget = (id: number) => {
-    setTargets((prev) => prev.filter((t) => t.id !== id));
-    revealEditTargetSetter(-1);
+  const deleteTarget = (id: string) => {
+    sendSocketMessage(wsRef.current, {
+      kind: 'target',
+      action: 'delete',
+      data: { id },
+    });
+    revealEditTargetSetter(null);
   };
 
   const selectOption = (option: OptionKey) => {
@@ -307,7 +323,79 @@ function Session() {
 
   useEffect(() => {
     if (!username || !slug) return;
-    SpecificSessionData(username, slug).then(setSessionData);
+    SpecificSessionData(username, slug).then((data: SessionDetailedItem) => {
+      setSessionData(data);
+      setWaypoints(data.waypoints);
+      setTargets(data.targets);
+      setTexts(data.texts);
+      setFrontlines(data.frontlines);
+      setWaypointId(data.waypoints.length + 1);
+    });
+  }, [username, slug]);
+
+  useEffect(() => {
+    if (!username || !slug) return;
+
+    const ws = connectSessionSocket(username, slug, (msg) => {
+      if (msg.kind === 'error') {
+        showToast(msg.message ?? 'Action not permitted');
+        return;
+      }
+
+      const { kind, action, data } = msg;
+      if (kind === 'waypoint') {
+        if (action === 'create') {
+          setWaypoints((prev) =>
+            [...prev, data as unknown as Waypoint].sort(
+              (a, b) => a.order - b.order,
+            ),
+          );
+        }
+        if (action === 'update') {
+          setWaypoints((prev) =>
+            prev.map((w) => (w.id === data?.id ? { ...w, ...data } : w)),
+          );
+        }
+        if (action === 'delete') {
+          setWaypoints((prev) => prev.filter((w) => w.id !== data?.id));
+        }
+        if (action === 'clear') setWaypoints([]);
+      }
+      if (kind === 'target') {
+        if (action === 'create')
+          setTargets((prev) => [...prev, data as unknown as Targetpoint]);
+        if (action === 'update') {
+          setTargets((prev) =>
+            prev.map((t) => (t.id === data?.id ? { ...t, ...data } : t)),
+          );
+        }
+        if (action === 'delete')
+          setTargets((prev) => prev.filter((t) => t.id !== data?.id));
+        if (action === 'clear') setTargets([]);
+      }
+      if (kind === 'text') {
+        if (action === 'create')
+          setTexts((prev) => [...prev, data as unknown as Textpoint]);
+        if (action === 'update') {
+          setTexts((prev) =>
+            prev.map((t) => (t.id === data?.id ? { ...t, ...data } : t)),
+          );
+        }
+        if (action === 'delete')
+          setTexts((prev) => prev.filter((t) => t.id !== data?.id));
+        if (action === 'clear') setTexts([]);
+      }
+      if (kind === 'frontline') {
+        if (action === 'create')
+          setFrontlines((prev) => [...prev, data as unknown as Frontline]);
+        if (action === 'delete')
+          setFrontlines((prev) => prev.filter((f) => f.id !== data?.id));
+        if (action === 'clear') setFrontlines([]);
+      }
+    });
+
+    wsRef.current = ws;
+    return () => ws.close();
   }, [username, slug]);
 
   const resetCamera = () => {
@@ -325,11 +413,11 @@ function Session() {
   const revealFlightInfoSetter = () => {
     setPopupRevealer((prev) => ({ ...prev, flightInfo: !prev.flightInfo }));
   };
-  const revealEditTextSetter = (idClicked: number) => {
+  const revealEditTextSetter = (idClicked: string | null) => {
     setPopupRevealer((prev) => ({ ...prev, editText: !prev.editText }));
     setTextClicked(idClicked);
   };
-  const revealEditTargetSetter = (idClicked: number) => {
+  const revealEditTargetSetter = (idClicked: string | null) => {
     setPopupRevealer((prev) => ({ ...prev, editTarget: !prev.editTarget }));
     setTargetClicked(idClicked);
   };
@@ -339,52 +427,52 @@ function Session() {
       <Menu />
       {toastMessage && <Toast ToastMessage={toastMessage} />}
       <div className={styles.canvasContainer}>
-        <Canvas
-          camera={{
-            fov: 45,
-            near: 0.1,
-            far: 300,
-            position: DEFAULT_CAMERA_POSITION.toArray(),
-          }}
-        >
-          <OrbitControls
-            ref={controlsRef}
-            rotateSpeed={0.4}
-            makeDefault
-            maxDistance={14}
-            panSpeed={1.35}
-            target={DEFAULT_TARGET.toArray()}
-            maxPolarAngle={1.5}
-            zoomSpeed={5}
-            //zoomToCursor
-          />
-          <color args={['#000000']} attach="background" />
+        {sessionData.map_selected && ( // dont mount the canvas until session has actually loaded
+          <Canvas
+            camera={{
+              fov: 45,
+              near: 0.1,
+              far: 300,
+              position: DEFAULT_CAMERA_POSITION.toArray(),
+            }}
+          >
+            <OrbitControls
+              ref={controlsRef}
+              rotateSpeed={0.4}
+              makeDefault
+              maxDistance={14}
+              panSpeed={1.35}
+              target={DEFAULT_TARGET.toArray()}
+              maxPolarAngle={1.5}
+              zoomSpeed={5}
+            />
+            <color args={['#000000']} attach="background" />
 
-          <Map
-            revealSettingsSetter={revealSettingsSetter}
-            mapLightObjectValues={mapLightObjectValues}
-            revealFlightInfoSetter={revealFlightInfoSetter}
-            sessionMap={sessionData.map_selected}
-            sessionTitle={sessionData.title}
-            optionSelected={optionSelected}
-            waypoints={waypoints}
-            addWaypoint={addWaypoint}
-            targets={targets}
-            addTarget={addTarget}
-            revealEditTargetSetter={revealEditTargetSetter}
-            texts={texts}
-            addText={addText}
-            revealEditTextSetter={revealEditTextSetter}
-            frontlines={frontlines}
-            addFrontline={addFrontline}
-            firstFrontlineClickData={firstFrontlineClickData}
-            setFirstFrontlineClickData={setFirstFrontlineClickData}
-            RemoveNavPoint={RemoveNavPoint}
-            isKilometers={isKilometers}
-          />
-          {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
-        </Canvas>
-
+            <Map
+              revealSettingsSetter={revealSettingsSetter}
+              mapLightObjectValues={mapLightObjectValues}
+              revealFlightInfoSetter={revealFlightInfoSetter}
+              sessionMap={sessionData.map_selected}
+              sessionTitle={sessionData.title}
+              optionSelected={optionSelected}
+              waypoints={waypoints}
+              addWaypoint={addWaypoint}
+              targets={targets}
+              addTarget={addTarget}
+              revealEditTargetSetter={revealEditTargetSetter}
+              texts={texts}
+              addText={addText}
+              revealEditTextSetter={revealEditTextSetter}
+              frontlines={frontlines}
+              addFrontline={addFrontline}
+              firstFrontlineClickData={firstFrontlineClickData}
+              setFirstFrontlineClickData={setFirstFrontlineClickData}
+              RemoveNavPoint={RemoveNavPoint}
+              isKilometers={isKilometers}
+            />
+            {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
+          </Canvas>
+        )}
         <Selection
           optionSelected={optionSelected}
           selectOption={selectOption}

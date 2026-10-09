@@ -61,7 +61,7 @@ interface MapProps {
     type: string,
     scale: number,
   ) => void;
-  revealEditTargetSetter: (idClicked: number) => void;
+  revealEditTargetSetter: (idClicked: string | null) => void;
   texts: Textpoint[];
   addText: (
     x: number,
@@ -70,7 +70,7 @@ interface MapProps {
     rotation: number,
     size: number,
   ) => void;
-  revealEditTextSetter: (idClicked: number) => void;
+  revealEditTextSetter: (idClicked: string | null) => void;
   frontlines: Frontline[];
   addFrontline: (
     xStart: number,
@@ -83,7 +83,7 @@ interface MapProps {
     xStart: number | null;
     yStart: number | null;
   }) => void;
-  RemoveNavPoint: (id: number) => void;
+  RemoveNavPoint: (id: string) => void;
   isKilometers: boolean;
 }
 
@@ -251,7 +251,7 @@ function Map({
                       WAYPOINT_COLORS[point.type] ?? 'var(--logo_yellow)',
                   }}
                 >
-                  <p className={styles.waypointId}>{point.id}</p>
+                  <p className={styles.waypointId}>{point.order}</p>
                   <p
                     className={styles.removeWaypoint}
                     onClick={() => RemoveNavPoint(point.id)}
@@ -353,8 +353,8 @@ function Map({
             return (
               <Segment
                 key={`frontline-${i}`}
-                start={[line.start[0].x, 0.01, line.start[0].y]}
-                end={[line.end[0].x, 0.01, line.end[0].y]}
+                start={[line.start_x, 0.01, line.start_y]}
+                end={[line.end_x, 0.01, line.end_y]}
                 color={line.color}
               />
             );

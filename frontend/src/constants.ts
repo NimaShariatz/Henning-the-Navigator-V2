@@ -145,13 +145,14 @@ export const TARGET_OPTION_KEYS: OptionKey[] = [
 ];
 
 export interface Waypoint {
-  id: number;
+  id: string; // UUID, assigned by the server
+  order: number; // display number (1, 2, 3...), independent of id
   x: number;
   y: number;
   type: string;
 }
 export interface Targetpoint {
-  id: number;
+  id: string;
   x: number;
   y: number;
   z: number;
@@ -162,7 +163,7 @@ export interface Targetpoint {
   scale: number;
 }
 export interface Textpoint {
-  id: number;
+  id: string;
   x: number;
   y: number;
   text: string;
@@ -171,9 +172,11 @@ export interface Textpoint {
   size: number;
 }
 export interface Frontline {
-  id: number;
-  start: { x: number; y: number }[];
-  end: { x: number; y: number }[];
+  id: string;
+  start_x: number; // flattened to match Frontline model/serializer instead of start: [{x,y}]
+  start_y: number;
+  end_x: number;
+  end_y: number;
   color: string;
 }
 
