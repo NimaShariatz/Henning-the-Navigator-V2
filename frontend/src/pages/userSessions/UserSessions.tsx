@@ -46,12 +46,15 @@ function UserSessions() {
       minute: '2-digit',
     });
 
-  const fetchSessions = (user: string) =>
+  const fetchSessions = async (user: string) => {
     // get list of sessions
-    BasicSessionData(user).then((sessions) => setSessionData(sessions));
+    const sessions = await BasicSessionData(user);
+    setSessionData(sessions);
+  };
 
   useEffect(() => {
     getUser() //calls getUser, sets username, calls BasicSessionData with the username as input. finally sets data in the useState
+      // ps: .then is just like async. just like async, it always returns a new promise.
       .then((data) => {
         setUsername(data.username);
         return fetchSessions(data.username);

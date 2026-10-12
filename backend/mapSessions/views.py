@@ -3,8 +3,11 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from .models import MapSession
-from .serializers import MapSessionListSerializer, MapSessionDetailSerializer, MapSessionWriteSerializer
+from django.db import models, transaction
+from .models import MapSession, Waypoint
+from .serializers import MapSessionListSerializer, MapSessionDetailSerializer, MapSessionWriteSerializer, WaypointSerializer
+from rest_framework.exceptions import PermissionDenied
+
 
 User = get_user_model()
 
@@ -62,10 +65,85 @@ class MapSessionDetailView(APIView):
     serializer.save()
     return Response(serializer.data, status=200)
   
-  
+  # Purpose: delete the session owned by the given user
+  # Input: DELETE /api/mapSessions/MapSession/<username>/<slug>/
+  # Output: session deleted. all targets, waypoints, texts, and frontlines deleted by cascade as well
   def delete(self, request, username, slug):
     session = get_object_or_404(MapSession, user__username=username, slug=slug)
     if request.user != session.user:
         return Response(status=403)
     session.delete()
+    return Response(status=204)
+  
+# Purpose: if the user is allowed 
+def get_session_for_edit(request, username, slug):
+  session = get_object_or_404(MapSession, user__username=username, slug=slug)
+  user = request.user
+  can_edit = session.all_can_edit or user == session.user or session.permitted_to_edit.filter(pk=user.pk).exists()
+  if not can_edit:
+    raise PermissionDenied()
+  return session
+
+
+
+
+
+
+
+class WaypointListView(APIView):
+  # WaypointListView does not take in a <local_id>. Not needed for GET and POST
+  permission_classes = [permissions.AllowAny]
+
+  # GET /api/mapSessions/MapSession/<username>/<slug>/waypoints/
+  def get(self, request, username, slug):
+    session = get_object_or_404(MapSession, user__username=username, slug=slug)
+    serializer = WaypointSerializer(session.waypoints.all(), many=True)
+    return Response(serializer.data, status=200)
+
+  # POST ... with { x, y, type }
+  def post(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+    if session.waypoints.count() >= 50:  # MAX_WAYPOINTS, mirror constants.ts
+      return Response({'detail': 'Max waypoints reached'}, status=400)
+    serializer = WaypointSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    next_id = (session.waypoints.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
+    serializer.save(session=session, local_id=next_id)
+    return Response(serializer.data, status=201)
+  
+  # DELETE .../waypoints/ — removes every waypoint for this session
+  def delete(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+    session.waypoints.all().delete()
+    return Response(status=204)
+
+
+class WaypointDetailView(APIView):
+  permission_classes = [permissions.AllowAny]
+
+  # PATCH .../waypoints/<local_id>/ with any subset of { x, y, type }
+  def patch(self, request, username, slug, local_id):
+    session = get_session_for_edit(request, username, slug)
+    waypoint = get_object_or_404(Waypoint, session=session, local_id=local_id)
+    serializer = WaypointSerializer(waypoint, data=request.data, partial=True)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=200)
+
+  # def delete(self, request, username, slug, local_id):
+  #   session = get_session_for_edit(request, username, slug)
+  #   waypoint = get_object_or_404(Waypoint, session=session, local_id=local_id)
+  #   waypoint.delete()
+  #   return Response(status=204)
+  
+  # DELETE
+  def delete(self, request, username, slug, local_id):
+    session = get_session_for_edit(request, username, slug)
+    waypoint = get_object_or_404(Waypoint, session=session, local_id=local_id)
+    with transaction.atomic(): # Wrapping in transaction.atomic() ensures a failure partway through doesn't leave gaps or duplicate IDs.
+      waypoint.delete()
+      # ascending order avoids colliding with the unique_together('session','local_id') constraint mid-shift
+      for wp in session.waypoints.filter(local_id__gt=local_id).order_by('local_id'):
+        wp.local_id -= 1
+        wp.save(update_fields=['local_id'])
     return Response(status=204)

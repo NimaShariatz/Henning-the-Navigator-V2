@@ -15,7 +15,7 @@ class MapSession(models.Model):
   slug = models.SlugField(max_length=50) # A URL-safe version of the title (e.g. "My Session" → "my-session"), used in the URL path
   created_at = models.DateTimeField(auto_now_add=True) # auto_now_add is the same as manually doing created_at = datetime.now() in save(). also makes the field non-editable. But only done once on creation.
   last_updated = models.DateTimeField(auto_now=True) # Automatically sets the field to the current date and time every time you call .save() on the object
-  all_can_edit = models.BooleanField(default=True)
+  all_can_edit = models.BooleanField(default=True) # if true, even those not signed in can edit
   permitted_to_edit = models.ManyToManyField( # sessions can have many users. users can have many sessions
     settings.AUTH_USER_MODEL, # references whatever model is set as AUTH_USER_MODEL in settings.py. so "accounts.User"
     related_name='editable_sessions', # how you access this relationship from the User side
@@ -48,3 +48,61 @@ class MapSession(models.Model):
   def save(self, *args, **kwargs): # override save so to auto-generate the slug 
     self.slug = slugify(self.title)  # auto-generate slug from title on save
     super().save(*args, **kwargs)
+    
+    
+    
+class Waypoint(models.Model):
+  session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='waypoints')
+  local_id = models.PositiveIntegerField()
+  x = models.FloatField()
+  y = models.FloatField()
+  type = models.CharField(max_length=20, choices=[(k, k) for k in ('startPoint','ingressPoint','targetPoint','egressPoint')])
+  last_updated = models.DateTimeField(auto_now=True)
+  
+  class Meta:
+    unique_together = ['session', 'local_id']
+    
+class Target(models.Model):
+  session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='targets')
+  local_id = models.PositiveIntegerField()
+  x = models.FloatField()
+  y = models.FloatField()
+  z = models.FloatField()
+  name = models.CharField(max_length=50)
+  rotation = models.FloatField(default=0)
+  type = models.CharField(max_length=20)  # matches TARGET_OPTION_KEYS in constants.ts
+  color = models.CharField(max_length=9)  # e.g. "#b91515"
+  scale = models.FloatField(default=1)
+  last_updated = models.DateTimeField(auto_now=True)
+
+  class Meta:
+    unique_together = ['session', 'local_id']
+
+
+class Text(models.Model):
+  session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='texts')
+  local_id = models.PositiveIntegerField()
+  x = models.FloatField()
+  y = models.FloatField()
+  text = models.CharField(max_length=200)
+  color = models.CharField(max_length=9)
+  rotation = models.FloatField(default=0)
+  size = models.FloatField(default=2)
+  last_updated = models.DateTimeField(auto_now=True)
+
+  class Meta:
+    unique_together = ['session', 'local_id']
+
+
+class Frontline(models.Model):
+  session = models.ForeignKey(MapSession, on_delete=models.CASCADE, related_name='frontlines')
+  local_id = models.PositiveIntegerField()
+  x_start = models.FloatField()
+  y_start = models.FloatField()
+  x_end = models.FloatField()
+  y_end = models.FloatField()
+  color = models.CharField(max_length=9)
+  last_updated = models.DateTimeField(auto_now=True)
+
+  class Meta:
+    unique_together = ['session', 'local_id']

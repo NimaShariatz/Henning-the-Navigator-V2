@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import MapSession
+from .models import MapSession, Waypoint, Target, Text, Frontline
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 # serializers.py handles data concerns: validates the input and creates the object.
@@ -52,3 +53,16 @@ class MapSessionWriteSerializer(serializers.ModelSerializer):
     if qs.exists():
         raise serializers.ValidationError("A session with this name already exists.")
     return value
+  
+  
+class WaypointSerializer(serializers.ModelSerializer):
+  id = serializers.IntegerField(source='local_id', read_only=True)  # server assigns this, see note below
+  class Meta:
+    model = Waypoint
+    fields = ['id', 'x', 'y', 'type']
+  
+  
+  
+  
+  
+  

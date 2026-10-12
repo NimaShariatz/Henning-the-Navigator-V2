@@ -29,6 +29,13 @@ import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 import Toast from '../../components/toast/Toast';
 import EditText from './text/EditText';
 import EditTarget from './target/EditTarget';
+import {
+  CreateWaypoint,
+  GetWaypoints,
+  DeleteWaypoint,
+  UpdateWaypoint,
+  ClearWaypoints,
+} from '../../api/points';
 
 export interface PerfStats {
   fps: number;
@@ -56,6 +63,7 @@ const DEFAULT_CAMERA_POSITION = new THREE.Vector3(0, 2, 4);
 const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 
 function Session() {
+  const [sessionIsLoading, setSessionIsLoading] = useState(true);
   const [perf, setPerf] = useState<PerfStats | null>(null);
   const [toastMessage, setToastMessage] = useState('');
   const showToast = (msg: string) => {
@@ -121,11 +129,26 @@ function Session() {
   }>({ xStart: null, yStart: null });
   const [color, setColor] = useState('#b91515');
 
+  // runs on startup
+  useEffect(() => {
+    if (!username || !slug) return;
+    Promise.all([
+      SpecificSessionData(username, slug).then(setSessionData),
+      GetWaypoints(username, slug).then((points) => {
+        // derive waypointId from the data returned by GetWaypoints. dont do waypoints.length + 1 as that means its now a useEffect variable... unneccassary triggers
+        setWaypoints(points);
+        setWaypointId(points.length + 1);
+      }),
+    ]).finally(() => {
+      setSessionIsLoading(false);
+    });
+  }, [username, slug]);
+
   const waypointIdSetter = (newId: number) => {
     setWaypointId(newId);
   };
 
-  const addWaypoint = (x: number, y: number, type: string) => {
+  const addWaypoint = async (x: number, y: number, type: string) => {
     if (waypoints.length >= MAX_WAYPOINTS) {
       showToast(`Max waypoints of ${MAX_WAYPOINTS} reached`);
       return;
@@ -135,20 +158,41 @@ function Session() {
 
     if (existingIndex !== -1) {
       // id already in use -> reposition instead of duplicating
-      const updated = [...waypoints];
-      updated[existingIndex] = { ...updated[existingIndex], x, y, type };
-      setWaypoints(updated);
+      try {
+        if (username && slug) {
+          await UpdateWaypoint(username, slug, waypointId);
+          const allWaypoints = await GetWaypoints(username, slug);
+          setWaypoints(allWaypoints);
+        }
+      } catch (err) {
+        if (err instanceof Error) showToast(err.message);
+      }
+
       return;
     }
 
-    const newWaypoint = {
-      id: waypointId,
-      x: x,
-      y: y,
-      type: type,
-    };
-    setWaypoints([...waypoints, newWaypoint]);
-    setWaypointId(waypointId + 1);
+    // const newWaypoint = {
+    //   id: waypointId,
+    //   x: x,
+    //   y: y,
+    //   type: type,
+    // };
+    // setWaypoints([...waypoints, newWaypoint]);
+    // setWaypointId(waypointId + 1);
+
+    try {
+      if (username && slug) {
+        await CreateWaypoint(username, slug, { x, y, type });
+        const allWaypoints = await GetWaypoints(username, slug);
+        setWaypoints(allWaypoints);
+        setWaypointId(allWaypoints.length + 1);
+      }
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
+    //then make delete work. then make edit work.
+    // then look into shifting id generation front frontend to backend
+    // then it should be done!
   };
 
   const addTarget = (
@@ -240,16 +284,24 @@ function Session() {
         frontlines.length > 0
           ? Math.max(...frontlines.map((w) => w.id)) + 1
           : 1,
-      start: [{ x: xStart, y: yStart }],
-      end: [{ x: xEnd, y: yEnd }],
+      Xstart: xStart,
+      Ystart: yStart,
+      Xend: xEnd,
+      Yend: yEnd,
       color: color,
     };
     setFrontlines([...frontlines, newFrontline]);
   };
 
-  const clearWaypoints = () => {
-    setWaypoints([]);
-    setWaypointId(1);
+  const clearWaypoints = async () => {
+    if (!username || !slug) return;
+    try {
+      await ClearWaypoints(username, slug);
+      setWaypoints([]);
+      setWaypointId(1);
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
   const clearTargets = () => {
     setTargets([]);
@@ -262,17 +314,16 @@ function Session() {
     setFirstFrontlineClickData({ xStart: null, yStart: null });
   };
 
-  const RemoveNavPoint = (id: number) => {
-    const updatedPoints = waypoints
-      .filter((point) => point.id !== id)
-      .map((point) => {
-        if (point.id > id) {
-          return { ...point, id: point.id - 1 };
-        }
-        return point;
-      });
-    setWaypoints(updatedPoints);
-    setWaypointId(waypoints.length);
+  const RemoveNavPoint = async (id: number) => {
+    if (!username || !slug) return;
+    try {
+      await DeleteWaypoint(username, slug, id);
+      const allWaypoints = await GetWaypoints(username, slug);
+      setWaypoints(allWaypoints);
+      setWaypointId(allWaypoints.length + 1);
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
 
   const deleteText = (id: number) => {
@@ -305,11 +356,6 @@ function Session() {
     });
   };
 
-  useEffect(() => {
-    if (!username || !slug) return;
-    SpecificSessionData(username, slug).then(setSessionData);
-  }, [username, slug]);
-
   const resetCamera = () => {
     const controls = controlsRef.current;
     if (!controls) return;
@@ -339,51 +385,53 @@ function Session() {
       <Menu />
       {toastMessage && <Toast ToastMessage={toastMessage} />}
       <div className={styles.canvasContainer}>
-        <Canvas
-          camera={{
-            fov: 45,
-            near: 0.1,
-            far: 300,
-            position: DEFAULT_CAMERA_POSITION.toArray(),
-          }}
-        >
-          <OrbitControls
-            ref={controlsRef}
-            rotateSpeed={0.4}
-            makeDefault
-            maxDistance={14}
-            panSpeed={1.35}
-            target={DEFAULT_TARGET.toArray()}
-            maxPolarAngle={1.5}
-            zoomSpeed={5}
-            //zoomToCursor
-          />
-          <color args={['#000000']} attach="background" />
+        {!sessionIsLoading && (
+          <Canvas
+            camera={{
+              fov: 45,
+              near: 0.1,
+              far: 300,
+              position: DEFAULT_CAMERA_POSITION.toArray(),
+            }}
+          >
+            <OrbitControls
+              ref={controlsRef}
+              rotateSpeed={0.4}
+              makeDefault
+              maxDistance={14}
+              panSpeed={1.35}
+              target={DEFAULT_TARGET.toArray()}
+              maxPolarAngle={1.5}
+              zoomSpeed={5}
+              //zoomToCursor
+            />
+            <color args={['#000000']} attach="background" />
 
-          <Map
-            revealSettingsSetter={revealSettingsSetter}
-            mapLightObjectValues={mapLightObjectValues}
-            revealFlightInfoSetter={revealFlightInfoSetter}
-            sessionMap={sessionData.map_selected}
-            sessionTitle={sessionData.title}
-            optionSelected={optionSelected}
-            waypoints={waypoints}
-            addWaypoint={addWaypoint}
-            targets={targets}
-            addTarget={addTarget}
-            revealEditTargetSetter={revealEditTargetSetter}
-            texts={texts}
-            addText={addText}
-            revealEditTextSetter={revealEditTextSetter}
-            frontlines={frontlines}
-            addFrontline={addFrontline}
-            firstFrontlineClickData={firstFrontlineClickData}
-            setFirstFrontlineClickData={setFirstFrontlineClickData}
-            RemoveNavPoint={RemoveNavPoint}
-            isKilometers={isKilometers}
-          />
-          {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
-        </Canvas>
+            <Map
+              revealSettingsSetter={revealSettingsSetter}
+              mapLightObjectValues={mapLightObjectValues}
+              revealFlightInfoSetter={revealFlightInfoSetter}
+              sessionMap={sessionData.map_selected}
+              sessionTitle={sessionData.title}
+              optionSelected={optionSelected}
+              waypoints={waypoints}
+              addWaypoint={addWaypoint}
+              targets={targets}
+              addTarget={addTarget}
+              revealEditTargetSetter={revealEditTargetSetter}
+              texts={texts}
+              addText={addText}
+              revealEditTextSetter={revealEditTextSetter}
+              frontlines={frontlines}
+              addFrontline={addFrontline}
+              firstFrontlineClickData={firstFrontlineClickData}
+              setFirstFrontlineClickData={setFirstFrontlineClickData}
+              RemoveNavPoint={RemoveNavPoint}
+              isKilometers={isKilometers}
+            />
+            {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
+          </Canvas>
+        )}
 
         <Selection
           optionSelected={optionSelected}
