@@ -45,6 +45,12 @@ import {
   GetTargets,
   UpdateTarget,
 } from '../../api/points/Target';
+import {
+  ClearTexts,
+  CreateText,
+  GetTexts,
+  UpdateText,
+} from '../../api/points/Text';
 
 export interface PerfStats {
   fps: number;
@@ -149,6 +155,7 @@ function Session() {
         setWaypointId(points.length + 1);
       }),
       GetTargets(username, slug).then(setTargets),
+      GetTexts(username, slug).then(setTexts),
     ]).finally(() => {
       setSessionIsLoading(false);
     });
@@ -227,7 +234,7 @@ function Session() {
     }
   };
 
-  const addText = (
+  const addText = async (
     x: number,
     y: number,
     text: string,
@@ -238,30 +245,46 @@ function Session() {
       showToast(`Max texts of ${MAX_TEXTS} reached`);
       return;
     } // stop once the render limit is reached
-    const newText = {
-      id: texts.length > 0 ? Math.max(...texts.map((w) => w.id)) + 1 : 1,
-      x: x,
-      y: y,
-      text: text,
-      color: color,
-      rotation: rotation,
-      size: size,
-    };
-    setTexts([...texts, newText]);
+
+    try {
+      if (username && slug) {
+        await CreateText(username, slug, {
+          x,
+          y,
+          text,
+          color,
+          rotation,
+          size,
+        });
+        const allTexts = await GetTexts(username, slug);
+        setTexts(allTexts);
+      }
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
 
-  const updateText = (
+  const updateText = async (
     id: number,
     text: string,
     color: string,
     rotation: number,
     size: number,
   ) => {
-    setTexts((prev) =>
-      prev.map((t) =>
-        t.id === id ? { ...t, text, color, rotation, size } : t,
-      ),
-    );
+    try {
+      if (username && slug) {
+        await UpdateText(username, slug, id, {
+          text,
+          rotation,
+          color,
+          size,
+        });
+        const allTexts = await GetTexts(username, slug);
+        setTexts(allTexts);
+      }
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
 
   const updateTarget = async (
@@ -330,8 +353,14 @@ function Session() {
       if (err instanceof Error) showToast(err.message);
     }
   };
-  const clearTexts = () => {
-    setTexts([]);
+  const clearTexts = async () => {
+    if (!username || !slug) return;
+    try {
+      await ClearTexts(username, slug);
+      setTexts([]);
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
   const clearFrontlines = () => {
     setFrontlines([]);

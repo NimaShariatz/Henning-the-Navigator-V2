@@ -195,3 +195,50 @@ class TargetDetailView(APIView):
         tg.local_id -= 1
         tg.save(update_fields=['local_id'])
     return Response(status=204)
+  
+  
+  
+class TextListView(APIView):
+  permission_classes = [permissions.AllowAny]
+  
+  def get(self, request, username, slug):
+    session = get_object_or_404(MapSession, user__username=username, slug=slug)
+    serializer = TextSerializer(session.texts.all(), many=True)
+    return Response(serializer.data, status=200)
+  
+  def post(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+    if session.texts.count() >= 80: # Just in case frontend fails
+      return Response({'detail': 'Max texts of 80 reached'}, status=400)
+    serializer = TextSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    next_id = (session.texts.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
+    serializer.save(session=session, local_id=next_id)
+    return Response(serializer.data, status=201)
+  
+  def delete(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+    session.texts.all().delete()
+    return Response(status=204)
+  
+class TextDetailView(APIView):
+  permission_classes = [permissions.AllowAny]
+  
+  def patch(self, request, username, slug, local_id):
+    session = get_session_for_edit(request, username, slug)
+    text = get_object_or_404(Text, session=session, local_id=local_id)
+    serializer = TextSerializer(text, data=request.data, partial=True)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=200)
+  
+  def delete(self, request, username, slug, local_id):
+    session = get_session_for_edit(request, username, slug)
+    text = get_object_or_404(Text, session=session, local_id=local_id)
+    with transaction.atomic(): # Wrapping in transaction.atomic() ensures a failure partway through doesn't leave gaps or duplicate IDs.
+      text.delete()
+      # ascending order avoids colliding with the unique_together('session','local_id') constraint mid-shift
+      for tg in session.texts.filter(local_id__gt=local_id).order_by('local_id'):
+        tg.local_id -= 1
+        tg.save(update_fields=['local_id'])
+    return Response(status=204)

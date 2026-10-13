@@ -29,9 +29,9 @@ function EditTargetForm({
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
 
-    const overLimit = 50 - newValue.length < 0;
+    const overLimit = 30 - newValue.length < 0;
     if (maxNameLength.current) {
-      maxNameLength.current.textContent = String(51 - newValue.length);
+      maxNameLength.current.textContent = String(31 - newValue.length);
       maxNameLength.current.style.color = overLimit
         ? 'var(--delete_red)'
         : 'var(--text_color_white)';

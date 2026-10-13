@@ -72,14 +72,14 @@ class TextSerializer(serializers.ModelSerializer):
   id = serializers.IntegerField(source='local_id', read_only=True)
   class Meta:
     model = Text
-    fields = ['id', 'text', 'color', 'rotation', 'size']
+    fields = ['id', 'x', 'y', 'text', 'color', 'rotation', 'size']
     
     
 class FrontlineSerializer(serializers.ModelSerializer):
   id = serializers.IntegerField(source='local_id', read_only=True)
   class Meta:
     mode = Frontline
-    fields = ['id', 'x_start', 'y_start', 'x_end', 'y_end', 'color']
+    fields = ['id', 'x', 'y', 'x_start', 'y_start', 'x_end', 'y_end', 'color']
 
   
   
