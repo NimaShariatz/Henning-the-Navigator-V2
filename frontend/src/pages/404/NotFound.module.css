@@ -1,0 +1,77 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.innerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--logo_black);
+  width: 90%;
+  height: 85%;
+  position: relative;
+  border-radius: 1vw;
+  overflow: hidden;
+}
+
+.fourohfour {
+  position: absolute;
+  color: var(--darkBG_1);
+  position: absolute;
+  font-size: 30vw;
+  z-index: 1;
+  user-select: none;
+}
+
+.textContainer {
+  color: var(--text_color_white);
+  z-index: 2;
+  padding-block: 1rem;
+  padding-inline: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.possiblesList {
+  list-style-type: square;
+}
+
+.possiblesList li {
+  margin-block: 0.25rem;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.errorLink {
+  background-color: var(--delete_red);
+  padding-block: 0.25rem;
+  padding-inline: 0.5rem;
+  border-radius: 5px;
+}
+
+.homeLink {
+  color: var(--hyperlink_color);
+}
+.homeLink:visited {
+  color: var(--hyperlink_color);
+}
+
+@media (max-width: 720px) {
+  .fourohfour {
+    font-size: 45vw;
+  }
+  .innerContainer {
+    width: 95%;
+    height: 90%;
+  }
+  .possiblesList li {
+    font-size: 14px;
+  }
+}

@@ -5,6 +5,8 @@ import Signup from './pages/signup/Signup';
 import Login from './pages/login/Login';
 import UserSessions from './pages/userSessions/UserSessions';
 import Session from './pages/session/Session';
+import NotFound from './pages/404/NotFound';
+import SessionNotFound from './pages/404/SessionNotFound';
 
 const pageTitles: Record<string, string> = {
   '/': 'Henning the Navigator',
@@ -33,6 +35,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/user-sessions" element={<UserSessions />} />
         <Route path="/session/:username/:slug" element={<Session />} />
+        <Route path="/session-not-found" element={<SessionNotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

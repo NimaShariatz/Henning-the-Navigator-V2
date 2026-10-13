@@ -1,4 +1,5 @@
-import { useParams } from 'react-router';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { SpecificSessionData } from '../../api/Session';
 import type { SessionDetailedItem } from '../../api/Session';
@@ -84,6 +85,7 @@ const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 
 function Session() {
   const [sessionIsLoading, setSessionIsLoading] = useState(true);
+  const navigate = useNavigate();
   const [perf, setPerf] = useState<PerfStats | null>(null);
   const [toastMessage, setToastMessage] = useState('');
   const showToast = (msg: string) => {
@@ -93,7 +95,6 @@ function Session() {
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
-  console.log(username, slug);
   const [sessionData, setSessionData] =
     useState<SessionDetailedItem>(emptySessionData);
 
@@ -163,10 +164,22 @@ function Session() {
       GetTargets(username, slug).then(setTargets),
       GetTexts(username, slug).then(setTexts),
       GetFrontlines(username, slug).then(setFrontlines),
-    ]).finally(() => {
-      setSessionIsLoading(false);
-    });
-  }, [username, slug]);
+    ])
+      .finally(() => {
+        setSessionIsLoading(false);
+      })
+      .catch((err) => {
+        if (axios.isAxiosError(err) && err.response?.status === 404) {
+          navigate('/session-not-found', {
+            replace: true,
+            state: { from: `/session/${username}/${slug}` },
+          }); // replace: true keeps the broken session URL out of browser history, so Back doesn't return to it
+        } else {
+          setSessionIsLoading(false);
+          if (err instanceof Error) showToast(err.message);
+        }
+      });
+  }, [username, slug, navigate]);
 
   const waypointIdSetter = (newId: number) => {
     setWaypointId(newId);
