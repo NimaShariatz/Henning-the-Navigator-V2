@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
-from .models import MapSession, Waypoint
-from .serializers import MapSessionListSerializer, MapSessionDetailSerializer, MapSessionWriteSerializer, WaypointSerializer
+from .models import MapSession, Waypoint, Target, Text, Frontline
+from .serializers import MapSessionListSerializer, MapSessionDetailSerializer, MapSessionWriteSerializer, WaypointSerializer, TargetSerializer, TextSerializer, FrontlineSerializer
 from rest_framework.exceptions import PermissionDenied
 
 
@@ -103,8 +103,8 @@ class WaypointListView(APIView):
   # POST ... with { x, y, type }
   def post(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
-    if session.waypoints.count() >= 50:  # MAX_WAYPOINTS, mirror constants.ts
-      return Response({'detail': 'Max waypoints reached'}, status=400)
+    if session.waypoints.count() >= 50:  # Just in case frontend fails
+      return Response({'detail': 'Max waypoints of 50 reached'}, status=400)
     serializer = WaypointSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     next_id = (session.waypoints.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
@@ -146,4 +146,52 @@ class WaypointDetailView(APIView):
       for wp in session.waypoints.filter(local_id__gt=local_id).order_by('local_id'):
         wp.local_id -= 1
         wp.save(update_fields=['local_id'])
+    return Response(status=204)
+  
+  
+  
+  
+class TargetListView(APIView):
+  permission_classes = [permissions.AllowAny]
+  
+  def get(self, request, username, slug):
+    session = get_object_or_404(MapSession, user__username=username, slug=slug)
+    serializer = TargetSerializer(session.targets.all(), many=True)
+    return Response(serializer.data, status=200)
+  
+  def post(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+    if session.targets.count() >= 80: # Just in case frontend fails
+      return Response({'detail': 'Max targets of 80 reached'}, status=400)
+    serializer = TargetSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    next_id = (session.targets.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
+    serializer.save(session=session, local_id=next_id)
+    return Response(serializer.data, status=201)
+  
+  def delete(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+    session.targets.all().delete()
+    return Response(status=204)
+  
+class TargetDetailView(APIView):
+  permission_classes = [permissions.AllowAny]
+  
+  def patch(self, request, username, slug, local_id):
+    session = get_session_for_edit(request, username, slug)
+    target = get_object_or_404(Target, session=session, local_id=local_id)
+    serializer = TargetSerializer(target, data=request.data, partial=True)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=200)
+  
+  def delete(self, request, username, slug, local_id):
+    session = get_session_for_edit(request, username, slug)
+    target = get_object_or_404(Target, session=session, local_id=local_id)
+    with transaction.atomic(): # Wrapping in transaction.atomic() ensures a failure partway through doesn't leave gaps or duplicate IDs.
+      target.delete()
+      # ascending order avoids colliding with the unique_together('session','local_id') constraint mid-shift
+      for tg in session.targets.filter(local_id__gt=local_id).order_by('local_id'):
+        tg.local_id -= 1
+        tg.save(update_fields=['local_id'])
     return Response(status=204)

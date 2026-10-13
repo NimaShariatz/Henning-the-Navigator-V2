@@ -68,7 +68,7 @@ class Target(models.Model):
   x = models.FloatField()
   y = models.FloatField()
   z = models.FloatField()
-  name = models.CharField(max_length=50)
+  name = models.CharField(max_length=50, blank=True)
   rotation = models.FloatField(default=0)
   type = models.CharField(max_length=20)  # matches TARGET_OPTION_KEYS in constants.ts
   color = models.CharField(max_length=9)  # e.g. "#b91515"

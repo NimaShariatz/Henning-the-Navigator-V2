@@ -56,13 +56,31 @@ class MapSessionWriteSerializer(serializers.ModelSerializer):
   
   
 class WaypointSerializer(serializers.ModelSerializer):
-  id = serializers.IntegerField(source='local_id', read_only=True)  # server assigns this, see note below
+  id = serializers.IntegerField(source='local_id', read_only=True)
   class Meta:
     model = Waypoint
     fields = ['id', 'x', 'y', 'type']
-  
-  
-  
+    
+    
+class TargetSerializer(serializers.ModelSerializer):
+  id = serializers.IntegerField(source='local_id', read_only=True)
+  class Meta:
+    model = Target
+    fields = ['id', 'x', 'y', 'z', 'name', 'rotation', 'type', 'color', 'scale']
+    
+class TextSerializer(serializers.ModelSerializer):
+  id = serializers.IntegerField(source='local_id', read_only=True)
+  class Meta:
+    model = Text
+    fields = ['id', 'text', 'color', 'rotation', 'size']
+    
+    
+class FrontlineSerializer(serializers.ModelSerializer):
+  id = serializers.IntegerField(source='local_id', read_only=True)
+  class Meta:
+    mode = Frontline
+    fields = ['id', 'x_start', 'y_start', 'x_end', 'y_end', 'color']
+
   
   
   

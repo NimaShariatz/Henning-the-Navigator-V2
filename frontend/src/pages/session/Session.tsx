@@ -24,6 +24,8 @@ import {
   MAX_WAYPOINTS,
   MAX_FRONTLINES,
   MAX_TEXTS,
+  DEFAULT_COLORSELECT_OPTIONS,
+  MAX_TARGETS,
 } from '../../constants';
 import PerfMonitor from '../../components/PerfMonitor/PerfMonitor';
 import Toast from '../../components/toast/Toast';
@@ -35,7 +37,14 @@ import {
   DeleteWaypoint,
   UpdateWaypoint,
   ClearWaypoints,
-} from '../../api/points';
+} from '../../api/points/Waypoint';
+import {
+  ClearTargets,
+  CreateTarget,
+  DeleteTarget,
+  GetTargets,
+  UpdateTarget,
+} from '../../api/points/Target';
 
 export interface PerfStats {
   fps: number;
@@ -127,7 +136,7 @@ function Session() {
     xStart: number | null;
     yStart: number | null;
   }>({ xStart: null, yStart: null });
-  const [color, setColor] = useState('#b91515');
+  const [color, setColor] = useState(DEFAULT_COLORSELECT_OPTIONS.redTarget);
 
   // runs on startup
   useEffect(() => {
@@ -139,6 +148,7 @@ function Session() {
         setWaypoints(points);
         setWaypointId(points.length + 1);
       }),
+      GetTargets(username, slug).then(setTargets),
     ]).finally(() => {
       setSessionIsLoading(false);
     });
@@ -160,7 +170,7 @@ function Session() {
       // id already in use -> reposition instead of duplicating
       try {
         if (username && slug) {
-          await UpdateWaypoint(username, slug, waypointId);
+          await UpdateWaypoint(username, slug, waypointId, { x, y, type });
           const allWaypoints = await GetWaypoints(username, slug);
           setWaypoints(allWaypoints);
         }
@@ -170,15 +180,6 @@ function Session() {
 
       return;
     }
-
-    // const newWaypoint = {
-    //   id: waypointId,
-    //   x: x,
-    //   y: y,
-    //   type: type,
-    // };
-    // setWaypoints([...waypoints, newWaypoint]);
-    // setWaypointId(waypointId + 1);
 
     try {
       if (username && slug) {
@@ -190,12 +191,9 @@ function Session() {
     } catch (err) {
       if (err instanceof Error) showToast(err.message);
     }
-    //then make delete work. then make edit work.
-    // then look into shifting id generation front frontend to backend
-    // then it should be done!
   };
 
-  const addTarget = (
+  const addTarget = async (
     x: number,
     y: number,
     z: number,
@@ -204,18 +202,29 @@ function Session() {
     type: string,
     scale: number,
   ) => {
-    const newTarget = {
-      id: targets.length > 0 ? Math.max(...targets.map((w) => w.id)) + 1 : 1,
-      x: x,
-      y: y,
-      z: z,
-      name: name,
-      rotation: rotation,
-      type: type,
-      color: color,
-      scale: scale,
-    };
-    setTargets([...targets, newTarget]);
+    if (targets.length >= MAX_TARGETS) {
+      showToast(`Max targets of ${MAX_TARGETS} reached`);
+      return;
+    } // stop once the render limit is reached
+
+    try {
+      if (username && slug) {
+        await CreateTarget(username, slug, {
+          x,
+          y,
+          z,
+          name,
+          rotation,
+          type,
+          scale,
+          color,
+        });
+        const allTargets = await GetTargets(username, slug);
+        setTargets(allTargets);
+      }
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
 
   const addText = (
@@ -255,18 +264,27 @@ function Session() {
     );
   };
 
-  const updateTarget = (
+  const updateTarget = async (
     id: number,
     name: string,
     rotation: number,
     color: string,
     scale: number,
   ) => {
-    setTargets((prev) =>
-      prev.map((t) =>
-        t.id === id ? { ...t, name, rotation, color, scale } : t,
-      ),
-    );
+    try {
+      if (username && slug) {
+        await UpdateTarget(username, slug, id, {
+          name,
+          rotation,
+          scale,
+          color,
+        });
+        const allTargets = await GetTargets(username, slug);
+        setTargets(allTargets);
+      }
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
 
   const addFrontline = (
@@ -303,8 +321,14 @@ function Session() {
       if (err instanceof Error) showToast(err.message);
     }
   };
-  const clearTargets = () => {
-    setTargets([]);
+  const clearTargets = async () => {
+    if (!username || !slug) return;
+    try {
+      await ClearTargets(username, slug);
+      setTargets([]);
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
   const clearTexts = () => {
     setTexts([]);
@@ -330,8 +354,15 @@ function Session() {
     setTexts((prev) => prev.filter((t) => t.id !== id));
     revealEditTextSetter(-1);
   };
-  const deleteTarget = (id: number) => {
-    setTargets((prev) => prev.filter((t) => t.id !== id));
+  const deleteTarget = async (id: number) => {
+    if (!username || !slug) return;
+    try {
+      await DeleteTarget(username, slug, id);
+      const allWaypoints = await GetTargets(username, slug);
+      setTargets(allWaypoints);
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
     revealEditTargetSetter(-1);
   };
 

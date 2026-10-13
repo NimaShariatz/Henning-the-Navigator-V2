@@ -1,5 +1,5 @@
 import axios from 'axios';
-import api from './AxiosInstance';
+import api from '../AxiosInstance';
 
 export async function GetWaypoints(username: string, slug: string) {
   const response = await api.get(
@@ -55,10 +55,12 @@ export async function UpdateWaypoint(
   username: string,
   slug: string,
   local_id: number,
+  data: { x: number; y: number; type: string },
 ) {
   try {
     const response = await api.patch(
       `/api/mapSessions/MapSession/${username}/${slug}/waypoints/${local_id}/`,
+      data,
     );
     return response.data;
   } catch (err: unknown) {

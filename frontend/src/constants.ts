@@ -200,6 +200,7 @@ export const DEFAULT_COLORSELECT_OPTIONS: Record<string, string> = {
 };
 
 export const MAX_WAYPOINTS = 50; // max waypoints
+export const MAX_TARGETS = 80; //max targets
 export const MAX_FRONTLINES = 250; // max frontlines
 export const MAX_TEXTS = 20; // max texts
 
