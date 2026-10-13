@@ -12,3 +12,9 @@
 - AWS instance
 - AWS postgres
 - Docker
+
+
+
+# Some Random Notes
+- If a user is not logged in, GET requests are fine, but others will be rejected by backend --BASED ON THE SESSION PERMISSION STATUS--
+- Limits on points is enforced on backend and frontend. Though frontend acts first, preventing a PUT request in the first place

@@ -4,6 +4,7 @@ import { HennLogo1 } from '../../constants';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import DeleteProfile from '../deleteAccount/DeleteAccount';
+import { isLoggedIn } from '../../helpers/isLoggedIn';
 
 function Menu() {
   const navigate = useNavigate();
@@ -12,18 +13,7 @@ function Menu() {
     setErrorClicked(input);
   }
 
-  const [loggedIn] = useState(isAuthenticated);
-  function isAuthenticated() {
-    const token = localStorage.getItem('access');
-    if (!token) return false;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1])); // atob is a built-in browser function that decodes a Base64-encoded string back into plain text.
-      //console.log(payload)
-      return payload.exp * 1000 > Date.now(); // exp is in seconds, Date.now() is ms
-    } catch {
-      return false;
-    }
-  }
+  const [loggedIn] = useState(isLoggedIn);
 
   function handleSignOut() {
     //console.log(localStorage.getItem('access'));
