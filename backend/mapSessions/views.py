@@ -41,7 +41,10 @@ class MapSessionListView(APIView):
 
 
 class MapSessionDetailView(APIView):
-  permission_classes = [permissions.IsAuthenticated]
+  def get_permissions(self): # if its GET, its fine. But if its anything else, user MUST be logged in so get_session_for_edit() can do its thing.
+    if self.request.method == 'GET':
+      return [permissions.AllowAny()]
+    return [permissions.IsAuthenticated()]
 
   # Purpose: Returns full session detail incl. permitted_to_edit, fetched when a user clicks the edit button
   # Input: GET /api/mapSessions/MapSession/<username>/<slug>/
@@ -241,4 +244,28 @@ class TextDetailView(APIView):
       for tg in session.texts.filter(local_id__gt=local_id).order_by('local_id'):
         tg.local_id -= 1
         tg.save(update_fields=['local_id'])
+    return Response(status=204)
+
+
+class FrontlineListView(APIView):
+  permission_classes = [permissions.AllowAny]
+  
+  def get(self, request, username, slug):
+    session = get_object_or_404(MapSession, user__username=username, slug=slug)
+    serializer = FrontlineSerializer(session.frontlines.all(), many=True)
+    return Response(serializer.data, status=200)
+  
+  def post(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+    if session.frontlines.count() >= 80: # Just in case frontend fails
+      return Response({'detail': 'Max frontlines of 80 reached'}, status=400)
+    serializer = FrontlineSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    next_id = (session.frontlines.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
+    serializer.save(session=session, local_id=next_id)
+    return Response(serializer.data, status=201)
+  
+  def delete(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+    session.frontlines.all().delete()
     return Response(status=204)

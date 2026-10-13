@@ -172,10 +172,10 @@ export interface Textpoint {
 }
 export interface Frontline {
   id: number;
-  Xstart: number;
-  Ystart: number;
-  Xend: number;
-  Yend: number;
+  xStart: number;
+  yStart: number;
+  xEnd: number;
+  yEnd: number;
   color: string;
 }
 

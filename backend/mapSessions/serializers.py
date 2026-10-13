@@ -77,9 +77,13 @@ class TextSerializer(serializers.ModelSerializer):
     
 class FrontlineSerializer(serializers.ModelSerializer):
   id = serializers.IntegerField(source='local_id', read_only=True)
+  xStart = serializers.FloatField(source='x_start')
+  yStart = serializers.FloatField(source='y_start')
+  xEnd = serializers.FloatField(source='x_end')
+  yEnd = serializers.FloatField(source='y_end')
   class Meta:
-    mode = Frontline
-    fields = ['id', 'x', 'y', 'x_start', 'y_start', 'x_end', 'y_end', 'color']
+    model = Frontline
+    fields = ['id', 'xStart', 'yStart', 'xEnd', 'yEnd', 'color']
 
   
   

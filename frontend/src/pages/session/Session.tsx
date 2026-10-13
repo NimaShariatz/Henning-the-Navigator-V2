@@ -51,6 +51,11 @@ import {
   GetTexts,
   UpdateText,
 } from '../../api/points/Text';
+import {
+  ClearFrontlines,
+  CreateFrontline,
+  GetFrontlines,
+} from '../../api/points/Frontline';
 
 export interface PerfStats {
   fps: number;
@@ -88,6 +93,7 @@ function Session() {
 
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { username, slug } = useParams<{ username: string; slug: string }>();
+  console.log(username, slug);
   const [sessionData, setSessionData] =
     useState<SessionDetailedItem>(emptySessionData);
 
@@ -156,6 +162,7 @@ function Session() {
       }),
       GetTargets(username, slug).then(setTargets),
       GetTexts(username, slug).then(setTexts),
+      GetFrontlines(username, slug).then(setFrontlines),
     ]).finally(() => {
       setSessionIsLoading(false);
     });
@@ -264,6 +271,34 @@ function Session() {
     }
   };
 
+  const addFrontline = async (
+    xStart: number,
+    yStart: number,
+    xEnd: number,
+    yEnd: number,
+  ) => {
+    if (frontlines.length >= MAX_FRONTLINES) {
+      showToast(`Max lines of ${MAX_FRONTLINES} reached`);
+      return;
+    } // stop once the render limit is reached
+
+    try {
+      if (username && slug) {
+        await CreateFrontline(username, slug, {
+          xStart,
+          yStart,
+          xEnd,
+          yEnd,
+          color,
+        });
+        const allFrontlines = await GetFrontlines(username, slug);
+        setFrontlines(allFrontlines);
+      }
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
+  };
+
   const updateText = async (
     id: number,
     text: string,
@@ -310,30 +345,6 @@ function Session() {
     }
   };
 
-  const addFrontline = (
-    xStart: number,
-    yStart: number,
-    xEnd: number,
-    yEnd: number,
-  ) => {
-    if (frontlines.length >= MAX_FRONTLINES) {
-      showToast(`Max lines of ${MAX_FRONTLINES} reached`);
-      return;
-    } // stop once the render limit is reached
-    const newFrontline = {
-      id:
-        frontlines.length > 0
-          ? Math.max(...frontlines.map((w) => w.id)) + 1
-          : 1,
-      Xstart: xStart,
-      Ystart: yStart,
-      Xend: xEnd,
-      Yend: yEnd,
-      color: color,
-    };
-    setFrontlines([...frontlines, newFrontline]);
-  };
-
   const clearWaypoints = async () => {
     if (!username || !slug) return;
     try {
@@ -362,9 +373,15 @@ function Session() {
       if (err instanceof Error) showToast(err.message);
     }
   };
-  const clearFrontlines = () => {
-    setFrontlines([]);
-    setFirstFrontlineClickData({ xStart: null, yStart: null });
+  const clearFrontlines = async () => {
+    if (!username || !slug) return;
+    try {
+      await ClearFrontlines(username, slug);
+      setFrontlines([]);
+      setFirstFrontlineClickData({ xStart: null, yStart: null });
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
   };
 
   const RemoveNavPoint = async (id: number) => {

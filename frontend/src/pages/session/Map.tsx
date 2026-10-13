@@ -353,8 +353,8 @@ function Map({
             return (
               <Segment
                 key={`frontline-${i}`}
-                start={[line.Xstart, 0.01, line.Ystart]}
-                end={[line.Xend, 0.01, line.Yend]}
+                start={[line.xStart, 0.01, line.yStart]}
+                end={[line.xEnd, 0.01, line.yEnd]}
                 color={line.color}
               />
             );
