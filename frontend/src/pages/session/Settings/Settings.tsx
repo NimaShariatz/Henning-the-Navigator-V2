@@ -1,6 +1,5 @@
 import styles from './Settings.module.css';
 import { useRef, useState } from 'react';
-import { UpdateSession } from '../../../api/Session';
 import type { SessionDetailedItem } from '../../../api/Session';
 import type {
   Textpoint,
@@ -8,6 +7,7 @@ import type {
   Targetpoint,
   Frontline,
 } from '../../../constants';
+import { ImportSessionData } from '../../../api/Import';
 
 interface SettingsProps {
   revealSettings: boolean;
@@ -32,6 +32,7 @@ interface SettingsProps {
   setTexts: React.Dispatch<React.SetStateAction<Textpoint[]>>;
   setFrontlines: React.Dispatch<React.SetStateAction<Frontline[]>>;
   setWaypointId: (newId: number) => void;
+  showToast: (mssg: string) => void;
 }
 
 function Settings({
@@ -54,6 +55,7 @@ function Settings({
   setTexts,
   setFrontlines,
   setWaypointId,
+  showToast,
 }: SettingsProps) {
   const [brightnessValue, setBrightnessValue] = useState(5);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -88,13 +90,12 @@ function Settings({
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     e.target.value = '';
-    if (!file) return;
+    if (!file || !username || !slug) return;
 
     const reader = new FileReader();
     reader.onload = async () => {
       try {
         const data = JSON.parse(reader.result as string);
-        //check that download is right...
         if (
           typeof data.mapSelected !== 'string' ||
           !Array.isArray(data.waypoints) ||
@@ -105,29 +106,26 @@ function Settings({
           throw new Error('Invalid map data file');
         }
 
-        setWaypoints(data.waypoints);
-        setTargets(data.targets);
-        setTexts(data.texts);
-        setFrontlines(data.frontlines);
-        setSessionData((prev) => ({
-          ...prev,
-          map_selected: data.mapSelected,
-        }));
+        const sorted = <T extends { id: number }>(a: T[]) =>
+          [...a].sort((p, q) => p.id - q.id);
+        const result = await ImportSessionData(username, slug, {
+          mapSelected: data.mapSelected,
+          waypoints: sorted(data.waypoints),
+          targets: sorted(data.targets),
+          texts: sorted(data.texts),
+          frontlines: sorted(data.frontlines),
+        });
 
-        const maxWaypointId = data.waypoints.reduce(
-          (max: number, w: Waypoint) => Math.max(max, w.id),
-          0,
-        );
-        setWaypointId(maxWaypointId + 1);
-
-        // persist the uploaded title/map to the backend so they survive a refresh
-        if (username && slug) {
-          await UpdateSession(username, slug, {
-            map_selected: data.mapSelected,
-          });
-        }
+        setWaypoints(result.waypoints);
+        setWaypointId(result.waypoints.length + 1);
+        setTargets(result.targets);
+        setTexts(result.texts);
+        setFrontlines(result.frontlines);
+        setSessionData((prev) => ({ ...prev, map_selected: data.mapSelected }));
       } catch (err) {
-        console.error('Failed to parse uploaded map data', err);
+        showToast(
+          err instanceof Error ? err.message : 'Failed to upload map data',
+        );
       }
     };
     reader.readAsText(file);

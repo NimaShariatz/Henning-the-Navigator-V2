@@ -6,12 +6,12 @@ from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from .models import MapSession, Waypoint, Target, Text, Frontline
 from .serializers import MapSessionListSerializer, MapSessionDetailSerializer, MapSessionWriteSerializer, WaypointSerializer, TargetSerializer, TextSerializer, FrontlineSerializer
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
+from .serializers import MAP_NAME_TO_INT
+LIMITS = {'waypoints': 50, 'targets': 80, 'texts': 80, 'frontlines': 80}
 
 
 User = get_user_model()
-
-
 
 class MapSessionListView(APIView):
   permission_classes = [permissions.IsAuthenticated]
@@ -106,8 +106,8 @@ class WaypointListView(APIView):
   # POST ... with { x, y, type }
   def post(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
-    if session.waypoints.count() >= 50:  # Just in case frontend fails
-      return Response({'detail': 'Max waypoints of 50 reached'}, status=400)
+    if session.waypoints.count() >= LIMITS['waypoints']:  # Just in case frontend fails
+      return Response({'detail': f"Max waypoints of {LIMITS['waypoints']} reached"}, status=400)
     serializer = WaypointSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     next_id = (session.waypoints.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
@@ -164,8 +164,8 @@ class TargetListView(APIView):
   
   def post(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
-    if session.targets.count() >= 80: # Just in case frontend fails
-      return Response({'detail': 'Max targets of 80 reached'}, status=400)
+    if session.targets.count() >= LIMITS['targets']: # Just in case frontend fails
+      return Response({'detail': f"Max targets of {LIMITS['targets']} reached"}, status=400)
     serializer = TargetSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     next_id = (session.targets.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
@@ -211,8 +211,8 @@ class TextListView(APIView):
   
   def post(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
-    if session.texts.count() >= 80: # Just in case frontend fails
-      return Response({'detail': 'Max texts of 80 reached'}, status=400)
+    if session.texts.count() >= LIMITS['texts']: # Just in case frontend fails
+      return Response({'detail': f"Max texts of {LIMITS['texts']} reached"}, status=400)
     serializer = TextSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     next_id = (session.texts.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
@@ -257,8 +257,8 @@ class FrontlineListView(APIView):
   
   def post(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
-    if session.frontlines.count() >= 80: # Just in case frontend fails
-      return Response({'detail': 'Max frontlines of 80 reached'}, status=400)
+    if session.frontlines.count() >= LIMITS['frontlines']: # Just in case frontend fails
+      return Response({'detail': f"Max frontlines of {LIMITS['frontlines']} reached"}, status=400)
     serializer = FrontlineSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     next_id = (session.frontlines.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
@@ -269,3 +269,53 @@ class FrontlineListView(APIView):
     session = get_session_for_edit(request, username, slug)
     session.frontlines.all().delete()
     return Response(status=204)
+  
+  
+# for settings.tsx upload
+class SessionImportView(APIView):
+  permission_classes = [permissions.AllowAny]
+
+  # POST ... with { mapSelected, waypoints, targets, texts, frontlines } — replaces all points in the session
+  def post(self, request, username, slug):
+    session = get_session_for_edit(request, username, slug)
+
+    map_name = request.data.get('mapSelected')
+    if map_name not in MAP_NAME_TO_INT:
+      raise ValidationError({'mapSelected': ['Invalid map name.']})
+    # mirrors MapSessionDetailView.patch, which is owner-only
+    if MAP_NAME_TO_INT[map_name] != session.map_selected and request.user != session.user:
+      raise PermissionDenied()
+
+    specs = [
+      ('waypoints', WaypointSerializer, Waypoint),
+      ('targets', TargetSerializer, Target),
+      ('texts', TextSerializer, Text),
+      ('frontlines', FrontlineSerializer, Frontline),
+    ]
+    validated = {}
+    for key, serializer_cls, _ in specs:
+      items = request.data.get(key)
+      if not isinstance(items, list):
+        raise ValidationError({key: ['Expected a list.']})
+      if len(items) > LIMITS[key]:
+        raise ValidationError({key: [f'Max {key} of {LIMITS[key]} reached']})
+      serializer = serializer_cls(data=items, many=True)
+      serializer.is_valid(raise_exception=True)
+      validated[key] = serializer.validated_data
+
+    with transaction.atomic():
+      for key, _, model in specs:
+        getattr(session, key).all().delete()
+        model.objects.bulk_create([
+          model(session=session, local_id=i, **item)  # array order defines ids
+          for i, item in enumerate(validated[key], start=1)
+        ])
+      session.map_selected = MAP_NAME_TO_INT[map_name]
+      session.save(update_fields=['map_selected', 'last_updated'])
+
+    return Response({
+      'waypoints': WaypointSerializer(session.waypoints.all(), many=True).data,
+      'targets': TargetSerializer(session.targets.all(), many=True).data,
+      'texts': TextSerializer(session.texts.all(), many=True).data,
+      'frontlines': FrontlineSerializer(session.frontlines.all(), many=True).data,
+    }, status=200)

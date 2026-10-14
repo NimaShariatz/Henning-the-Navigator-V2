@@ -559,6 +559,7 @@ function Session() {
           setTexts={setTexts}
           setFrontlines={setFrontlines}
           setWaypointId={waypointIdSetter}
+          showToast={showToast}
         />
 
         <FlightInfo

@@ -78,8 +78,12 @@
   align-items: center;
   cursor: pointer;
   padding-inline: 0.7rem;
+  padding-block: 0.1rem;
   font-weight: 700;
   outline: 4px solid transparent;
+}
+.download {
+  padding-block: 0.5rem;
 }
 .unitChange {
   margin-left: 0.75rem;
