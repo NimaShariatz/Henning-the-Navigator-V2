@@ -18,6 +18,7 @@ import {
   blenderParadrop,
   blenderCircle,
   blenderSquare,
+  blenderArrow,
   blenderUnknown,
 } from '../../../constants';
 import { useGLTF, Html } from '@react-three/drei';
@@ -53,6 +54,7 @@ function TargetRender({
   const paradrop = useGLTF(blenderParadrop);
   const circle = useGLTF(blenderCircle);
   const square = useGLTF(blenderSquare);
+  const arrow = useGLTF(blenderArrow);
   const unknown = useGLTF(blenderUnknown);
 
   // maps each unique model url to its loaded scene
@@ -73,6 +75,7 @@ function TargetRender({
     [blenderParadrop]: paradrop.scene,
     [blenderCircle]: circle.scene,
     [blenderSquare]: square.scene,
+    [blenderArrow]: arrow.scene,
     [blenderUnknown]: unknown.scene,
   };
 
@@ -81,7 +84,7 @@ function TargetRender({
       {targets.map((target) => (
         <TargetInstance
           key={target.id}
-          scene={sceneByUrl[TargetModels[target.type]] ?? radar.scene}
+          scene={sceneByUrl[TargetModels[target.type]] ?? unknown.scene}
           target={target}
           sessionMap={sessionMap}
           revealEditTargetSetter={revealEditTargetSetter}

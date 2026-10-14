@@ -530,6 +530,33 @@ function Selection({
                   ></rect>
                 </svg>
               </button>
+
+              <button
+                className={styles.targetButton}
+                onClick={() => selectOption('arrow')}
+                style={{
+                  outlineColor: optionSelected.arrow
+                    ? 'var(--active_color)'
+                    : 'transparent',
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="80%"
+                  height="80%"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill={color}
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="m12 21l9-7h-4.99L16 3H8v11H3z"
+                  ></path>
+                </svg>
+              </button>
+
               <button
                 className={styles.targetButton}
                 onClick={() => selectOption('unknown')}

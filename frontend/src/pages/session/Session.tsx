@@ -134,6 +134,7 @@ function Session() {
     paradrop: false,
     circle: false,
     square: false,
+    arrow: false,
     unknown: false,
     text: false,
     frontline: false,

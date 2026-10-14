@@ -118,6 +118,7 @@ export type OptionKey =
   | 'paradrop'
   | 'circle'
   | 'square'
+  | 'arrow'
   | 'unknown'
   | 'text'
   | 'frontline';
@@ -141,6 +142,7 @@ export const TARGET_OPTION_KEYS: OptionKey[] = [
   'paradrop',
   'circle',
   'square',
+  'arrow',
   'unknown',
 ];
 
@@ -237,6 +239,7 @@ const TargetModels: Record<string, string> = {
   paradrop: blenderParadrop,
   circle: blenderCircle,
   square: blenderSquare,
+  arrow: blenderArrow,
   unknown: blenderUnknown,
 };
 
@@ -261,6 +264,7 @@ import blenderAirfield from './assets/blenderTargets/airfield.glb';
 import blenderParadrop from './assets/blenderTargets/paradrop.glb';
 import blenderCircle from './assets/blenderTargets/circle.glb';
 import blenderSquare from './assets/blenderTargets/square.glb';
+import blenderArrow from './assets/blenderTargets/arrow.glb';
 import blenderUnknown from './assets/blenderTargets/unknown.glb';
 
 export {
@@ -325,5 +329,6 @@ export {
   blenderParadrop,
   blenderCircle,
   blenderSquare,
+  blenderArrow,
   blenderUnknown,
 };
