@@ -8,7 +8,7 @@ from .models import MapSession, Waypoint, Target, Text, Frontline
 from .serializers import MapSessionListSerializer, MapSessionDetailSerializer, MapSessionWriteSerializer, WaypointSerializer, TargetSerializer, TextSerializer, FrontlineSerializer
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from .serializers import MAP_NAME_TO_INT
-LIMITS = {'waypoints': 50, 'targets': 80, 'texts': 80, 'frontlines': 80}
+LIMITS = {'waypoints': 50, 'targets': 100, 'texts': 30, 'frontlines': 150}
 
 
 User = get_user_model()

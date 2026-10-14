@@ -137,7 +137,7 @@ function Map({
       (key) => optionSelected[key],
     );
     if (activeTargetType) {
-      addTarget(x, y, 0, activeTargetType, 0, activeTargetType, 1);
+      addTarget(x, y, 0, activeTargetType, 0, activeTargetType, 1.5);
       return;
     }
     // the thing true is text
@@ -335,7 +335,7 @@ function Map({
 
         <Segments
           limit={MAX_FRONTLINES}
-          lineWidth={60 * MapScaleAdjustment[sessionMap]}
+          lineWidth={75 * MapScaleAdjustment[sessionMap]}
         >
           {Array.from({ length: MAX_FRONTLINES }, (_, i) => {
             const line = frontlines[i];
