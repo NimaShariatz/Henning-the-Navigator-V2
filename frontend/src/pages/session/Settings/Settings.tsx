@@ -8,6 +8,7 @@ import type {
   Frontline,
 } from '../../../constants';
 import { ImportSessionData } from '../../../api/Import';
+import { tawConverter } from '../../../helpers/tawConverter';
 
 interface SettingsProps {
   revealSettings: boolean;
@@ -73,7 +74,14 @@ function Settings({
   };
 
   const downloadMapData = () => {
-    const mapData = { mapSelected, waypoints, targets, texts, frontlines };
+    const mapData = {
+      isJSONHenningV2: true,
+      mapSelected,
+      waypoints,
+      targets,
+      texts,
+      frontlines,
+    };
     const blob = new Blob([JSON.stringify(mapData, null, 2)], {
       type: 'application/json',
     });
@@ -95,15 +103,23 @@ function Settings({
     const reader = new FileReader();
     reader.onload = async () => {
       try {
-        const data = JSON.parse(reader.result as string);
-        if (
-          typeof data.mapSelected !== 'string' ||
-          !Array.isArray(data.waypoints) ||
-          !Array.isArray(data.targets) ||
-          !Array.isArray(data.texts) ||
-          !Array.isArray(data.frontlines)
-        ) {
-          throw new Error('Invalid map data file');
+        let data = JSON.parse(reader.result as string);
+
+        if (data.isJSONHenningV2) {
+          if (
+            typeof data.mapSelected !== 'string' ||
+            !Array.isArray(data.waypoints) ||
+            !Array.isArray(data.targets) ||
+            !Array.isArray(data.texts) ||
+            !Array.isArray(data.frontlines)
+          ) {
+            showToast('Upload failed');
+            throw new Error(
+              'Invalid map data file. This is a Henning JSON, but the structure is invalid',
+            );
+          }
+        } else {
+          data = tawConverter(data);
         }
 
         const sorted = <T extends { id: number }>(a: T[]) =>
@@ -122,6 +138,7 @@ function Settings({
         setTexts(result.texts);
         setFrontlines(result.frontlines);
         setSessionData((prev) => ({ ...prev, map_selected: data.mapSelected }));
+        showToast('Map updated');
       } catch (err) {
         showToast(
           err instanceof Error ? err.message : 'Failed to upload map data',

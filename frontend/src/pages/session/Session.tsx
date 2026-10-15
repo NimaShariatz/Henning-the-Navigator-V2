@@ -487,10 +487,10 @@ function Session() {
           >
             <OrbitControls
               ref={controlsRef}
-              rotateSpeed={0.4}
+              rotateSpeed={0.3}
               makeDefault
               maxDistance={14}
-              panSpeed={1.35}
+              panSpeed={1.4}
               target={DEFAULT_TARGET.toArray()}
               maxPolarAngle={1.5}
               zoomSpeed={5}

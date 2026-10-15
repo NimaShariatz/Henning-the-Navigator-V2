@@ -209,7 +209,7 @@ export const MAX_TEXTS = 30; // max texts
 const MapScaleAdjustment: Record<string, number> = {
   //do console.log(Math.abs(pointX - nextPointX)) in Map.tsx/distanceHeadingCalculations()
   Arras: 0.11,
-  Kuban: 0.06,
+  Kuban: 0.05,
   Lapino: 0.12,
   Moscow: 0.06,
   Normandy: 0.06,

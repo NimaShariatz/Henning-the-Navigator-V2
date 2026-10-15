@@ -112,7 +112,7 @@ function TargetInstance({
         (child as THREE.Mesh).material = new THREE.MeshLambertMaterial({
           color: target.color,
           transparent: true,
-          opacity: 0.7,
+          opacity: 0.65,
         });
       }
     });

@@ -20,6 +20,9 @@ function KeySelect({ resetCamera }: KeySelectProps) {
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.key === 'Shift') setIsShift(false);
     };
+    const RKey = (e: KeyboardEvent) => {
+      if (e.key === 'r') resetCamera();
+    };
 
     const handleMouseDown = (e: MouseEvent) => {
       if (e.button === 0) setIsLeftClick(true);
@@ -40,18 +43,20 @@ function KeySelect({ resetCamera }: KeySelectProps) {
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('keyup', RKey);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
     window.addEventListener('wheel', handleWheel);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('keyup', RKey);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('wheel', handleWheel);
       clearTimeout(scrollTimeout);
     };
-  }, []);
+  }, [resetCamera]);
 
   return (
     <div className={styles.keySelectContainer}>

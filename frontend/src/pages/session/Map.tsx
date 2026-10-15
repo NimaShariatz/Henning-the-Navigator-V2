@@ -168,7 +168,7 @@ function Map({
   };
 
   return (
-    <group position={[0, -1, -1.5]}>
+    <group position={[0, -0.5, -1.5]}>
       <primitive object={table.scene} position={[0, 0, 0]} scale={0.92} />
       <primitive object={lamp.scene} position={[0, 6.2, -0.4]} scale={0.45} />
       <Text
