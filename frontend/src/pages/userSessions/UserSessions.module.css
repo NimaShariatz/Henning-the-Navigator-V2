@@ -1,12 +1,16 @@
 .initialContainer {
   margin-top: var(--menu_height);
   padding-left: 1rem;
-  min-height: 400px;
+  min-height: 500px;
   position: relative;
   text-align: left;
   display: flex;
   align-items: center;
   z-index: var(--sessionHeader_index);
+  background-color: black;
+  margin-inline: 4%;
+  border-radius: 25px;
+  border: 6px solid var(--logo_yellow);
 }
 .initialContainer img {
   position: absolute;
@@ -15,7 +19,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.6;
+  opacity: 0.7;
   z-index: 1;
   mask-image:
     linear-gradient(
@@ -302,6 +306,9 @@
 }
 
 @media (max-width: 720px) {
+  .initialContainer {
+    margin-inline: 1%;
+  }
   .initialContainer h1 {
     max-width: 95%;
   }

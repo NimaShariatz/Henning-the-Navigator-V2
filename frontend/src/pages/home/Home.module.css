@@ -1,34 +1,33 @@
-.tempo {
-  margin-left: 3rem;
-  position: relative;
-  width: fit-content;
-  font-weight: 700;
-  padding-block: 3px;
-  padding-inline: 13px;
-  transition: all 0.3s ease-in-out;
+.videoContainer {
+  background-color: black;
+  margin-inline: 4%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+  border-radius: 20px;
+  outline: 5px solid var(--logo_yellow);
 }
 
-.tempo span {
-  content: '';
-  position: absolute;
-  left: -16px;
-  top: 7px;
-  width: 13px;
-  height: 13px;
-  background-color: #faba4d;
-  border-radius: 50%;
-  transition: all 0.3s ease-in-out;
-}
-.tempo:hover {
-  transform: translateX(15px);
-}
-
-.tempo:hover span {
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  transition: all 0.3s ease-in-out;
-  left: 0;
-  top: 0;
-  border-radius: 10px;
+.homeVideo {
+  height: 600px;
+  object-fit: contain;
+  opacity: 0.7;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      black 40%,
+      black 50%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 30%,
+      black 50%,
+      transparent 100%
+    );
+  mask-composite: intersect;
+  filter: grayscale(1);
 }
