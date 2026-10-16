@@ -48,9 +48,21 @@ const mapHashToName: Record<string, string> = {
   '#western_front': 'Western Front',
 };
 
-// Right-edge lng of the TAW map; calibrate by exporting corner markers per map.
-const tawMapWidth: Record<string, number> = {
-  Kuban: 144.5,
+// Right-edge lng of the TAW map; calibrate by importing il2 mission planner files. change numbers as needed
+const tawMapWidth: Record<string, { xVal: number; yVal: number }> = {
+  // the higher the number, the more it goes to the top left corner
+  Arras: { xVal: 163.5, yVal: 163.7 },
+  Kuban: { xVal: 144.3, yVal: 144.5 },
+  Lapino: { xVal: 220, yVal: 200 }, // Lapino il2 map and henning map are different...
+  Moscow: { xVal: 194.3, yVal: 194.5 },
+  Normandy: { xVal: 125.7, yVal: 125.8 },
+  Novosokolniki: { xVal: 256, yVal: 256 },
+  Odessa: { xVal: 191.5, yVal: 192 },
+  Prokhorovka: { xVal: 163.8, yVal: 164 },
+  Rheinland: { xVal: 139.3, yVal: 149 },
+  Stalingrad: { xVal: 256, yVal: 259.5 },
+  Vluki: { xVal: 255.3, yVal: 254.5 },
+  'Western Front': { xVal: 217.2, yVal: 219.4 },
 };
 
 const tawTypeToHenning: Record<string, string> = {
@@ -90,7 +102,8 @@ export const tawConverter = (
     if (!mapSelected || !width) return null;
 
     const { xLenght, yHeight } = MapImagesSizes[mapSelected];
-    const scale = xLenght / width;
+    const scaleX = xLenght / width.xVal;
+    const scaleY = xLenght / width.yVal;
 
     const targets: Targetpoint[] = ((data.points as TawPoint[]) ?? [])
       .slice(0, MAX_TARGETS)
@@ -100,8 +113,8 @@ export const tawConverter = (
         const type = tawTypeToHenning[p.type] ?? 'unknown';
         return {
           id: index + 1,
-          x: lng * scale - xLenght / 2,
-          y: -lat * scale - yHeight / 2,
+          x: lng * scaleX - xLenght / 2,
+          y: -lat * scaleY - yHeight / 2,
           z: 0,
           name: (p.name ?? '').slice(0, 30),
           rotation: 0,

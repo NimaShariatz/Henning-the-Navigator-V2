@@ -215,10 +215,10 @@ const MapScaleAdjustment: Record<string, number> = {
   Normandy: 0.06,
   Novosokolniki: 0.15,
   Odessa: 0.06,
-  Prokhorovka: 0.06,
+  Prokhorovka: 0.11,
   Rheinland: 0.06,
   Stalingrad: 0.06,
-  Vluki: 0.05,
+  Vluki: 0.08,
   'Western Front': 0.04,
 };
 
