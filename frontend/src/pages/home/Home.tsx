@@ -1,11 +1,12 @@
 import { Link } from 'react-router';
 import styles from './Home.module.css';
 import Menu from '../../components/menu/Menu';
-import { homeVideo, sessionHeader, HennLogo2 } from '../../constants';
+import { sessionHeader, HennLogo2 } from '../../constants';
 import { isLoggedIn } from '../../helpers/isLoggedIn';
 import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import HomeWaypoint from './HomeWaypoint';
 
 function Home() {
   const [loggedIn] = useState(isLoggedIn);
@@ -33,8 +34,6 @@ function Home() {
       </div>
 
       <div className={styles.waypointContainer}>
-        <h4>Set Your Path</h4>
-
         <div className={styles.canvasContainer}>
           <Canvas
             camera={{
@@ -45,10 +44,7 @@ function Home() {
           >
             <OrbitControls />
 
-            <mesh position={[0, 0, 0]}>
-              <octahedronGeometry args={[1, 0]} />
-              <meshLambertMaterial opacity={0.5} color={'#33b9ea'} />
-            </mesh>
+            <HomeWaypoint />
 
             <pointLight
               intensity={12}

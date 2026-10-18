@@ -23,16 +23,9 @@
 
   /* waypoint stuff */
   --waypoint_extraction: #2ee31e;
-  --waypoint_extraction_id_color: #59e34cd4;
-
   --waypoint_start: #33b9ea;
-  --waypoint_start_id_color: #7ac4dfde;
-
   --waypoint_target: #ae3232;
-  --waypoint_target_id_color: #d76565d7;
-
   --waypoint_ingress: #ffc90e;
-  --waypoint_ingress_id_color: #ebc84cd0;
 
   /* z-index and units */
   --menu_height: 60px;
