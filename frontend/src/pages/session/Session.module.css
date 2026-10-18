@@ -58,8 +58,8 @@
 }
 
 .waypointInfoContainer {
-  font-weight: 700;
-  opacity: 0.65;
+  font-weight: 600;
+  opacity: 0.6;
   background-color: var(--darkBG_1);
   padding-inline: 0.5rem;
   border-radius: 3px;
@@ -68,5 +68,5 @@
 .waypointInfoContainer p {
   color: var(--text_color_white);
   white-space: nowrap; /* no new lines*/
-  font-size: 12px;
+  font-size: 10px;
 }

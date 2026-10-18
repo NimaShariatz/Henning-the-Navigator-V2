@@ -1,6 +1,6 @@
 import HennLogo1 from './assets/img/Henning_logo.webp';
 import HennLogo2 from './assets/img/Henning_logo2.webp';
-import homeVideo from './assets/img/home/henninghome1-480.mp4';
+import homeVideo from './assets/img/home/homevid480.mp4';
 
 import sessionHeader from './assets/img/session/session_header4.png'; //https://unsplash.com/photos/3d-render-abstract-white-paper-background-layers-flat-fiber-structures-holes-macro-texture-_HUUfJX7Qks
 import sessionBg from './assets/img/session/gis--contour-map2.png';

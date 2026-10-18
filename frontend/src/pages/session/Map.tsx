@@ -268,7 +268,7 @@ function Map({
           {' '}
           {/* 
             not using drei line with waypoints.map because of draw calls. 
-            50 segments are created. They take triangles. if point exists, move and re-color it to x and y. else, render it far far away.
+            # of segments are created. They take triangles. if point exists, move and re-color it to x and y. else, render it far far away.
           */}
           {Array.from({ length: MAX_WAYPOINTS - 1 }, (_, i) => {
             const point = waypoints[i];

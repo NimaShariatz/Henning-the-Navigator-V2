@@ -59,7 +59,7 @@ function UserSessions() {
         setUsername(data.username);
         return fetchSessions(data.username);
       })
-      .catch(() => navigate('/login'));
+      .catch(() => navigate('/login', { replace: true }));
   }, [navigate]);
 
   const toggleDeleteSelected = (slug: string) => {
