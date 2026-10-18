@@ -68,14 +68,15 @@
   border-radius: 8px;
 }
 
-.waypointContainer {
+/* .waypointContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   width: 100%;
-  height: 1000px;
-  padding-inline: 1rem;
+  height: 85vw;
   gap: 2rem;
+  overflow: hidden;
+  position: relative;
 }
 
 .canvasContainer {
@@ -86,47 +87,20 @@
   font-weight: 600;
   font-size: 20px;
   color: var(--text_color_white);
-  white-space: nowrap; /* no new lines*/
-  display: inline-block; /* no new lines*/
+  white-space: nowrap; 
+  display: inline-block; 
   background-color: var(--darkBG_1);
-  outline-width: 3px;
+  outline-width: 4px;
   outline-style: solid;
   border-radius: 3px;
   padding-inline: 0.5rem;
   padding-block: 0.1rem;
   user-select: none;
-}
-
-/* .videoContainer {
-  background-color: black;
-  margin-inline: 4%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 3rem;
-  border-radius: 20px;
-  outline: 5px solid var(--logo_yellow);
-}
-
-.homeVideo {
-  height: 600px;
-  object-fit: contain;
-  opacity: 0.7;
-  mask-image:
-    linear-gradient(
-      to right,
-      transparent 0%,
-      black 40%,
-      black 50%,
-      transparent 100%
-    ),
-    linear-gradient(
-      to bottom,
-      transparent 0%,
-      black 30%,
-      black 50%,
-      transparent 100%
-    );
-  mask-composite: intersect;
-  filter: grayscale(1);
 } */
+
+@media (max-width: 720px) {
+  .homeHennContainer .createSession {
+    margin-left: 10px;
+    font-size: 24px;
+  }
+}

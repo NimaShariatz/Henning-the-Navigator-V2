@@ -4,9 +4,9 @@ import Menu from '../../components/menu/Menu';
 import { sessionHeader, HennLogo2 } from '../../constants';
 import { isLoggedIn } from '../../helpers/isLoggedIn';
 import { useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import HomeWaypoint from './HomeWaypoint';
+// import { Canvas } from '@react-three/fiber';
+// import HomeWaypoint from './HomeWaypoint';
+// import { degToRad } from 'three/src/math/MathUtils.js';
 
 function Home() {
   const [loggedIn] = useState(isLoggedIn);
@@ -33,16 +33,19 @@ function Home() {
         )}
       </div>
 
-      <div className={styles.waypointContainer}>
+      {/* <div className={styles.waypointContainer}>
         <div className={styles.canvasContainer}>
+          
           <Canvas
             camera={{
               fov: 45,
               near: 0.1,
               far: 300,
+              position: [0.5, 1, 2],
+              rotation: [degToRad(-5), 0, degToRad(0)]
             }}
+            
           >
-            <OrbitControls />
 
             <HomeWaypoint />
 
@@ -50,20 +53,17 @@ function Home() {
               intensity={12}
               decay={0.3}
               color={'#f0ebe1'}
-              position={[0, 10, 0]}
+              position={[2, 15, -9]}
             />
+
+            <mesh position={[2, 15, -9]} >
+              <boxGeometry args={[1, 1, 1]} />
+              <meshLambertMaterial opacity={0.5} color={"#d10909"} />
+            </mesh>
+
+
           </Canvas>
         </div>
-      </div>
-
-      {/* <div className={styles.videoContainer}>
-        <video
-          className={styles.homeVideo}
-          src={homeVideo}
-          autoPlay
-          loop
-          muted
-        ></video>
       </div> */}
     </>
   );
