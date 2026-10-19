@@ -1,17 +1,18 @@
 import HennLogo1 from './assets/img/Henning_logo.webp';
 import HennLogo2 from './assets/img/Henning_logo2.webp';
-import homeVideo from './assets/img/home/homevid480.mp4';
 
 import sessionHeader from './assets/img/session/session_header4.png'; //https://unsplash.com/photos/3d-render-abstract-white-paper-background-layers-flat-fiber-structures-holes-macro-texture-_HUUfJX7Qks
 import sessionBg from './assets/img/session/gis--contour-map2.png';
 
-import a20 from './assets/img/home/a20.jpg';
-import fw190 from './assets/img/home/fw190.jpg';
-import heink from './assets/img/home/heink.jpg';
-import nieup from './assets/img/home/nieup.jpg';
-import ta152 from './assets/img/home/ta152.jpg';
-import ww1 from './assets/img/home/ww1.jpg';
-import yak from './assets/img/home/yak.jpg';
+import a20 from './assets/img/login/a20.jpg';
+import fw190 from './assets/img/login/fw190.jpg';
+import heink from './assets/img/login/heink.jpg';
+import nieup from './assets/img/login/nieup.jpg';
+import ta152 from './assets/img/login/ta152.jpg';
+import ww1 from './assets/img/login/ww1.jpg';
+import yak from './assets/img/login/yak.jpg';
+
+import mapScreenshot from './assets/img/home/textureScreenshot.png';
 
 import lowResArras from './assets/img/lowResMaps/Arras.jpg';
 import lowResKuban from './assets/img/lowResMaps/Kuban.jpg';
@@ -269,10 +270,11 @@ import blenderSquare from './assets/blenderTargets/square.glb';
 import blenderArrow from './assets/blenderTargets/arrow.glb';
 import blenderUnknown from './assets/blenderTargets/unknown.glb';
 
+import blenderHomePlane from './assets/blenderMisc/airplane.glb';
+
 export {
   HennLogo1,
   HennLogo2,
-  homeVideo,
   a20,
   fw190,
   heink,
@@ -282,6 +284,8 @@ export {
   yak,
   sessionHeader,
   sessionBg,
+  mapScreenshot,
+  blenderHomePlane,
   Arras,
   Kuban,
   Lapino,

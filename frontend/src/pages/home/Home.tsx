@@ -4,9 +4,11 @@ import Menu from '../../components/menu/Menu';
 import { sessionHeader, HennLogo2 } from '../../constants';
 import { isLoggedIn } from '../../helpers/isLoggedIn';
 import { useState } from 'react';
-// import { Canvas } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
+import HomeWaypointSection from './HomeWaypointSection';
 // import HomeWaypoint from './HomeWaypoint';
 // import { degToRad } from 'three/src/math/MathUtils.js';
+import { OrbitControls } from '@react-three/drei';
 
 function Home() {
   const [loggedIn] = useState(isLoggedIn);
@@ -31,6 +33,19 @@ function Home() {
             Login to Create a Session
           </Link>
         )}
+      </div>
+
+      <div className={styles.canvasContainer}>
+        <Canvas
+          camera={{
+            fov: 45,
+            near: 0.1,
+            far: 300,
+          }}
+        >
+          <OrbitControls />
+          <HomeWaypointSection />
+        </Canvas>
       </div>
 
       {/* <div className={styles.waypointContainer}>

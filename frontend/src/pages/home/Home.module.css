@@ -68,6 +68,11 @@
   border-radius: 8px;
 }
 
+.canvasContainer {
+  width: 100%;
+  height: 100vh;
+}
+
 /* .waypointContainer {
   display: flex;
   align-items: center;
