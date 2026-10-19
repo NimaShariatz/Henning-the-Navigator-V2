@@ -45,6 +45,7 @@ function Home() {
         >
           <OrbitControls />
           <HomeWaypointSection />
+          <color args={['#000000']} attach="background" />
         </Canvas>
       </div>
 
