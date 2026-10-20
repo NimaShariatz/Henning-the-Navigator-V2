@@ -8,7 +8,7 @@ import { Canvas } from '@react-three/fiber';
 import HomeWaypointSection from './HomeWaypointSection';
 // import HomeWaypoint from './HomeWaypoint';
 // import { degToRad } from 'three/src/math/MathUtils.js';
-import { OrbitControls } from '@react-three/drei';
+import { degToRad } from 'three/src/math/MathUtils.js';
 
 function Home() {
   const [loggedIn] = useState(isLoggedIn);
@@ -36,51 +36,20 @@ function Home() {
       </div>
 
       <div className={styles.canvasContainer}>
+        <h1>Set a Path</h1>
         <Canvas
           camera={{
             fov: 45,
             near: 0.1,
             far: 300,
+            position: [-0.2, 0.5, 0.4],
+            rotation: [degToRad(0), degToRad(-90), degToRad(0)],
           }}
         >
-          <OrbitControls />
           <HomeWaypointSection />
           <color args={['#000000']} attach="background" />
         </Canvas>
       </div>
-
-      {/* <div className={styles.waypointContainer}>
-        <div className={styles.canvasContainer}>
-          
-          <Canvas
-            camera={{
-              fov: 45,
-              near: 0.1,
-              far: 300,
-              position: [0.5, 1, 2],
-              rotation: [degToRad(-5), 0, degToRad(0)]
-            }}
-            
-          >
-
-            <HomeWaypoint />
-
-            <pointLight
-              intensity={12}
-              decay={0.3}
-              color={'#f0ebe1'}
-              position={[2, 15, -9]}
-            />
-
-            <mesh position={[2, 15, -9]} >
-              <boxGeometry args={[1, 1, 1]} />
-              <meshLambertMaterial opacity={0.5} color={"#d10909"} />
-            </mesh>
-
-
-          </Canvas>
-        </div>
-      </div> */}
     </>
   );
 }
