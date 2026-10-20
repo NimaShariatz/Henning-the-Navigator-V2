@@ -1,14 +1,13 @@
 import { Link } from 'react-router';
 import styles from './Home.module.css';
 import Menu from '../../components/menu/Menu';
-import { sessionHeader, HennLogo2 } from '../../constants';
+import { sessionHeader, HennLogo2, shareScreenshot } from '../../constants';
 import { isLoggedIn } from '../../helpers/isLoggedIn';
 import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import HomeWaypointSection from './HomeWaypointSection';
-// import HomeWaypoint from './HomeWaypoint';
-// import { degToRad } from 'three/src/math/MathUtils.js';
 import { degToRad } from 'three/src/math/MathUtils.js';
+import TargetPointSection from './TargetPointSection';
 
 function Home() {
   const [loggedIn] = useState(isLoggedIn);
@@ -36,10 +35,10 @@ function Home() {
       </div>
 
       <div className={styles.canvasContainer}>
-        <h1>Set a Path</h1>
+        <h1>Set a path</h1>
         <Canvas
           camera={{
-            fov: 45,
+            fov: 50,
             near: 0.1,
             far: 300,
             position: [-0.2, 0.5, 0.4],
@@ -49,6 +48,28 @@ function Home() {
           <HomeWaypointSection />
           <color args={['#000000']} attach="background" />
         </Canvas>
+      </div>
+
+      <div className={styles.canvasContainer}>
+        <h1>Define your targets</h1>
+        <Canvas
+          camera={{
+            fov: 35,
+            near: 0.1,
+            far: 300,
+          }}
+        >
+          <TargetPointSection />
+          <color args={['#000000']} attach="background" />
+        </Canvas>
+      </div>
+
+      <div className={styles.shareSessionContainer}>
+        <img className={styles.backgroundImg} src={shareScreenshot} />
+        <div>
+          <h1>Share your session</h1>
+          <Link to="session/user/example-session">See example session</Link>
+        </div>
       </div>
     </>
   );

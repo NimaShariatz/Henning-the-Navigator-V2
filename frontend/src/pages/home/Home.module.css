@@ -57,7 +57,6 @@
 
 .homeHennContainer .createSession {
   z-index: 3;
-  height: fit-content;
   margin-bottom: 50px;
   margin-left: 50px;
   font-size: 36px;
@@ -77,7 +76,7 @@
 .canvasContainer h1 {
   position: absolute;
   left: 2rem;
-  bottom: 25%;
+  bottom: 50px;
   color: var(--logo_yellow);
   padding-inline: 2rem;
   padding-block: 0.25rem;
@@ -85,7 +84,6 @@
   background-color: var(--darkBG_1);
   z-index: 2;
 }
-
 .htmlText {
   font-weight: 600;
   font-size: 12px;
@@ -99,11 +97,86 @@
   padding-inline: 0.5rem;
   padding-block: 0.1rem;
   user-select: none;
+  transition: transform 0.18s ease-in-out;
+}
+
+.htmlText:hover {
+  transition: transform 0.25s ease-in-out;
+  transform: scale(1.45);
+}
+
+.shareSessionContainer {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background-color: black;
+}
+
+.shareSessionContainer div {
+  position: absolute;
+  left: 2rem;
+  bottom: 50px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.shareSessionContainer div h1 {
+  color: var(--logo_yellow);
+  padding-inline: 2rem;
+  padding-block: 0.25rem;
+  border-radius: 10px;
+  background-color: var(--darkBG_1);
+}
+.shareSessionContainer div a {
+  color: var(--hyperlink_color);
+  margin-left: 2rem;
+  font-weight: 600;
+}
+
+.shareSessionContainer .backgroundImg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  z-index: 1;
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      black 40%,
+      black 50%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 30%,
+      black 50%,
+      transparent 100%
+    );
+  mask-composite: intersect;
+  z-index: 1;
 }
 
 @media (max-width: 720px) {
   .homeHennContainer .createSession {
     margin-left: 10px;
     font-size: 24px;
+  }
+
+  .canvasContainer h1,
+  .shareSessionContainer div h1 {
+    font-size: 24px;
+    padding-inline: 1rem;
+  }
+
+  .shareSessionContainer div,
+  .canvasContainer h1 {
+    left: 1rem;
   }
 }

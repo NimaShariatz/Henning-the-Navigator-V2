@@ -13,6 +13,7 @@ import ww1 from './assets/img/login/ww1.jpg';
 import yak from './assets/img/login/yak.jpg';
 
 import mapScreenshot from './assets/img/home/textureScreenshot.png';
+import shareScreenshot from './assets/img/home/shareSessionScreenshot.png';
 
 import lowResArras from './assets/img/lowResMaps/Arras.jpg';
 import lowResKuban from './assets/img/lowResMaps/Kuban.jpg';
@@ -285,6 +286,7 @@ export {
   sessionHeader,
   sessionBg,
   mapScreenshot,
+  shareScreenshot,
   blenderHomePlane,
   Arras,
   Kuban,
