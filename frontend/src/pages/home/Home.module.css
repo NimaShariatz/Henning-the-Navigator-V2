@@ -133,6 +133,7 @@
   color: var(--hyperlink_color);
   margin-left: 2rem;
   font-weight: 600;
+  width: fit-content;
 }
 
 .shareSessionContainer .backgroundImg {
