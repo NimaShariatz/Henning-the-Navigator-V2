@@ -1,5 +1,6 @@
 import axios from 'axios';
 import api from './AxiosInstance';
+import type { Waypoint, Targetpoint, Textpoint, Frontline } from '../constants';
 
 export interface SessionListItem {
   slug: string;
@@ -17,6 +18,15 @@ export interface SessionDetailedItem {
   sessionInfo: string;
   created_at: string;
   last_updated: string;
+}
+export interface AllSessionInfo {
+  waypoints: Waypoint[];
+  targets: Targetpoint[];
+  texts: Textpoint[];
+  frontlines: Frontline[];
+  map_selected: string;
+  sessionInfo: string;
+  title: string;
 }
 
 /* get the list of sessions */
@@ -66,6 +76,16 @@ export async function UpdateSession(
 export async function deleteSession(username: string, slug: string) {
   const response = await api.delete(
     `/api/mapSessions/MapSession/${username}/${slug}/`,
+  );
+  return response.data;
+}
+
+export async function GetAllData(
+  username: string,
+  slug: string,
+): Promise<AllSessionInfo> {
+  const response = await api.get(
+    `/api/mapSessions/MapSession/${username}/${slug}/allsessiondata/`,
   );
   return response.data;
 }

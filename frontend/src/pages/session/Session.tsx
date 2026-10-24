@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
-import { SpecificSessionData } from '../../api/Session';
-import type { SessionDetailedItem } from '../../api/Session';
+import { GetAllData } from '../../api/Session';
+import type { SessionDetailedItem, AllSessionInfo } from '../../api/Session';
 import styles from './Session.module.css';
 import { OrbitControls } from '@react-three/drei';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
@@ -153,35 +153,51 @@ function Session() {
   }>({ xStart: null, yStart: null });
   const [color, setColor] = useState(DEFAULT_COLORSELECT_OPTIONS.redTarget);
 
+  const applyAllData = (data: AllSessionInfo) => {
+    setSessionData((prev) => ({
+      ...prev,
+      title: data.title,
+      map_selected: data.map_selected,
+      sessionInfo: data.sessionInfo,
+    }));
+    setWaypoints(data.waypoints);
+    setWaypointId(data.waypoints.length + 1);
+    setTargets(data.targets);
+    setTexts(data.texts);
+    setFrontlines(data.frontlines);
+  };
+
   // runs on startup
   useEffect(() => {
     if (!username || !slug) return;
-    Promise.all([
-      SpecificSessionData(username, slug).then(setSessionData),
-      GetWaypoints(username, slug).then((points) => {
-        // derive waypointId from the data returned by GetWaypoints. dont do waypoints.length + 1 as that means its now a useEffect variable... unneccassary triggers
-        setWaypoints(points);
-        setWaypointId(points.length + 1);
-      }),
-      GetTargets(username, slug).then(setTargets),
-      GetTexts(username, slug).then(setTexts),
-      GetFrontlines(username, slug).then(setFrontlines),
-    ])
-      .finally(() => {
-        setSessionIsLoading(false);
-      })
+    GetAllData(username, slug)
+      .then(applyAllData)
+      .then(() => setSessionIsLoading(false))
       .catch((err) => {
         if (axios.isAxiosError(err) && err.response?.status === 404) {
           navigate('/session-not-found', {
-            replace: true,
+            replace: true, // replace: true keeps the broken session URL out of browser history, so Back doesn't return to it
             state: { from: `/session/${username}/${slug}` },
-          }); // replace: true keeps the broken session URL out of browser history, so Back doesn't return to it
+          });
         } else {
           setSessionIsLoading(false);
           if (err instanceof Error) showToast(err.message);
         }
       });
   }, [username, slug, navigate]);
+
+  const updateSession = async () => {
+    if (!username || !slug) return;
+    try {
+      applyAllData(await GetAllData(username, slug));
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 404) {
+        navigate('/session-not-found', { replace: true });
+      } else if (err instanceof Error) {
+        showToast(err.message);
+      }
+    }
+  };
 
   const waypointIdSetter = (newId: number) => {
     setWaypointId(newId);
@@ -528,6 +544,7 @@ function Session() {
               setFirstFrontlineClickData={setFirstFrontlineClickData}
               RemoveNavPoint={RemoveNavPoint}
               isKilometers={isKilometers}
+              updateSession={updateSession}
             />
             {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
           </Canvas>

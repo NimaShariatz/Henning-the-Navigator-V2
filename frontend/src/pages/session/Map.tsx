@@ -41,6 +41,7 @@ import styles from './Session.module.css';
 import * as React from 'react';
 import { midXmidY, distanceCalc, headingCalc } from '../../helpers/distance';
 import TargetRender from './targets/targetRender';
+import Lightbulb from './tableObjects/Lightbulb';
 
 interface MapProps {
   revealSettingsSetter: () => void;
@@ -85,6 +86,7 @@ interface MapProps {
   }) => void;
   RemoveNavPoint: (id: number) => void;
   isKilometers: boolean;
+  updateSession: () => Promise<void>;
 }
 
 function Map({
@@ -108,6 +110,7 @@ function Map({
   setFirstFrontlineClickData,
   RemoveNavPoint,
   isKilometers,
+  updateSession,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -402,6 +405,7 @@ function Map({
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
       <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />
+      <Lightbulb updateSession={updateSession} />
     </group>
   );
 }

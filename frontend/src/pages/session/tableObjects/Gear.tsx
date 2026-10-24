@@ -15,7 +15,7 @@ function Gear({ revealSettingsSetter }: GearProps) {
   const [revealHTML, setRevealHTML] = useState(false);
 
   return (
-    <group position={[-5.6, 0.63, -6.3]}>
+    <group position={[-6.4, 0.63, -7]}>
       <primitive
         object={gear.scene}
         scale={0.5}

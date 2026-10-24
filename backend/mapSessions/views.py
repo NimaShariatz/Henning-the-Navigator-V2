@@ -283,6 +283,26 @@ class FrontlineListView(APIView):
     return Response(status=204)
   
   
+  
+class GetAllInfo(APIView):
+  permission_classes = [permissions.AllowAny]
+
+  # Purpose: Returns every point type plus map and session info in one request
+  # Input: GET /api/mapSessions/MapSession/<username>/<slug>/allpoints/
+  # Output: { waypoints, texts, frontlines, targets, map_selected, sessionInfo }
+  def get(self, request, username, slug):
+    session = get_object_or_404(MapSession, user__username=username, slug=slug)
+    return Response({
+      'waypoints': WaypointSerializer(session.waypoints.all(), many=True).data,
+      'texts': TextSerializer(session.texts.all(), many=True).data,
+      'frontlines': FrontlineSerializer(session.frontlines.all(), many=True).data,
+      'targets': TargetSerializer(session.targets.all(), many=True).data,
+      'map_selected': session.get_map_selected_display(),
+      'sessionInfo': session.sessionInfo,
+      'title': session.title,
+    }, status=200)
+  
+  
 # for settings.tsx upload
 class SessionImportView(APIView):
   permission_classes = [permissions.AllowAny]

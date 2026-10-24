@@ -251,6 +251,7 @@ import blenderTable from './assets/blenderTable/threejsTable.glb';
 import blenderLamp from './assets/blenderTable/threejsLampBasic.glb';
 import blenderGear from './assets/blenderTable/threejsSettings2.glb';
 import blenderClipboard from './assets/blenderTable/threejsClipboard.glb';
+import blenderLightbulb from './assets/blenderTable/threejsLightbulb.glb';
 
 import blenderRadar from './assets/blenderTargets/radar.glb';
 import blenderFactory from './assets/blenderTargets/factory.glb';
@@ -322,6 +323,7 @@ export {
   blenderLamp,
   blenderGear,
   blenderClipboard,
+  blenderLightbulb,
   blenderRadar,
   blenderFactory,
   blenderCity,
