@@ -69,3 +69,14 @@ export async function deleteSession(username: string, slug: string) {
   );
   return response.data;
 }
+
+// get current version
+export async function GetSessionVersion(
+  username: string,
+  slug: string,
+): Promise<number> {
+  const response = await api.get(
+    `/api/mapSessions/MapSession/${username}/${slug}/version/`,
+  );
+  return response.data.version;
+}

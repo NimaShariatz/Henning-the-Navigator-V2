@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import MapSessionListView, MapSessionDetailView, WaypointListView, WaypointDetailView, TargetListView, TargetDetailView, TextListView, TextDetailView, FrontlineListView, SessionImportView
+from .views import MapSessionListView, MapSessionDetailView, WaypointListView, WaypointDetailView, TargetListView, TargetDetailView, TextListView, TextDetailView, FrontlineListView, SessionImportView, SessionVersionView
 
 urlpatterns = [
   path('list/<str:username>/', MapSessionListView.as_view()),
@@ -12,4 +12,5 @@ urlpatterns = [
   path('MapSession/<str:username>/<slug:slug>/texts/<int:local_id>/', TextDetailView.as_view()),
   path('MapSession/<str:username>/<slug:slug>/frontlines/', FrontlineListView.as_view()),
   path('MapSession/<str:username>/<slug:slug>/import/', SessionImportView.as_view()),
+  path('MapSession/<str:username>/<slug:slug>/version/', SessionVersionView.as_view()),
 ]

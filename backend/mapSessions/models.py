@@ -15,6 +15,7 @@ class MapSession(models.Model):
   slug = models.SlugField(max_length=50) # A URL-safe version of the title (e.g. "My Session" → "my-session"), used in the URL path
   created_at = models.DateTimeField(auto_now_add=True) # auto_now_add is the same as manually doing created_at = datetime.now() in save(). also makes the field non-editable. But only done once on creation.
   last_updated = models.DateTimeField(auto_now=True) # Automatically sets the field to the current date and time every time you call .save() on the object
+  version = models.PositiveBigIntegerField(default=0) # for polling!!
   all_can_edit = models.BooleanField(default=True) # if true, even those not signed in can edit
   permitted_to_edit = models.ManyToManyField( # sessions can have many users. users can have many sessions
     settings.AUTH_USER_MODEL, # references whatever model is set as AUTH_USER_MODEL in settings.py. so "accounts.User"

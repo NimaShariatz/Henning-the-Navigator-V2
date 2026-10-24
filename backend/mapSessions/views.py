@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
+from django.db.models import F
 from .models import MapSession, Waypoint, Target, Text, Frontline
 from .serializers import MapSessionListSerializer, MapSessionDetailSerializer, MapSessionWriteSerializer, WaypointSerializer, TargetSerializer, TextSerializer, FrontlineSerializer
 from rest_framework.exceptions import PermissionDenied, ValidationError
@@ -66,6 +67,7 @@ class MapSessionDetailView(APIView):
     # session: the existing db object to update, data=request.data: the incoming JSON from frontend, partial=True: makes it a PATCH, not a PUT so not al fields are required.  frontend can send only { "title": "New Title" } without needing to resend map_selected, all_can_edit, and sessionInfo as well
     serializer.is_valid(raise_exception=True) # runs all the alidation logic in MapSessionWriteSerializer, including validate_map_selected() which does the string to int conversion.
     serializer.save()
+    bump_version(session)
     return Response(serializer.data, status=200)
   
   # Purpose: delete the session owned by the given user
@@ -78,7 +80,7 @@ class MapSessionDetailView(APIView):
     session.delete()
     return Response(status=204)
   
-# Purpose: if the user is allowed 
+# (General Helper) Purpose: if the user is allowed 
 def get_session_for_edit(request, username, slug):
   session = get_object_or_404(MapSession, user__username=username, slug=slug)
   user = request.user
@@ -86,10 +88,6 @@ def get_session_for_edit(request, username, slug):
   if not can_edit:
     raise PermissionDenied()
   return session
-
-
-
-
 
 
 
@@ -112,12 +110,14 @@ class WaypointListView(APIView):
     serializer.is_valid(raise_exception=True)
     next_id = (session.waypoints.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
     serializer.save(session=session, local_id=next_id)
+    bump_version(session)
     return Response(serializer.data, status=201)
   
   # DELETE .../waypoints/ — removes every waypoint for this session
   def delete(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
     session.waypoints.all().delete()
+    bump_version(session)
     return Response(status=204)
 
 
@@ -131,6 +131,7 @@ class WaypointDetailView(APIView):
     serializer = WaypointSerializer(waypoint, data=request.data, partial=True)
     serializer.is_valid(raise_exception=True)
     serializer.save()
+    bump_version(session)
     return Response(serializer.data, status=200)
 
   # def delete(self, request, username, slug, local_id):
@@ -149,6 +150,7 @@ class WaypointDetailView(APIView):
       for wp in session.waypoints.filter(local_id__gt=local_id).order_by('local_id'):
         wp.local_id -= 1
         wp.save(update_fields=['local_id'])
+      bump_version(session)
     return Response(status=204)
   
   
@@ -170,11 +172,13 @@ class TargetListView(APIView):
     serializer.is_valid(raise_exception=True)
     next_id = (session.targets.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
     serializer.save(session=session, local_id=next_id)
+    bump_version(session)
     return Response(serializer.data, status=201)
   
   def delete(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
     session.targets.all().delete()
+    bump_version(session)
     return Response(status=204)
   
 class TargetDetailView(APIView):
@@ -186,6 +190,7 @@ class TargetDetailView(APIView):
     serializer = TargetSerializer(target, data=request.data, partial=True)
     serializer.is_valid(raise_exception=True)
     serializer.save()
+    bump_version(session)
     return Response(serializer.data, status=200)
   
   def delete(self, request, username, slug, local_id):
@@ -197,6 +202,7 @@ class TargetDetailView(APIView):
       for tg in session.targets.filter(local_id__gt=local_id).order_by('local_id'):
         tg.local_id -= 1
         tg.save(update_fields=['local_id'])
+      bump_version(session)
     return Response(status=204)
   
   
@@ -217,11 +223,13 @@ class TextListView(APIView):
     serializer.is_valid(raise_exception=True)
     next_id = (session.texts.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
     serializer.save(session=session, local_id=next_id)
+    bump_version(session)
     return Response(serializer.data, status=201)
   
   def delete(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
     session.texts.all().delete()
+    bump_version(session)
     return Response(status=204)
   
 class TextDetailView(APIView):
@@ -233,6 +241,7 @@ class TextDetailView(APIView):
     serializer = TextSerializer(text, data=request.data, partial=True)
     serializer.is_valid(raise_exception=True)
     serializer.save()
+    bump_version(session)
     return Response(serializer.data, status=200)
   
   def delete(self, request, username, slug, local_id):
@@ -244,6 +253,7 @@ class TextDetailView(APIView):
       for tg in session.texts.filter(local_id__gt=local_id).order_by('local_id'):
         tg.local_id -= 1
         tg.save(update_fields=['local_id'])
+      bump_version(session)
     return Response(status=204)
 
 
@@ -263,11 +273,13 @@ class FrontlineListView(APIView):
     serializer.is_valid(raise_exception=True)
     next_id = (session.frontlines.aggregate(models.Max('local_id'))['local_id__max'] or 0) + 1
     serializer.save(session=session, local_id=next_id)
+    bump_version(session)
     return Response(serializer.data, status=201)
   
   def delete(self, request, username, slug):
     session = get_session_for_edit(request, username, slug)
     session.frontlines.all().delete()
+    bump_version(session)
     return Response(status=204)
   
   
@@ -312,10 +324,34 @@ class SessionImportView(APIView):
         ])
       session.map_selected = MAP_NAME_TO_INT[map_name]
       session.save(update_fields=['map_selected', 'last_updated'])
-
+      bump_version(session)
+    
     return Response({
       'waypoints': WaypointSerializer(session.waypoints.all(), many=True).data,
       'targets': TargetSerializer(session.targets.all(), many=True).data,
       'texts': TextSerializer(session.texts.all(), many=True).data,
       'frontlines': FrontlineSerializer(session.frontlines.all(), many=True).data,
     }, status=200)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+class SessionVersionView(APIView):
+  permission_classes = [permissions.AllowAny]
+
+  # GET .../MapSession/<username>/<slug>/version/ -> { "version": n }
+  def get(self, request, username, slug):
+    version = MapSession.objects.filter(user__username=username, slug=slug).values_list('version', flat=True).first()
+    if version is None:
+      return Response(status=404)
+    return Response({'version': version})
+
+
+# (General Helper) Purpose: bump up session version by 1
+def bump_version(session):
+  MapSession.objects.filter(pk=session.pk).update(version=F('version') + 1) # update() with F() is atomic, so concurrent writers can't lose a bump, and it doesn't touch last_updated

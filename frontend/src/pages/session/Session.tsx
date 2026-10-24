@@ -49,6 +49,7 @@ import {
 import {
   ClearTexts,
   CreateText,
+  DeleteText,
   GetTexts,
   UpdateText,
 } from '../../api/points/Text';
@@ -410,10 +411,18 @@ function Session() {
     }
   };
 
-  const deleteText = (id: number) => {
-    setTexts((prev) => prev.filter((t) => t.id !== id));
+  const deleteText = async (id: number) => {
+    if (!username || !slug) return;
+    try {
+      await DeleteText(username, slug, id);
+      const allTexts = await GetTexts(username, slug);
+      setTexts(allTexts);
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
     revealEditTextSetter(-1);
   };
+
   const deleteTarget = async (id: number) => {
     if (!username || !slug) return;
     try {
