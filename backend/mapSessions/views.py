@@ -315,9 +315,9 @@ class SessionImportView(APIView):
     map_name = request.data.get('mapSelected')
     if map_name not in MAP_NAME_TO_INT:
       raise ValidationError({'mapSelected': ['Invalid map name.']})
-    # mirrors MapSessionDetailView.patch, which is owner-only
-    if MAP_NAME_TO_INT[map_name] != session.map_selected and request.user != session.user:
-      raise PermissionDenied()
+    # mirrors MapSessionDetailView.patch, which makes JSON uploads author only
+    # if MAP_NAME_TO_INT[map_name] != session.map_selected and request.user != session.user:
+    #   raise PermissionDenied()
 
     specs = [
       ('waypoints', WaypointSerializer, Waypoint),

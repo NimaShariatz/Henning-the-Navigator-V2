@@ -211,7 +211,6 @@ function Session() {
     //no try block as its called with places that have try blocks
     if (!username || !slug) return false;
     const version = await GetSessionVersion(username, slug);
-    console.log(version, sessionData.version);
     return version === sessionData.version;
   };
 
@@ -285,6 +284,11 @@ function Session() {
     } // stop once the render limit is reached
 
     try {
+      if (!(await doesVersionMatch())) {
+        //GET Version
+        await updateSession();
+        return;
+      }
       if (username && slug) {
         await CreateTarget(username, slug, {
           x,
@@ -296,6 +300,7 @@ function Session() {
           scale,
           color,
         });
+        await syncVersionAfterWrite();
         const allTargets = await GetTargets(username, slug);
         setTargets(allTargets);
       }
@@ -317,6 +322,11 @@ function Session() {
     } // stop once the render limit is reached
 
     try {
+      if (!(await doesVersionMatch())) {
+        //GET Version
+        await updateSession();
+        return;
+      }
       if (username && slug) {
         await CreateText(username, slug, {
           x,
@@ -326,6 +336,7 @@ function Session() {
           rotation,
           size,
         });
+        await syncVersionAfterWrite();
         const allTexts = await GetTexts(username, slug);
         setTexts(allTexts);
       }
@@ -346,6 +357,11 @@ function Session() {
     } // stop once the render limit is reached
 
     try {
+      if (!(await doesVersionMatch())) {
+        //GET Version
+        await updateSession();
+        return;
+      }
       if (username && slug) {
         await CreateFrontline(username, slug, {
           xStart,
@@ -354,6 +370,7 @@ function Session() {
           yEnd,
           color,
         });
+        await syncVersionAfterWrite();
         const allFrontlines = await GetFrontlines(username, slug);
         setFrontlines(allFrontlines);
       }
@@ -370,6 +387,11 @@ function Session() {
     size: number,
   ) => {
     try {
+      if (!(await doesVersionMatch())) {
+        //GET Version
+        await updateSession();
+        return;
+      }
       if (username && slug) {
         await UpdateText(username, slug, id, {
           text,
@@ -377,6 +399,7 @@ function Session() {
           color,
           size,
         });
+        await syncVersionAfterWrite();
         const allTexts = await GetTexts(username, slug);
         setTexts(allTexts);
       }
@@ -393,6 +416,11 @@ function Session() {
     scale: number,
   ) => {
     try {
+      if (!(await doesVersionMatch())) {
+        //GET Version
+        await updateSession();
+        return;
+      }
       if (username && slug) {
         await UpdateTarget(username, slug, id, {
           name,
@@ -400,6 +428,7 @@ function Session() {
           scale,
           color,
         });
+        await syncVersionAfterWrite();
         const allTargets = await GetTargets(username, slug);
         setTargets(allTargets);
       }
@@ -410,8 +439,13 @@ function Session() {
 
   const clearWaypoints = async () => {
     if (!username || !slug) return;
+    if (!(await doesVersionMatch())) {
+      await updateSession();
+      return;
+    }
     try {
       await ClearWaypoints(username, slug);
+      await syncVersionAfterWrite();
       setWaypoints([]);
       setWaypointId(1);
     } catch (err) {
@@ -420,8 +454,13 @@ function Session() {
   };
   const clearTargets = async () => {
     if (!username || !slug) return;
+    if (!(await doesVersionMatch())) {
+      await updateSession();
+      return;
+    }
     try {
       await ClearTargets(username, slug);
+      await syncVersionAfterWrite();
       setTargets([]);
     } catch (err) {
       if (err instanceof Error) showToast(err.message);
@@ -429,8 +468,13 @@ function Session() {
   };
   const clearTexts = async () => {
     if (!username || !slug) return;
+    if (!(await doesVersionMatch())) {
+      await updateSession();
+      return;
+    }
     try {
       await ClearTexts(username, slug);
+      await syncVersionAfterWrite();
       setTexts([]);
     } catch (err) {
       if (err instanceof Error) showToast(err.message);
@@ -438,8 +482,13 @@ function Session() {
   };
   const clearFrontlines = async () => {
     if (!username || !slug) return;
+    if (!(await doesVersionMatch())) {
+      await updateSession();
+      return;
+    }
     try {
       await ClearFrontlines(username, slug);
+      await syncVersionAfterWrite();
       setFrontlines([]);
       setFirstFrontlineClickData({ xStart: null, yStart: null });
     } catch (err) {
@@ -464,28 +513,39 @@ function Session() {
     }
   };
 
-  const deleteText = async (id: number) => {
-    if (!username || !slug) return;
-    try {
-      await DeleteText(username, slug, id);
-      const allTexts = await GetTexts(username, slug);
-      setTexts(allTexts);
-    } catch (err) {
-      if (err instanceof Error) showToast(err.message);
-    }
-    revealEditTextSetter(-1);
-  };
-
   const deleteTarget = async (id: number) => {
     if (!username || !slug) return;
+    if (!(await doesVersionMatch())) {
+      await updateSession();
+      return;
+    }
     try {
       await DeleteTarget(username, slug, id);
       const allWaypoints = await GetTargets(username, slug);
+      await syncVersionAfterWrite();
       setTargets(allWaypoints);
     } catch (err) {
       if (err instanceof Error) showToast(err.message);
     }
     revealEditTargetSetter(-1);
+  };
+
+  const deleteText = async (id: number) => {
+    if (!username || !slug) return;
+    if (!(await doesVersionMatch())) {
+      console.log('not same');
+      await updateSession();
+      return;
+    }
+    try {
+      await DeleteText(username, slug, id);
+      const allTexts = await GetTexts(username, slug);
+      await syncVersionAfterWrite();
+      setTexts(allTexts);
+    } catch (err) {
+      if (err instanceof Error) showToast(err.message);
+    }
+    revealEditTextSetter(-1);
   };
 
   const selectOption = (option: OptionKey) => {
@@ -625,6 +685,7 @@ function Session() {
           setFrontlines={setFrontlines}
           setWaypointId={waypointIdSetter}
           showToast={showToast}
+          syncVersionAfterWrite={syncVersionAfterWrite}
         />
 
         <FlightInfo

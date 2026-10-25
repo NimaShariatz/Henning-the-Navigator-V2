@@ -34,6 +34,7 @@ interface SettingsProps {
   setFrontlines: React.Dispatch<React.SetStateAction<Frontline[]>>;
   setWaypointId: (newId: number) => void;
   showToast: (mssg: string) => void;
+  syncVersionAfterWrite: () => Promise<void>;
 }
 
 function Settings({
@@ -57,6 +58,7 @@ function Settings({
   setFrontlines,
   setWaypointId,
   showToast,
+  syncVersionAfterWrite,
 }: SettingsProps) {
   const [brightnessValue, setBrightnessValue] = useState(5);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -138,6 +140,7 @@ function Settings({
         setTexts(result.texts);
         setFrontlines(result.frontlines);
         setSessionData((prev) => ({ ...prev, map_selected: data.mapSelected }));
+        syncVersionAfterWrite();
         showToast('Map updated');
       } catch (err) {
         showToast(
