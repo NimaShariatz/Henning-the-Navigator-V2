@@ -152,6 +152,7 @@ function Session() {
     yStart: number | null;
   }>({ xStart: null, yStart: null });
   const [color, setColor] = useState(DEFAULT_COLORSELECT_OPTIONS.redTarget);
+  const [flashSignal, setFlashSignal] = useState(0);
 
   const applyAllData = (data: AllSessionInfo) => {
     setSessionData((prev) => ({
@@ -190,6 +191,7 @@ function Session() {
     if (!username || !slug) return;
     try {
       applyAllData(await GetAllData(username, slug));
+      setFlashSignal((n) => n + 1);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 404) {
         navigate('/session-not-found', { replace: true });
@@ -545,6 +547,7 @@ function Session() {
               RemoveNavPoint={RemoveNavPoint}
               isKilometers={isKilometers}
               updateSession={updateSession}
+              flashSignal={flashSignal}
             />
             {import.meta.env.DEV && <PerfMonitor onUpdate={setPerf} />}
           </Canvas>

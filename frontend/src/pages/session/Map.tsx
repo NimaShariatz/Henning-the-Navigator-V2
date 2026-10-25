@@ -87,6 +87,7 @@ interface MapProps {
   RemoveNavPoint: (id: number) => void;
   isKilometers: boolean;
   updateSession: () => Promise<void>;
+  flashSignal: number;
 }
 
 function Map({
@@ -111,6 +112,7 @@ function Map({
   RemoveNavPoint,
   isKilometers,
   updateSession,
+  flashSignal,
 }: MapProps) {
   const table = useGLTF(blenderTable);
   const lamp = useGLTF(blenderLamp);
@@ -405,7 +407,7 @@ function Map({
 
       <Gear revealSettingsSetter={revealSettingsSetter} />
       <Clipboard revealFlightInfoSetter={revealFlightInfoSetter} />
-      <Lightbulb updateSession={updateSession} />
+      <Lightbulb updateSession={updateSession} flashSignal={flashSignal} />
     </group>
   );
 }
