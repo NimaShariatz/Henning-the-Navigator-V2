@@ -84,7 +84,7 @@ interface MapProps {
     xStart: number | null;
     yStart: number | null;
   }) => void;
-  RemoveNavPoint: (id: number) => void;
+  deleteWaypoint: (id: number) => void;
   isKilometers: boolean;
   updateSession: () => Promise<void>;
   flashSignal: number;
@@ -109,7 +109,7 @@ function Map({
   addFrontline,
   firstFrontlineClickData,
   setFirstFrontlineClickData,
-  RemoveNavPoint,
+  deleteWaypoint,
   isKilometers,
   updateSession,
   flashSignal,
@@ -259,7 +259,7 @@ function Map({
                   <p className={styles.waypointId}>{point.id}</p>
                   <p
                     className={styles.removeWaypoint}
-                    onClick={() => RemoveNavPoint(point.id)}
+                    onClick={() => deleteWaypoint(point.id)}
                   >
                     Remove waypoint
                   </p>

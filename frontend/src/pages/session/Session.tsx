@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
-import { GetAllData } from '../../api/Session';
+import { GetAllData, GetSessionVersion } from '../../api/Session';
 import type { SessionDetailedItem, AllSessionInfo } from '../../api/Session';
 import styles from './Session.module.css';
 import { OrbitControls } from '@react-three/drei';
@@ -78,6 +78,7 @@ const emptySessionData: SessionDetailedItem = {
   sessionInfo: '',
   created_at: '',
   last_updated: '',
+  version: 0,
 };
 
 // desired camera position & look-at target for the reset view
@@ -160,6 +161,7 @@ function Session() {
       title: data.title,
       map_selected: data.map_selected,
       sessionInfo: data.sessionInfo,
+      version: data.version,
     }));
     setWaypoints(data.waypoints);
     setWaypointId(data.waypoints.length + 1);
@@ -205,6 +207,23 @@ function Session() {
     setWaypointId(newId);
   };
 
+  const doesVersionMatch = async (): Promise<boolean> => {
+    //no try block as its called with places that have try blocks
+    if (!username || !slug) return false;
+    const version = await GetSessionVersion(username, slug);
+    console.log(version, sessionData.version);
+    return version === sessionData.version;
+  };
+
+  const syncVersionAfterWrite = async () => {
+    if (!username || !slug) return;
+    const serverVersion = await GetSessionVersion(username, slug);
+    const expected = sessionData.version + 1;
+    setSessionData((prev) => ({ ...prev, version: serverVersion }));
+    // someone else wrote between our check and our write -> resync everything
+    if (serverVersion !== expected) await updateSession();
+  };
+
   const addWaypoint = async (x: number, y: number, type: string) => {
     if (waypoints.length >= MAX_WAYPOINTS) {
       showToast(`Max waypoints of ${MAX_WAYPOINTS} reached`);
@@ -216,22 +235,33 @@ function Session() {
     if (existingIndex !== -1) {
       // id already in use -> reposition instead of duplicating
       try {
+        if (!(await doesVersionMatch())) {
+          //GET Version
+          await updateSession();
+          return;
+        }
         if (username && slug) {
-          await UpdateWaypoint(username, slug, waypointId, { x, y, type });
-          const allWaypoints = await GetWaypoints(username, slug);
+          await UpdateWaypoint(username, slug, waypointId, { x, y, type }); // PATCH Waypoint
+          await syncVersionAfterWrite(); // GET Version
+          const allWaypoints = await GetWaypoints(username, slug); // GET Waypoint
           setWaypoints(allWaypoints);
         }
       } catch (err) {
         if (err instanceof Error) showToast(err.message);
       }
-
       return;
     }
 
     try {
+      if (!(await doesVersionMatch())) {
+        //GET Version
+        await updateSession();
+        return;
+      }
       if (username && slug) {
-        await CreateWaypoint(username, slug, { x, y, type });
-        const allWaypoints = await GetWaypoints(username, slug);
+        await CreateWaypoint(username, slug, { x, y, type }); // PUT Waypoint
+        await syncVersionAfterWrite(); // GET Version
+        const allWaypoints = await GetWaypoints(username, slug); // GET Waypoint
         setWaypoints(allWaypoints);
         setWaypointId(allWaypoints.length + 1);
       }
@@ -417,11 +447,16 @@ function Session() {
     }
   };
 
-  const RemoveNavPoint = async (id: number) => {
+  const deleteWaypoint = async (id: number) => {
     if (!username || !slug) return;
+    if (!(await doesVersionMatch())) {
+      await updateSession();
+      return;
+    }
     try {
       await DeleteWaypoint(username, slug, id);
       const allWaypoints = await GetWaypoints(username, slug);
+      await syncVersionAfterWrite();
       setWaypoints(allWaypoints);
       setWaypointId(allWaypoints.length + 1);
     } catch (err) {
@@ -544,7 +579,7 @@ function Session() {
               addFrontline={addFrontline}
               firstFrontlineClickData={firstFrontlineClickData}
               setFirstFrontlineClickData={setFirstFrontlineClickData}
-              RemoveNavPoint={RemoveNavPoint}
+              deleteWaypoint={deleteWaypoint}
               isKilometers={isKilometers}
               updateSession={updateSession}
               flashSignal={flashSignal}

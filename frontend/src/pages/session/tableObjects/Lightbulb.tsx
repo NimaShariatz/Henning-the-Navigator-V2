@@ -9,7 +9,7 @@ import * as THREE from 'three';
 
 // later, create a Ref for version control. on every patch or push, check if local version == db version. if so, do the push/patch. If not,
 
-const FLASH_PEAK = 12;
+const FLASH_PEAK = 15;
 const FLASH_DURATION = 0.4; // seconds
 
 interface LightbulbProps {
@@ -63,7 +63,7 @@ function Lightbulb({ updateSession, flashSignal }: LightbulbProps) {
           position={[0, 0.75, 0]}
           color={'#ffbe1b'}
           intensity={0}
-          decay={3}
+          decay={2.5}
         />
 
         {revealHTML && (

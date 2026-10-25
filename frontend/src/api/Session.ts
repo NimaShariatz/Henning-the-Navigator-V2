@@ -18,6 +18,7 @@ export interface SessionDetailedItem {
   sessionInfo: string;
   created_at: string;
   last_updated: string;
+  version: number;
 }
 export interface AllSessionInfo {
   waypoints: Waypoint[];
@@ -27,6 +28,7 @@ export interface AllSessionInfo {
   map_selected: string;
   sessionInfo: string;
   title: string;
+  version: number;
 }
 
 /* get the list of sessions */

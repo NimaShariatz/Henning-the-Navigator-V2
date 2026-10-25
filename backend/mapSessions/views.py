@@ -300,6 +300,7 @@ class GetAllInfo(APIView):
       'map_selected': session.get_map_selected_display(),
       'sessionInfo': session.sessionInfo,
       'title': session.title,
+      'version': session.version,
     }, status=200)
   
   
