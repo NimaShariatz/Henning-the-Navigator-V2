@@ -9,9 +9,8 @@
 - a dev and prod branch with live instances
 - gunicorn
 - NGINX
-- AWS instance
+- AWS lightsail
 - AWS postgres
-- Docker
 
 
 

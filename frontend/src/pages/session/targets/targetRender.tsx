@@ -30,13 +30,13 @@ import { MapScaleAdjustment } from '../../../constants';
 interface TargetRenderProps {
   targets: Targetpoint[];
   sessionMap: string;
-  revealEditTargetSetter: (idClicked: number) => void;
+  revealTarget: (id: number) => Promise<void>;
 }
 
 function TargetRender({
   targets,
   sessionMap,
-  revealEditTargetSetter,
+  revealTarget,
 }: TargetRenderProps) {
   const radar = useGLTF(blenderRadar);
   const factory = useGLTF(blenderFactory);
@@ -87,7 +87,7 @@ function TargetRender({
           scene={sceneByUrl[TargetModels[target.type]] ?? unknown.scene}
           target={target}
           sessionMap={sessionMap}
-          revealEditTargetSetter={revealEditTargetSetter}
+          revealTarget={revealTarget}
         />
       ))}
     </>
@@ -98,12 +98,12 @@ function TargetInstance({
   scene,
   target,
   sessionMap,
-  revealEditTargetSetter,
+  revealTarget,
 }: {
   scene: THREE.Group;
   target: Targetpoint;
   sessionMap: string;
-  revealEditTargetSetter: (idClicked: number) => void;
+  revealTarget: (id: number) => Promise<void>;
 }) {
   const clonedScene = useMemo(() => {
     const clone = scene.clone();
@@ -157,7 +157,7 @@ function TargetInstance({
         scale={0.25 * MapScaleAdjustment[sessionMap] * target.scale}
         onClick={(e: ThreeEvent<MouseEvent>) => {
           e.stopPropagation();
-          revealEditTargetSetter(target.id);
+          revealTarget(target.id);
         }}
         onPointerEnter={() => {
           document.body.style.cursor = 'pointer';

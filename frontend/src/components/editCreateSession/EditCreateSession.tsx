@@ -25,6 +25,7 @@ const emptySessionData: SessionDetailedItem = {
   sessionInfo: '',
   created_at: '',
   last_updated: '',
+  version: 0,
 };
 
 function EditCreateSession({

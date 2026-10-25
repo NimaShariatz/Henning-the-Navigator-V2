@@ -86,6 +86,7 @@ interface MapProps {
   }) => void;
   deleteWaypoint: (id: number) => void;
   isKilometers: boolean;
+  doesVersionMatch: () => Promise<boolean>;
   updateSession: () => Promise<void>;
   flashSignal: number;
 }
@@ -111,6 +112,7 @@ function Map({
   setFirstFrontlineClickData,
   deleteWaypoint,
   isKilometers,
+  doesVersionMatch,
   updateSession,
   flashSignal,
 }: MapProps) {
@@ -170,6 +172,24 @@ function Map({
       }
       return;
     }
+  };
+
+  const revealTarget = async (id: number) => {
+    if (!(await doesVersionMatch())) {
+      //GET Version
+      await updateSession();
+      return;
+    }
+    revealEditTargetSetter(id);
+  };
+
+  const revealText = async (id: number) => {
+    if (!(await doesVersionMatch())) {
+      //GET Version
+      await updateSession();
+      return;
+    }
+    revealEditTextSetter(id);
   };
 
   return (
@@ -386,7 +406,7 @@ function Map({
           scale={30 * MapScaleAdjustment[sessionMap]}
           onClick={(e) => {
             e.stopPropagation();
-            revealEditTextSetter(text.id);
+            revealText(text.id);
           }}
           onPointerEnter={() => {
             document.body.style.cursor = 'pointer';
@@ -402,7 +422,7 @@ function Map({
       <TargetRender
         targets={targets}
         sessionMap={sessionMap}
-        revealEditTargetSetter={revealEditTargetSetter}
+        revealTarget={revealTarget}
       />
 
       <Gear revealSettingsSetter={revealSettingsSetter} />

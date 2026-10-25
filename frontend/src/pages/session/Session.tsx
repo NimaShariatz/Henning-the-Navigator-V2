@@ -641,6 +641,7 @@ function Session() {
               setFirstFrontlineClickData={setFirstFrontlineClickData}
               deleteWaypoint={deleteWaypoint}
               isKilometers={isKilometers}
+              doesVersionMatch={doesVersionMatch}
               updateSession={updateSession}
               flashSignal={flashSignal}
             />
@@ -713,6 +714,7 @@ function Session() {
           deleteTarget={deleteTarget}
         />
 
+        {/* doing npm run dev sets import.meta.env.DEV to true. doing npm run build sets import.meta.env.DEV to false */}
         {import.meta.env.DEV && perf && (
           <div className={styles.perfOverlay}>
             {perf.fps} fps · {perf.frameMs.toFixed(2)} ms · calls {perf.calls} ·
