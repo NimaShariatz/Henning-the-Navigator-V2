@@ -1,0 +1,14 @@
+[Unit]
+Description=Henning Gunicorn
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/srv/henning/backend
+RuntimeDirectory=henning
+ExecStart=/srv/henning/venv/bin/gunicorn backend.wsgi:application --workers 2 --bind unix:/run/henning/gunicorn.sock --umask 007
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
