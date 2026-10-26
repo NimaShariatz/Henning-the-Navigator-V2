@@ -34,7 +34,7 @@ import Lapino from './assets/img/maps/LapinoSaturate50.jpg';
 import Moscow from './assets/img/maps/MoscowSaturate50.jpg';
 import Normandy from './assets/img/maps/NormandySaturate50.jpg';
 import Novosokolniki from './assets/img/maps/NovosokolnikiSaturate50.jpg';
-import Odessa from './assets/img/maps/OdessaSaturate50.jpg';
+import Odessa from './assets/img/maps/OdessaSaturate35.jpg';
 import Prokhorovka from './assets/img/maps/ProkhorovkaSaturate50.jpg';
 import Rheinland from './assets/img/maps/RheinlandSaturate50.jpg';
 import Stalingrad from './assets/img/maps/StalingradSaturate50.jpg';
