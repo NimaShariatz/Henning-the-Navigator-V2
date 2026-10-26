@@ -5,8 +5,7 @@
 
 
 # ToDO
-- tests run by git actions
-- a dev and prod branch with live instances
+- tests and deployment run by git actions
 - gunicorn
 - NGINX
 - AWS lightsail
