@@ -12,28 +12,29 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta # - for using Djangorestframework-simplejwt. customizing the token lifetimes
+import os
+from dotenv import load_dotenv # - for loading the .env into settings.py. need .env for deployment
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / '.env') # - set base dir to .env if its there. for deployment.
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@^_5b)d-qb4+lhx6c$(zx)09zsp+gl9s1#(n&bkmlizd%d2wgf'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG') == '1'
 
-ALLOWED_HOSTS = []
-CORS_ALLOWED_ORIGINS = [ # - so that api with ReactJS works
-    "http://localhost:5173",
-]
-CSRF_TRUSTED_ORIGINS = [ # - otherwise we get 403 forbidden errors from backend
-    "http://localhost:5173",
-]
+
+ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOSTS'].split(',') # - changed for deployment
+
+CORS_ALLOWED_ORIGINS = os.environ['DJANGO_ORIGINS'].split(',')  # - so that api with ReactJS works
+
+CSRF_TRUSTED_ORIGINS = os.environ['DJANGO_ORIGINS'].split(',')  # - otherwise we get 403 forbidden errors from backend
 
 
 # Application definition
@@ -102,7 +103,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('DJANGO_DB_PATH', BASE_DIR / 'db.sqlite3'), # - if we dont have DJANGO_DB_PATH in .env, then just set it to default. need name for deployment
     }
 }
 
@@ -142,3 +143,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles' # - for deployment
+
+
+if not DEBUG: # - for deployment. if not debug mode...
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
