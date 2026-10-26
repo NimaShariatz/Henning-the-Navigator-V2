@@ -10,7 +10,6 @@
 - gunicorn
 - NGINX
 - AWS lightsail
-- AWS postgres
 
 
 
