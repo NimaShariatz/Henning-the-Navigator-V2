@@ -25,6 +25,7 @@ function EditTargetForm({
   const [scale, setScale] = useState(selectedTarget.scale);
   const [rotation, setRotation] = useState(selectedTarget.rotation);
   const [color, setColor] = useState(selectedTarget.color);
+  const dialRef = useRef<HTMLDivElement>(null);
 
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -45,12 +46,15 @@ function EditTargetForm({
     setScale(scale + input);
   };
 
-  const changeRotation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newValue = Number(e.target.value);
-    if (newValue < 0 || newValue > 360) {
-      newValue = 0;
-    }
-    setRotation(newValue);
+  const setFromPointer = (e: React.PointerEvent, snap: boolean) => {
+    const rect = dialRef.current!.getBoundingClientRect();
+    const dx = e.clientX - (rect.left + rect.width / 2);
+    const dy = e.clientY - (rect.top + rect.height / 2);
+    // 0° = up, increasing clockwise
+    const clockwiseFromTop = (Math.atan2(dx, -dy) * 180) / Math.PI;
+    let deg = Math.round(180 - clockwiseFromTop) % 360;
+    if (snap) deg = (Math.round(deg / 15) * 15) % 360;
+    setRotation(deg);
   };
 
   return (
@@ -121,13 +125,33 @@ function EditTargetForm({
 
       <div className={styles.editTargetOption}>
         <h5>Rotation:</h5>
-        <input
-          className={styles.rotationInput}
-          type="number"
-          onChange={changeRotation}
-          value={rotation}
-        ></input>
-        <span>°</span>
+        <div
+          ref={dialRef}
+          className={styles.dial}
+          role="slider"
+          aria-valuemin={0}
+          aria-valuemax={360}
+          aria-valuenow={rotation}
+          tabIndex={0}
+          onPointerDown={(e) => {
+            e.currentTarget.setPointerCapture(e.pointerId);
+            setFromPointer(e, e.shiftKey);
+          }}
+          onPointerMove={(e) => {
+            if (e.buttons) setFromPointer(e, e.shiftKey);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowUp')
+              setRotation((r) => (r + 1) % 360);
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowDown')
+              setRotation((r) => (r + 359) % 360);
+          }}
+        >
+          <div
+            className={styles.needle}
+            style={{ transform: `rotate(${180 - rotation}deg)` }}
+          />
+        </div>
       </div>
 
       <div className={styles.editTargetOption}>
