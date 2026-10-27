@@ -185,7 +185,7 @@ make sure when you push a bash file, it ends with CRLF (so dont push with Termin
 ```
 cd /srv/henning && git pull
 ```
-After that, just do 
+After that, you can now run the bash file with this command from /srv/henning
 ```
 /srv/henning/scripts/deploy-backend.sh
 ```
