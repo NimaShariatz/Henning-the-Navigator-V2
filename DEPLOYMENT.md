@@ -138,7 +138,7 @@ Run `crontab -e` and add:
 ```
 0 3 * * * sqlite3 /var/lib/henning/db.sqlite3 ".backup /var/lib/henning/backup-$(date +\%a).db"
 ```
-This keeps seven rotating daily copies. Copy them off the server now and then, and keep Lightsail snapshots on.
+This keeps seven rotating daily copies. Copy them off the server now and then.
 
 ### 9. Smoke test
 - `https://www.henningthenavigator.ca` loads
@@ -166,7 +166,30 @@ cd backend
 ../venv/bin/python manage.py collectstatic --noinput
 sudo systemctl restart henning
 ```
-Take a Lightsail snapshot before deploying a migration. If old build files pile up in `/var/www/henning/assets/`, clear that folder before uploading.
+A bash file has been created with the following lines: 
+```bash
+set -euo pipefail
+
+cd /srv/henning
+git pull
+./venv/bin/pip install -r backend/requirements.txt
+
+cd backend
+../venv/bin/python manage.py migrate
+../venv/bin/python manage.py collectstatic --noinput
+
+sudo systemctl restart henning
+sudo systemctl status henning --no-pager
+```
+make sure when you push a bash file, it ends with CRLF (so dont push with Terminal. Do it with Ubuntu). On first run do
+```
+cd /srv/henning && git pull
+```
+After that, just do 
+```
+/srv/henning/scripts/deploy-backend.sh
+```
+
 
 ## Troubleshooting
 
