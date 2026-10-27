@@ -1,6 +1,6 @@
 # Deployment Guide
 
-Henning the Navigator runs on a single AWS Lightsail Ubuntu 24.04 server (1 GB RAM, 2 vCPU).
+Henning the Navigator runs on a single AWS Lightsail Ubuntu 24.04 server (1 GB RAM, 2 vCPU, 40GB SSD disk, 2 TB Transfer).
 
 ## Architecture
 
