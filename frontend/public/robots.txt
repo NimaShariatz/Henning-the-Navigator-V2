@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /login
+Disallow: /signup
+Disallow: /user-sessions
+
+Sitemap: https://www.henningthenavigator.ca/sitemap.xml

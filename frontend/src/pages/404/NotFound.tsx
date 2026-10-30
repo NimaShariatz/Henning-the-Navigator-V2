@@ -7,6 +7,7 @@ function NotFound() {
   const { pathname } = useLocation();
   return (
     <>
+      <meta name="robots" content="noindex" />
       <Menu />
       <div className={styles.container}>
         <div className={styles.innerContainer}>

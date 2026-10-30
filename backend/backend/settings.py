@@ -62,7 +62,7 @@ REST_FRAMEWORK = { # - for using Djangorestframework-simplejwt
 }
 SIMPLE_JWT = { # - for using Djangorestframework-simplejwt
     'ACCESS_TOKEN_LIFETIME': timedelta(days=2),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=6),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
 
