@@ -1,8 +1,10 @@
 import HennLogo1 from './assets/img/Henning_logo.webp';
 import HennLogo2 from './assets/img/Henning_logo2.webp';
 
-import sessionHeader from './assets/img/session/session_header4.png'; //https://unsplash.com/photos/3d-render-abstract-white-paper-background-layers-flat-fiber-structures-holes-macro-texture-_HUUfJX7Qks
+import sessionHeader from './assets/img/session/session_header4.png';
 import sessionBg from './assets/img/session/gis--contour-map2.png';
+
+import adminHeader from './assets/img/adminPanel/adminPanelHeader.avif'; //https://unsplash.com/photos/3d-render-abstract-white-paper-background-layers-flat-fiber-structures-holes-macro-texture-_HUUfJX7Qks
 
 import a20 from './assets/img/login/a20.jpg';
 import fw190 from './assets/img/login/fw190.jpg';
@@ -286,6 +288,7 @@ export {
   yak,
   sessionHeader,
   sessionBg,
+  adminHeader,
   mapScreenshot,
   shareScreenshot,
   blenderHomePlane,
