@@ -23,6 +23,8 @@
   transition: 0.25s ease-in-out;
   box-shadow: var(--boxshadow_1);
   border: 3px solid var(--logo_yellow);
+  max-height: 85%;
+  overflow-y: auto;
 }
 
 .form {

@@ -7,13 +7,16 @@ import UserSessions from './pages/userSessions/UserSessions';
 import Session from './pages/session/Session';
 import NotFound from './pages/404/NotFound';
 import SessionNotFound from './pages/404/SessionNotFound';
+import AdminPanel from './pages/adminPanel/AdminPanel';
 
 const pageTitles: Record<string, string> = {
   '/': 'Henning the Navigator',
   '/signup': 'Sign up',
   '/login': 'Login',
   '/user-sessions': 'User sessions',
+  '/adminpanel': 'Admin panel',
   '/session/:username/:slug': 'Session',
+  '/session-not-found': 'Session not found',
 };
 
 function App() {
@@ -34,6 +37,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user-sessions" element={<UserSessions />} />
+        <Route path="/adminpanel" element={<AdminPanel />} />
         <Route path="/session/:username/:slug" element={<Session />} />
         <Route path="/session-not-found" element={<SessionNotFound />} />
         <Route path="*" element={<NotFound />} />

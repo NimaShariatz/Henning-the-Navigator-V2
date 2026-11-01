@@ -11,7 +11,6 @@
 }
 
 .container {
-  width: 100%;
   background: var(--darkBG_1);
   backdrop-filter: 3px;
   display: flex;
@@ -24,6 +23,8 @@
   transition: 0.25s ease-in-out;
   box-shadow: var(--boxshadow_1);
   border: 3px solid var(--logo_yellow);
+  max-height: 85%;
+  overflow-y: auto;
 }
 
 .form {

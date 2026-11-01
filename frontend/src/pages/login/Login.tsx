@@ -40,7 +40,7 @@ function Login() {
         <div className={styles.container}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <h2>Login</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: 'var(--error_red)' }}>{error}</p>}
             <div>
               <label>Username</label>
               <input
@@ -98,6 +98,7 @@ function Login() {
               )}
             </div>
             <Link to="/signup">No account? Sign up</Link>
+            <Link to="/">Or return home</Link>
             <button className={styles.loginButton} type="submit">
               Login
             </button>

@@ -40,7 +40,7 @@ function Signup() {
         <div className={styles.container}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <h2>Sign up</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: 'var(--error_red)' }}>{error}</p>}
             <div>
               <label>Username</label>
               <input
@@ -138,11 +138,13 @@ function Signup() {
         ></div>
 
         <div className={styles.logo_container}>
-          <img
-            className={styles.logo}
-            src={HennLogo2}
-            alt="Henning the Navigator Logo"
-          />
+          <Link to="/">
+            <img
+              className={styles.logo}
+              src={HennLogo2}
+              alt="Henning the Navigator Logo"
+            />
+          </Link>
         </div>
       </div>
     </>
