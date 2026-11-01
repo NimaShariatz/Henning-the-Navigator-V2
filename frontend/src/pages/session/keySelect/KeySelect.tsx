@@ -63,7 +63,7 @@ function KeySelect({ resetCamera }: KeySelectProps) {
       <small
         ref={shiftRef}
         className={styles.shift}
-        style={{ opacity: isShift ? 0.7 : 0.3 }}
+        style={{ opacity: isShift ? 0.9 : 0.6 }}
       >
         Shift
       </small>
@@ -77,21 +77,21 @@ function KeySelect({ resetCamera }: KeySelectProps) {
         <path
           fill={'var(--medium_yellow)'}
           strokeWidth={'3'}
-          style={{ opacity: isLeftClick ? 0.7 : 0.3 }}
+          style={{ opacity: isLeftClick ? 0.9 : 0.6 }}
           d="M0.527832 43.6206H41.5278V0.620605C11.7501 7.10485 2.01896 15.9526 0.527832 43.6206Z"
           stroke="black"
         />
         <path
           fill={'var(--medium_yellow)'}
           strokeWidth={'3'}
-          style={{ opacity: isRightClick ? 0.7 : 0.3 }}
+          style={{ opacity: isRightClick ? 0.9 : 0.6 }}
           d="M100.528 43.6206H59.5278V0.620605C89.3055 7.10485 99.0367 15.9526 100.528 43.6206Z"
           stroke="black"
         />
         <path
           fill={'var(--medium_yellow)'}
           strokeWidth={'3'}
-          style={{ opacity: isScroll ? 0.7 : 0.3 }}
+          style={{ opacity: isScroll ? 0.9 : 0.6 }}
           d="M59.5278 23.6206H41.5278V62.6206H59.5278V23.6206Z"
           stroke="black"
         />
