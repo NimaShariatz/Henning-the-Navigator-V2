@@ -57,3 +57,65 @@
   padding-block: 5rem;
   gap: 2rem;
 }
+
+.usersContainer {
+  width: 80%;
+  border-radius: 5px;
+  padding-inline: 1rem;
+  padding-block: 1rem;
+  background-color: var(--light_yellow);
+  height: 400px;
+  overflow-y: auto;
+}
+
+.usersContainer p {
+  margin-block: 1rem;
+  background: linear-gradient(
+    to right,
+    var(--medium_yellow),
+    var(--light_yellow)
+  );
+  border-radius: 5px;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.usersContainer p:hover {
+  background: var(--logo_white);
+}
+
+.searchFormContainer button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--logo_yellow);
+  outline: 4px solid transparent;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+.searchFormContainer button:hover {
+  outline-color: var(--text_color_white);
+}
+.searchFormContainer button:active {
+  background-color: var(--active_color);
+}
+.searchFormContainer input {
+  padding: 6px 10px;
+  border-radius: 3px;
+  border: none;
+  outline: 2px solid rgba(0, 0, 0, 1);
+  width: 350px;
+}
+.searchFormContainer input:focus {
+  outline-color: var(--logo_yellow);
+}
+
+@media (max-width: 720px) {
+  .usersContainer {
+    width: 95%;
+  }
+  .searchFormContainer input {
+    width: min(60%, 300px);
+  }
+}

@@ -569,6 +569,16 @@ function Session() {
     });
   };
 
+  const selectNoOption = () => {
+    setOptionSelected((prev: OptionSelected) => {
+      const next = { ...prev };
+      for (const key of Object.keys(next) as OptionKey[]) {
+        next[key] = false;
+      }
+      return next;
+    });
+  };
+
   const resetCamera = () => {
     const controls = controlsRef.current;
     if (!controls) return;
@@ -580,17 +590,21 @@ function Session() {
 
   const revealSettingsSetter = () => {
     setPopupRevealer((prev) => ({ ...prev, settings: !prev.settings }));
+    selectNoOption();
   };
   const revealFlightInfoSetter = () => {
     setPopupRevealer((prev) => ({ ...prev, flightInfo: !prev.flightInfo }));
+    selectNoOption();
   };
   const revealEditTextSetter = (idClicked: number) => {
     setPopupRevealer((prev) => ({ ...prev, editText: !prev.editText }));
     setTextClicked(idClicked);
+    selectNoOption();
   };
   const revealEditTargetSetter = (idClicked: number) => {
     setPopupRevealer((prev) => ({ ...prev, editTarget: !prev.editTarget }));
     setTargetClicked(idClicked);
+    selectNoOption();
   };
 
   return (

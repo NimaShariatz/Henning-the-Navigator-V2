@@ -1,7 +1,7 @@
 .keySelectContainer {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
+  bottom: 5px;
+  left: 5px;
   z-index: var(--selection_index);
   display: flex;
   justify-content: center;
@@ -9,6 +9,26 @@
   gap: 1rem;
   user-select: none;
   pointer-events: none;
+  padding: 0.3rem 0.4rem;
+  border-radius: 5px;
+  animation: emphasize 3s ease-in;
+}
+@keyframes emphasize {
+  0% {
+    background-color: transparent;
+  }
+  15% {
+    background-color: var(--active_color);
+  }
+  50% {
+    background-color: transparent;
+  }
+  65% {
+    background-color: var(--active_color);
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 
 .shift {

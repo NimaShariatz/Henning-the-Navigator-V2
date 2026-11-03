@@ -135,6 +135,7 @@
   display: flex;
   background-color: transparent;
   pointer-events: all;
+  animation: emphasize 3s ease-in;
 }
 
 .changeOptions:hover {
@@ -145,6 +146,23 @@
 }
 .changeOptions:active svg {
   fill: var(--active_color);
+}
+@keyframes emphasize {
+  0% {
+    background-color: transparent;
+  }
+  15% {
+    background-color: var(--active_color);
+  }
+  50% {
+    background-color: transparent;
+  }
+  65% {
+    background-color: var(--active_color);
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 
 .optionsContainer {
