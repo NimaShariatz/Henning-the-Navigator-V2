@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .serializers import RegisterSerializer
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
+from rest_framework.exceptions import PermissionDenied
 User = get_user_model()
 #views.py handles HTTP concerns: receives the request, returns a response, and generates tokens.
 
@@ -63,3 +64,20 @@ class UserSearchView(APIView):
       .values_list('username', flat=True)[:10]
     )
     return Response(list(usernames), status=200)
+  
+  
+  
+class AdminView(APIView):
+  permission_classes = [permissions.IsAuthenticated]
+  
+  # Purpose: check if the user is an admin type
+  # Input: GET /admin
+  # Output: a 200 if user is an admin type
+  def get(self, request):
+    user = request.user
+    if user.is_staff:
+      return Response(status=200)
+    else:
+      raise PermissionDenied()
+  
+  

@@ -9,18 +9,18 @@ import { isLoggedIn } from '../../helpers/isLoggedIn';
 function Menu() {
   const navigate = useNavigate();
   const [errorClicked, setErrorClicked] = useState(false);
-  function ErrorClicked_handler(input: boolean) {
+  const ErrorClicked_handler = (input: boolean) => {
     setErrorClicked(input);
-  }
+  };
 
   const [loggedIn] = useState(isLoggedIn);
 
-  function handleSignOut() {
+  const handleSignOut = () => {
     //console.log(localStorage.getItem('access'));
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
     navigate('/login');
-  }
+  };
 
   return (
     <>

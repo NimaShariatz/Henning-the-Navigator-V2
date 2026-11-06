@@ -15,3 +15,8 @@ export async function searchUsers(query: string): Promise<string[]> {
   });
   return response.data;
 }
+
+export async function getAdmin() {
+  const response = await api.get('/api/accounts/admin/');
+  return response.data;
+}
