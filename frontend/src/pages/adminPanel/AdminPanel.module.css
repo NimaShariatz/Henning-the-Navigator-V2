@@ -64,8 +64,10 @@
   padding-inline: 1rem;
   padding-block: 1rem;
   background-color: var(--light_yellow);
-  height: 400px;
-  overflow-y: auto;
+}
+
+.usersContainer h4 {
+  margin-top: 3rem;
 }
 
 @media (max-width: 720px) {

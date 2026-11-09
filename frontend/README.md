@@ -14,3 +14,7 @@ to check the current latest version, do `npm view three version` and `npm view @
 - `react-three/fiber`: Cuts down on ThreeJS syntax by using React componentization
 - `@react-three/drei`: For effects and helpers
 - `react-colorful`: for the color RGB selection
+- `@mui/x-charts`: for admin panel charts
+- `@mui/material`: for admin panel charts
+- `@emotion/react`: a peer dependency for MUI charts
+- `@emotion/styled`: a peer dependency for MUI charts
