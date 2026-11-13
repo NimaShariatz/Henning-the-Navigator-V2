@@ -181,7 +181,7 @@ cd backend
 sudo systemctl restart henning
 sudo systemctl status henning --no-pager
 ```
-make sure when you push a bash file, it ends with CRLF (so dont push with Terminal. Do it with Ubuntu). On first run do
+make sure when you push a bash file, it ends with LF (so dont push with Terminal. Do it with Ubuntu). On first run do
 ```
 cd /srv/henning && git pull
 ```
